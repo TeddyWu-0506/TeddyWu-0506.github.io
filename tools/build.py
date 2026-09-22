@@ -134,6 +134,30 @@ def check():
         for m in re.finditer(r'<div class="panel panel--preview[^"]*"[^>]*>', body):
             if not re.match(r'<div class="panel panel--preview[^"]*"[^>]*>\s*<div class="app"', body[m.start():m.start()+400]):
                 print('   preview panel is not wrapped in .app:', os.path.relpath(p,tmp)); bad += 1
+    # Anti-drift: a prose string that lives in BOTH a data file and an authored page is
+    # a dead copy waiting to go stale. This exact bug shipped once (content.json held the
+    # six-cell copy that nothing read while index.html held the real one).
+    authored = []
+    for rel in PAGES:
+        p = os.path.join(ROOT, rel)
+        if os.path.exists(p):
+            authored.append(open(p, encoding='utf-8').read())
+    blob = '\n'.join(authored)
+    def strings(o):
+        if isinstance(o, str): yield o
+        elif isinstance(o, dict):
+            for v in o.values(): yield from strings(v)
+        elif isinstance(o, list):
+            for v in o: yield from strings(v)
+    for name in ('demo-samples.json', 'rules.json'):
+        dp = os.path.join(ROOT, 'assets/data', name)
+        if not os.path.exists(dp): continue
+        data = json.load(open(dp, encoding='utf-8'))
+        dupes = sorted({x for x in strings(data) if len(x) >= 14 and x in blob})
+        if dupes:
+            print(f'   DEAD COPY in {name}: {len(dupes)} string(s) also present in authored HTML')
+            for x in dupes[:3]: print('      ', x[:70])
+            bad += 1
     # The demo prints the live index length at runtime, so the prose count must
     # agree with the data file or the two drift apart silently.
     try:

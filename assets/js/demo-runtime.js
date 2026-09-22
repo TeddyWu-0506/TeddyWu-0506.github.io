@@ -71,7 +71,7 @@ export function mountDemo(host) {
     actions.innerHTML = `<button class="btn btn--solid" data-act="run">运行审核 <span class="ar">↘</span></button>
       <span class="hint" data-hint>⌘ / Ctrl + Enter</span>`;
     const ta = form.querySelector('textarea');
-    const samples = window.__CONTENT__?.samples || [];
+    const samples = window.__SAMPLES__?.samples || [];
     form.querySelector('[data-samples]').innerHTML = samples.map((s) =>
       `<button class="chip" data-sample="${s.id}" type="button">${esc(s.label)}</button>`).join('');
     form.addEventListener('click', (e) => {

@@ -17,7 +17,7 @@ CSS_SRC = 'dist/assets/css/site.css'   # build.py already flattened the cascade
 # load order matters: dependencies first, entry last
 JS = ['analytics.js', 'reveal.js', 'engine-review.js', 'engine-match.js',
       'demo-runtime.js', 'deck.js', 'main.js']
-DATA = ['creators.json', 'rules.json', 'content.json']
+DATA = ['creators.json', 'rules.json', 'demo-samples.json']
 SITE = 'https://teddywu.site'
 MIME = {'woff2': 'font/woff2', 'jpg': 'image/jpeg', 'png': 'image/png', 'svg': 'image/svg+xml'}
 

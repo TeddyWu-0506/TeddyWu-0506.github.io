@@ -8,8 +8,8 @@ bindCta();
 
 
 async function boot() {
-  try { window.__CONTENT__ = await (await fetch('/assets/data/content.json')).json(); }
-  catch (_) { window.__CONTENT__ = { samples: [] }; }
+  try { window.__SAMPLES__ = await (await fetch('/assets/data/demo-samples.json')).json(); }
+  catch (_) { window.__SAMPLES__ = { samples: [] }; }
 /* ---- generic tab group: [role=tablist] > [role=tab][aria-controls] ---- */
 function wireTabs(listEl) {
   const tabs = [...listEl.querySelectorAll('[role="tab"]')];
