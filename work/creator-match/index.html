@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>达人推荐 · AI Creator Match — 从投放 brief 到可解释的候选池 · Teddy Wu</title>
+<meta name="description" content="达人自动化推荐系统。选号 30min→5min、中选率 30%→50%（口径见页内）。填一份 brief 即可试用在线 demo。">
+<link rel="canonical" href="https://teddywu-0506.github.io/work/creator-match/">
+<meta property="og:type" content="article"><meta property="og:locale" content="zh_CN">
+<meta property="og:title" content="达人推荐 · AI Creator Match — 从投放 brief 到可解释的候选池 · Teddy Wu"><meta property="og:description" content="达人自动化推荐系统。选号 30min→5min、中选率 30%→50%（口径见页内）。填一份 brief 即可试用在线 demo。"><meta property="og:url" content="/work/creator-match/">
+<meta property="og:image" content="/assets/img/og-home.png"><meta property="og:image:alt" content="达人推荐 · AI Creator Match — 从投放 brief 到可解释的候选池 · Teddy Wu">
+<meta name="twitter:card" content="summary_large_image"><meta name="theme-color" content="#F2F0EA">
+<link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/assets/css/site.css">
+<script>document.documentElement.className='js'</script>
+</head>
+<body class="doc">
+<header class="doc-head" data-theme="paper">
+  <a class="brand" href="/"><span class="brand-mark">TW</span><span class="brand-rule" aria-hidden="true"></span><span class="brand-sub">Product Dossier</span></a>
+  <nav class="nav" aria-label="页面导航"><a href="/#work">← 返回作品台</a><a href="/profile/">履历</a><a href="/#contact">联系</a></nav>
+</header>
+<main class="doc-main">
+
+<section class="doc-hero">
+  <div><a class="back" href="/#work">← 返回作品台</a>
+    <p class="kicker">SELECTED WORK 02 · 2026</p>
+    <h1 class="product-name" style="margin:14px 0 6px">Creator Match</h1>
+    <p class="work-cn-name">达人推荐</p></div>
+  <div><p class="doc-thesis">把「我凭感觉知道谁合适」，变成可检索、可解释、可复盘的候选池。</p>
+    <p class="doc-status">本地演示 · 样例数据 · 索引为 20 条脱敏样例，线上索引规模更大</p>
+    <p style="margin-top:18px"><a class="btn btn--solid" href="#demo">直接跑一次 <span class="ar">↘</span></a></p></div>
+</section>
+<dl class="doc-meta"><div><dt>Role</dt><dd>产品定义 / 数据建模 / 匹配策略设计</dd></div><div><dt>Timeline</dt><dd>2026.01 — 至今</dd></div><div><dt>Team</dt><dd>我一个人 + 借用工程同学的接口</dd></div><div><dt>Stack</dt><dd>飞瓜 / MCN 开放 API · 多维知识库 · 场景权重 · 双向评分</dd></div></dl>
+<section class="sec"><div class="sec-grid">
+  <div><span class="sec-kicker">01 / Context</span><h2>这不是客户委托，<br>是我自己的日常。</h2></div>
+  <div class="prose"><p>选号是达人营销里最容易被低估的一环。它看起来是「找人」，实际上是同时满足品牌调性、平台规则、预算、档期和历史效果五件事。</p><p>我原来筛一位达人要 30 分钟：翻飞瓜、查历史合作、比对粉丝画像、再想想上次谁踩过坑。大促期要批量上 KOC，这个速度直接撑不住。</p><p>利益相关方：品牌方要调性对、投放要档期稳、MCN 要报价合理、我要能在两小时内交出一份可提交的候选池。</p></div></div></section>
+<section class="sec"><div class="sec-grid">
+  <div><span class="sec-kicker">02 / The problem, priced</span><h2>30 分钟一位，而且换个人就选不出同一批。</h2></div>
+  <div><div class="prose"><p>人工筛号的问题不只是慢。更麻烦的是它不可复现——同一份 brief 交给两个人，选出来的名单重合度很低，出了问题没人能回溯为什么选了他。</p><p>数据本身也是散的：飞瓜一份、MCN 一份、自建表格一份，同一个达人在三处有三套类目。</p></div><div class="cost"><div><b>30min</b><span>单位达人人均筛选</span></div><div><b>3 套</b><span>同一达人的数据源</span></div><div><b>30%</b><span>原中选率</span></div><div><b>大促</b><span>批量 KOC 无法支撑</span></div></div></div></div></section>
+<section class="sec"><div class="sec-grid">
+  <div><span class="sec-kicker">03 / What I decided</span><h2>四个决定，和它们各自的代价。</h2></div>
+  <div class="dec"><div class="dec-item"><div><p class="dec-q">相似度还是场景适配<span class="vs">单一相似度排序 vs 场景权重重排</span></p></div><div class="dec-a"><p><strong>选了：</strong>四套场景权重（种草 / 品宣 / 拉新 / 大促），同一位达人在不同场景下得分完全不同。</p><p><strong>为什么：</strong>种草要亲和力和图文教程，品宣要专业感和画像纯度，拉新要形式和触达。用一把尺子量，选出来的永远是同一批头部。</p><dl><dt>放弃</dt><dd>放弃「一个统一相关性分数」这种简单解释。</dd><dt>代价</dt><dd>权重需要人调，每上一个新场景就要重新定义一次；解释成本变高，必须逐维展示。</dd></dl></div></div><div class="dec-item"><div><p class="dec-q">一路召回还是多支路<span class="vs">单路向量检索 vs 主题 / 人设 / 历史合作多支路召回</span></p></div><div class="dec-a"><p><strong>选了：</strong>多支路召回后合并去重，每支路各取 top N。</p><p><strong>为什么：</strong>单路检索会被语义相近但业务无关的达人占满。历史合作那一路是纯结构化过滤，恰恰是最有用的。</p><dl><dt>放弃</dt><dd>放弃单路的实现简单与低延迟。</dd><dt>代价</dt><dd>合并与去重逻辑要单独维护；不同支路的分数不可直接比较，必须在重排层归一。</dd></dl></div></div><div class="dec-item"><div><p class="dec-q">谁说了算<span class="vs">纯系统打分 vs 双向评分闭环</span></p></div><div class="dec-a"><p><strong>选了：</strong>系统自动打分 + 人工打分并列，人工分作为反馈样本回流。</p><p><strong>为什么：</strong>我一开始不信任何「AI 选号」。只有把人工的否决记录变成数据，系统才会往我认可的方向走。</p><dl><dt>放弃</dt><dd>放弃全自动的吞吐想象。</dd><dt>代价</dt><dd>需要有人真的去点采纳 / 忽略。这个动作很烦，所以我把反馈按钮放在结果里，而不是另开一个页面。</dd></dl></div></div><div class="dec-item"><div><p class="dec-q">用飞瓜字段还是自建<span class="vs">直接用平台字段 vs 自建标准化字段</span></p></div><div class="dec-a"><p><strong>选了：</strong>自建五维标准化字段（账号类型 / 人设 / 内容形式 / 内容主题 / 粉丝画像），平台字段只做原始来源。</p><p><strong>为什么：</strong>飞瓜和 MCN 的类目体系不一致，直接用任何一家的字段，另一家的数据就进不来。</p><dl><dt>放弃</dt><dd>放弃直接复用平台现成标签体系。</dd><dt>代价</dt><dd>初期必须人工复核 AI 打标——我把错误打标当成数据采集，而不是当成 bug。</dd></dl></div></div></div></div></section>
+<section class="sec"><div class="sec-grid">
+  <div><span class="sec-kicker">04 / How it works</span><h2>一份 brief 走过的五步。</h2></div>
+  <div class="flow"><div class="flow-step"><span class="flow-n">01</span><div><h3>数据接入</h3><p>对接飞瓜与 MCN 开放 API，采集内容风格、粉丝画像与投放效果数据。</p></div></div><div class="flow-step"><span class="flow-n">02</span><div><h3>标准化建模</h3><p>统一清洗、归类、标签化成五维字段。初期人工复核 AI 错误打标——这段人工成本是必要的，它定义了后面所有检索的语义。</p><span class="flow-tag">你在 demo 里看到的四个维度就是这一步的产物</span></div></div><div class="flow-step"><span class="flow-n">03</span><div><h3>多支路召回</h3><p>主题路 / 人设路 / 历史合作路各取 top N，合并去重成候选池。</p></div></div><div class="flow-step"><span class="flow-n">04</span><div><h3>场景权重重排</h3><p>按投放场景套用不同权重，输出排序后的候选池与逐维分数。</p></div></div><div class="flow-step"><span class="flow-n">05</span><div><h3>双向评分回流</h3><p>系统分与人工分并列记录，人工分作为反馈样本持续优化匹配策略。</p><span class="flow-tag">HITL</span></div></div></div></div></section>
+<section class="sec" id="demo"><div class="sec-grid">
+  <div><span class="sec-kicker">05 / Try it</span><h2>自己跑一次。</h2>
+    <p class="prose" style="margin-top:16px">本地结构化字段过滤 + 场景加权重排，无模型调用。真实系统里对应的是多支路召回与向量检索，此处刻意不谎称 embedding。</p></div>
+  <div><div class="doc-demo"><div class="demo-host" data-demo="match" data-source="case" data-case-url="/work/creator-match/"></div></div></div></div></section>
+<section class="sec"><div class="sec-grid">
+  <div><span class="sec-kicker">06 / Results, with receipts</span><h2>数字，和它的口径。</h2></div>
+  <div><div class="res"><div class="res-row"><b>30min → 5min</b><em>单轮选号耗时</em><span>从收到 brief 到产出可提交候选池的中位耗时 · 月均 200+ 达人筛选 · 2025.06–2026.06</span></div><div class="res-row"><b>30% → 50%</b><em>中选率</em><span>提交候选池中最终被品牌方选中的比例</span></div><div class="res-row"><b>85%</b><em>候选池匹配率</em><span>人工复核认为「确实合适」的占比</span></div><div class="res-row is-down"><b>未达标</b><em>报价与档期准确率</em><span>仍靠人工同步，未接实时数据源。这是当前最大的可用性问题。</span></div></div>
+    <div class="grid6" style="margin-top:30px"><div class="cell cell--result" role="button" tabindex="0" data-prov="prov" aria-controls="prov" aria-expanded="false">
+      <span class="cell-label">业务结果</span><p class="cell-stat"><span class="stat">30min → 5min</span></p>
+      <p class="cell-body">选号效率 +83%</p><span class="cell-arrow">口径 +</span>
+      <div class="provenance" id="prov">口径：从收到 brief 到产出可提交候选池的中位耗时。样本 月均 200+ 达人筛选。时间窗 2025.06–2026.06。候选池匹配率 85%。</div></div></div></div></div></section>
+<section class="sec"><div class="sec-grid">
+  <div><span class="sec-kicker">07 / What broke</span><h2>它坏过三次。</h2></div>
+  <div class="dec"><div class="dec-item"><div><p class="dec-q">数据更新滞后，候选池整体不可用</p></div><div class="dec-a"><p>某次大促前给出的名单，有三位达人报价已上调 40% 以上。系统没错，是数据源过期。但品牌方只会记住「你给的名单不行」。</p><p><strong>怎么改：</strong>给每条结果加数据新鲜度标记。过期数据现在会明确降级为「需人工核实」，而不是安静地出现在候选池里。</p></div></div><div class="dec-item"><div><p class="dec-q">AI 把「学生党」打成「职场」</p></div><div class="dec-a"><p>初期错误率不低，而且错得很有规律：平台类目本身就混，模型照着学就一起混。</p><p><strong>怎么改：</strong>前两周所有打标全部人工复核，把错误样本单独攒成一份对照集。这份对照集后来成了我定义字段口径的依据。</p></div></div><div class="dec-item"><div><p class="dec-q">蒲公英标签与自建标签冲突</p></div><div class="dec-a"><p>同一位达人在蒲公英是「美妆」，在自建体系里是「个护」。合并去重时同一人出现两次，分数还不一样。</p><p><strong>怎么改：</strong>明确自建字段为唯一真源，平台字段只做原始来源、不参与排序。这个决定让数据接入变慢，但让结果可解释。</p></div></div></div>
+  <div class="prose" style="grid-column:1/-1"><p style="margin-top:26px"><strong>下一步：</strong>把报价与档期接实时源；以及把「参考达人 → 相似达人」这条链路补上多模态输入（截图 / 主页解析）。现在这个 demo 里没有那部分，我不会假装它有。</p></div></div></section>
+<footer style="display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;padding:24px 0 40px;border-top:1px solid var(--border);font-family:var(--f-mono);font-size:var(--micro);letter-spacing:.05em;text-transform:uppercase;color:var(--text-quiet)">
+  <span>© 2026 Teddy Wu</span><span>本地演示 · 样例数据</span><span><a href="/#contact" style="border-bottom:1px solid currentColor">联系 →</a></span>
+</footer>
+</main>
+<script type="module">
+import { mountDemo } from '/assets/js/demo-runtime.js';
+import { bindCta } from '/assets/js/analytics.js';
+bindCta();
+document.querySelectorAll('[data-demo]').forEach(mountDemo);
+document.querySelectorAll('[data-prov]').forEach(t=>t.addEventListener('click',()=>{
+  const b=document.getElementById(t.getAttribute('aria-controls'));
+  const o=b.classList.toggle('is-open'); t.setAttribute('aria-expanded',String(o));
+}));
+</script>
+</body></html>
