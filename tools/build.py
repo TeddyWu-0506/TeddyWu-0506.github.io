@@ -161,9 +161,11 @@ def build(outdir):
         if not os.path.exists(s): continue
         d = os.path.join(outdir, rel); os.makedirs(os.path.dirname(d), exist_ok=True)
         shutil.copyfile(s, d)
-    # Cloudflare Pages reads this; GitHub Pages ignores it and serves it as a plain file,
-    # which is harmless. Generated rather than committed so the cache policy cannot drift
-    # away from what the build actually emits.
+    # Cloudflare Pages reads this. GitHub Pages does not serve it at all - no .nojekyll
+    # means Pages runs Jekyll, which drops underscore-prefixed paths, so /_headers 404s
+    # there. That is the better of the two outcomes: the policy is inert on GH rather than
+    # sitting there as a downloadable file. Generated, not committed, so the cache policy
+    # cannot drift from what the build actually emits.
     #
     # No content hashes yet, so assets get one day, not a year: "immutable" on a file whose
     # name never changes is a stuck stylesheet until the visitor force-reloads.
