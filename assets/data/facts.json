@@ -9,6 +9,6 @@
  "match.pool": "85%",
  "index.size": "20",
  "scale.creators": "200+",
- "scale.spend": "150W+",
+ "scale.spend": "100W+",
  "problem.volume": "600 条"
 }

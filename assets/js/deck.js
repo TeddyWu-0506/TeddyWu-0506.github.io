@@ -1,4 +1,3 @@
-import { revealScene } from './reveal.js';
 import { track } from './analytics.js';
 
 const DECK_MQ = '(min-width: 769px)';
@@ -16,6 +15,11 @@ export function createDeck({ onScene } = {}) {
   const navs   = [...document.querySelectorAll('[data-scene-link]')];
   const idxEl  = rail?.querySelector('.rail-index .cur');
   const nameEl = rail?.querySelector('.rail-name');
+  /* The mobile rail hides .rail-index and .rail-name and shows only this <summary>,
+     so it needs its own handles - under 768px it is the one progress signal there is. */
+  const sumEl      = rail?.querySelector('.rail-jump > summary');
+  const sumNumEl   = sumEl?.querySelector('.cur');
+  const sumLabelEl = sumEl?.querySelector('.sum-label');
   const liveEl = rail?.querySelector('.rail-live');
   const prevB  = rail?.querySelector('[data-deck="prev"]');
   const nextB  = rail?.querySelector('[data-deck="next"]');
@@ -53,6 +57,10 @@ export function createDeck({ onScene } = {}) {
     });
     if (idxEl) idxEl.textContent = String(i + 1).padStart(2, '0');
     if (nameEl) nameEl.textContent = scenes[i].dataset.label || '';
+    /* Write the two spans, never the summary's textContent - that would flatten .cur
+       into a bare text node and cost it the styling it shares with .rail-index. */
+    if (sumNumEl) sumNumEl.textContent = String(i + 1).padStart(2, '0');
+    if (sumLabelEl) sumLabelEl.textContent = scenes[i].dataset.label || '';
     if (prevB) prevB.disabled = i === 0;
     if (nextB) nextB.disabled = i === scenes.length - 1;
     setChromeTheme(themeOf(scenes[i]));
@@ -67,7 +75,6 @@ export function createDeck({ onScene } = {}) {
     if (deckMode) {
       cut();
       scenes[i]._t = Date.now();
-      revealScene(scenes[i]);
       const h = scenes[i].querySelector('h2,h1');
       if (h && !document.activeElement.closest('input,textarea,select')) h.setAttribute('tabindex', '-1');
     } else {
@@ -87,7 +94,7 @@ export function createDeck({ onScene } = {}) {
     stack.classList.toggle('is-vertical', !deckMode);
     document.body.classList.toggle('is-deck', deckMode);
     if (!deckMode) {
-      scenes.forEach((s) => { s.classList.add('is-active'); revealScene(s); });
+      scenes.forEach((s) => s.classList.add('is-active'));
       setChromeTheme('paper');
       segs.forEach((s, n) => { s.classList.toggle('is-passed', n < i); s.classList.toggle('is-current', n === i); });
     } else {
@@ -173,7 +180,7 @@ export function createDeck({ onScene } = {}) {
   i = fromHash();
   document.body.classList.toggle('is-deck', deckMode);
   stage.classList.toggle('is-vertical', !deckMode);
-  scenes.forEach((s, n) => { if (n === i || !deckMode) { s.classList.add('is-active'); revealScene(s); } });
+  scenes.forEach((s, n) => { if (n === i || !deckMode) s.classList.add('is-active'); });
   scenes[i]._t = Date.now();
   paintDeck();
   if (liveEl) liveEl.textContent = `第 ${i + 1} / ${scenes.length} 屏：${scenes[i].dataset.label || ''}`;

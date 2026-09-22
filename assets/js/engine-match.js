@@ -85,7 +85,10 @@ export function match(creators, brief) {
       score: Math.round(s.total * 100), dims: s.dims,
       note: note(c, s.dims, ref), best: i === 0
     })),
-    poolSize: pool.length, retrieved: Math.min(pool.length, 40)
+    /* No recall cap: the desensitised index is 20 rows, so every row is scored. The old
+       Math.min(pool.length, 40) was copied from the online system and advertised a
+       candidate pool the local demo does not have. */
+    poolSize: pool.length, retrieved: pool.length
   };
 }
 

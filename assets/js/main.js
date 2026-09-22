@@ -1,15 +1,14 @@
 import { createDeck } from './deck.js';
-import { initReveal } from './reveal.js';
 import { bindCta, track } from './analytics.js';
 import { mountDemo, mountPreview } from './demo-runtime.js';
 
-initReveal();
 bindCta();
 
-
-async function boot() {
-  try { window.__SAMPLES__ = await (await fetch('/assets/data/demo-samples.json')).json(); }
-  catch (_) { window.__SAMPLES__ = { samples: [] }; }
+/* Nothing at this level may wait on the network. The inline script in <head> has already
+   flipped <html> to class="js", which switches the no-js fallback off, so a single await
+   here turns a stalled request into a site stuck on scene 1 - strictly worse than having
+   no JS at all. Sample data now loads lazily inside demo-runtime.js. */
+function boot() {
 /* ---- generic tab group: [role=tablist] > [role=tab][aria-controls] ---- */
 function wireTabs(listEl) {
   const tabs = [...listEl.querySelectorAll('[role="tab"]')];
@@ -90,6 +89,15 @@ document.addEventListener('click', (e) => {
   }
 });
 
+/* ---- QR reveal (contact scene) ---- */
+document.addEventListener('click', (e) => {
+  const t = e.target.closest('[data-qr]'); if (!t) return;
+  const box = document.getElementById(t.getAttribute('aria-controls')); if (!box) return;
+  const open = box.hasAttribute('hidden');
+  if (open) box.removeAttribute('hidden'); else box.setAttribute('hidden', '');
+  t.setAttribute('aria-expanded', String(open));
+});
+
 /* ---- header stuck ---- */
 const header = document.querySelector('.site-header,.doc-head');
 if (header) { const on = () => header.classList.toggle('is-stuck', window.scrollY > 12);
@@ -99,10 +107,13 @@ if (header) { const on = () => header.classList.toggle('is-stuck', window.scroll
 document.querySelectorAll('[data-year]').forEach((el) => (el.textContent = new Date().getFullYear()));
 document.addEventListener('click', async (e) => {
   const b = e.target.closest('[data-copy]'); if (!b) return;
-  const keep = b.textContent;
+  /* Snapshot with innerHTML, not textContent: the label ends in a styled
+     <span class="ar">, and a textContent round-trip flattens it into a bare glyph
+     that has lost its font, size and hover offset. */
+  const keep = b.innerHTML;
   try { await navigator.clipboard.writeText(b.dataset.copy); b.textContent = '已复制 ✓'; }
   catch (_) { b.textContent = b.dataset.copy; }
-  setTimeout(() => (b.textContent = keep), 1800);
+  setTimeout(() => (b.innerHTML = keep), 1800);
 });
 }
 boot();

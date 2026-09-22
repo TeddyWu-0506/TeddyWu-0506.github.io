@@ -1,11 +1,12 @@
 /* ==== fonts.css ==== */
+/* self-hosted latin subsets - regenerate with: python3 tools/fonts.py
 /* self-hosted latin subsets */
 @font-face{font-family:'Bricolage Grotesque';font-style:normal;font-weight:500;font-display:swap;src:url('/assets/fonts/BricolageGrotesque-normal-500.woff2') format('woff2');unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;}
 @font-face{font-family:'Bricolage Grotesque';font-style:normal;font-weight:700;font-display:swap;src:url('/assets/fonts/BricolageGrotesque-normal-700.woff2') format('woff2');unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;}
 @font-face{font-family:'Inter Tight';font-style:normal;font-weight:400;font-display:swap;src:url('/assets/fonts/InterTight-normal-400.woff2') format('woff2');unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;}
 @font-face{font-family:'Inter Tight';font-style:normal;font-weight:600;font-display:swap;src:url('/assets/fonts/InterTight-normal-600.woff2') format('woff2');unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;}
 @font-face{font-family:'JetBrains Mono';font-style:normal;font-weight:400;font-display:swap;src:url('/assets/fonts/JetBrainsMono-normal-400.woff2') format('woff2');unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;}
-@font-face{font-family:'Newsreader';font-style:italic;font-weight:400;font-display:swap;src:url('/assets/fonts/Newsreader-italic-400.woff2') format('woff2');unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;}
+@font-face{font-family:'JetBrains Mono';font-style:normal;font-weight:500;font-display:swap;src:url('/assets/fonts/JetBrainsMono-normal-500.woff2') format('woff2');unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;}
 
 /* ==== tokens.css ==== */
 /* ============ LAYER 1 · PRIMITIVE ============ */
@@ -20,7 +21,10 @@
   --f-display:"Bricolage Grotesque","Helvetica Neue",Arial,sans-serif;
   --f-body:"Inter Tight",Inter,-apple-system,"Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
   --f-mono:"JetBrains Mono",ui-monospace,"SFMono-Regular",Consolas,monospace;
-  --f-serif:Newsreader,Georgia,"Times New Roman",serif;
+  /* System serif on purpose. Newsreader was declared for this slot and shipped 24 KB of
+     woff2 that no page ever fetched - every <em> in the site is CJK and fell through to
+     PingFang anyway. Same intent, one fewer asset to keep honest. */
+  --f-serif:Georgia,"Times New Roman","Songti SC",serif;
   --f-cjk:"PingFang SC","Hiragino Sans GB","Microsoft YaHei","Noto Sans CJK SC",sans-serif;
 
   /* LAYER 3 · COMPONENT */
@@ -89,6 +93,10 @@ button{cursor:pointer;background:none;border:0;padding:0}
 img{display:block;max-width:100%}
 h1,h2,h3,h4,p{margin:0}
 :focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:1px}
+/* The !important here is load-bearing: .work-panel{display:grid} and friends live in a
+   later file, so a bare [hidden] would lose to them on source order alone. Any rule that
+   deliberately un-hides (the html.no-js fallbacks in components.css) has to carry
+   !important as well and win on specificity instead. */
 [hidden]{display:none!important}
 
 /* ---- typography utilities ---- */
@@ -462,7 +470,7 @@ select.field{height:40px;padding:0 10px;font-size:13px;font-family:var(--f-body)
 /* transform-only: an opacity fade makes axe sample a blended foreground */
 @keyframes rise{from{transform:translateY(10px)}to{transform:none}}
 .finding-top{display:flex;align-items:center;gap:9px;flex-wrap:wrap}
-.sev{display:inline-flex;align-items:center;gap:5px;font-family:var(--f-mono);font-size:9px;
+.sev{display:inline-flex;align-items:center;gap:5px;font-family:var(--f-mono);font-size:var(--micro);
   letter-spacing:.06em;text-transform:uppercase;padding:3px 7px;border-radius:3px}
 .sev--fail{background:rgba(178,58,46,.18);color:#F0A79C}
 .sev--warn{background:rgba(184,122,31,.18);color:#EFC489}
@@ -473,7 +481,7 @@ select.field{height:40px;padding:0 10px;font-size:13px;font-family:var(--f-body)
 .finding-swap{font-family:var(--f-cjk);font-size:var(--body-s);line-height:1.6;color:#B4B8AE}
 .finding-swap del{color:#C98C82;text-decoration-color:rgba(201,140,130,.5)}
 .finding-swap ins{color:var(--signal-500);text-decoration:none;border-bottom:1px solid rgba(157,233,60,.4)}
-.finding-why{font-family:var(--f-mono);font-size:9px;letter-spacing:.03em;color:#9A9C93;line-height:1.7}
+.finding-why{font-family:var(--f-mono);font-size:var(--caption);letter-spacing:.03em;color:#9A9C93;line-height:1.7}
 .finding-acts{display:flex;gap:6px;align-self:center;flex-wrap:wrap;justify-content:flex-end}
 .finding-acts .btn{height:30px;padding:0 10px;border:1px solid #4A4E47;border-radius:3px;
   font-family:var(--f-cjk);font-size:12px;font-weight:500;color:#C9CCC4;transition:.18s}
@@ -495,7 +503,7 @@ select.field{height:40px;padding:0 10px;font-size:13px;font-family:var(--f-body)
 .crow-main{min-width:0}
 .crow-main b{display:block;font-family:var(--f-cjk);font-size:14px;font-weight:600;color:var(--paper-1);
   white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.crow-main span{display:block;font-family:var(--f-mono);font-size:9px;letter-spacing:.03em;color:#A9ACA3;margin-top:3px}
+.crow-main span{display:block;font-family:var(--f-mono);font-size:var(--micro);letter-spacing:.03em;color:#A9ACA3;margin-top:3px}
 .crow-score{font-family:var(--f-mono);font-size:clamp(15px,1.5vw,19px);font-weight:500;color:var(--signal-500);letter-spacing:-.02em}
 .crow-x{font-family:var(--f-mono);color:#9A9C93;font-size:13px;text-align:center}
 .crow.is-best .crow-x,.crow.is-best .crow-score{text-decoration:none}
@@ -504,7 +512,7 @@ select.field{height:40px;padding:0 10px;font-size:13px;font-family:var(--f-body)
 .crow.is-open .crow-detail{display:grid}
 .dims{display:grid;gap:7px}
 .dim{display:grid;grid-template-columns:74px 1fr 38px;align-items:center;gap:10px;
-  font-family:var(--f-mono);font-size:9px;letter-spacing:.03em;color:#A9ACA3;text-transform:uppercase}
+  font-family:var(--f-mono);font-size:var(--micro);letter-spacing:.03em;color:#A9ACA3;text-transform:uppercase}
 .dim i{display:block;height:4px;background:#34372F;border-radius:2px;overflow:hidden}
 .dim i b{display:block;height:100%;background:var(--signal-500);border-radius:2px;
   transform-origin:left;animation:grow .6s var(--ease) both}
@@ -512,7 +520,7 @@ select.field{height:40px;padding:0 10px;font-size:13px;font-family:var(--f-body)
 .dim em{font-style:normal;text-align:right;color:#B4B8AE;font-size:10px}
 .crow-note{font-family:var(--f-cjk);font-size:var(--body-s);line-height:1.65;color:#A9ACA3}
 .crow-facts{display:flex;flex-wrap:wrap;gap:8px}
-.crow-facts span{font-family:var(--f-mono);font-size:9px;letter-spacing:.03em;color:#A9ACA3;
+.crow-facts span{font-family:var(--f-mono);font-size:var(--micro);letter-spacing:.03em;color:#A9ACA3;
   border:1px solid #34372F;padding:4px 7px;border-radius:3px}
 @media (max-width:640px){.crow{grid-template-columns:22px 30px 1fr auto}.crow-x{display:none}
   .crow-av{width:30px;height:30px;font-size:12px}.dim{grid-template-columns:62px 1fr 32px}}
@@ -555,21 +563,34 @@ select.field{height:40px;padding:0 10px;font-size:13px;font-family:var(--f-body)
   align-content:center;padding-block:var(--s-section)}
 .contact-links{display:flex;gap:clamp(20px,3vw,40px);flex-wrap:wrap;margin-top:clamp(10px,2vh,20px)}
 .contact-links .btn--link .ar{font-family:var(--f-mono)}
+/* The contact scene is exactly one viewport tall, so the QR overlays rather than pushing
+   the grid. It sits on a paper card because a QR needs a light, quiet field to scan
+   against - the ink theme would eat the margin. */
+.qr{position:absolute;right:0;top:50%;z-index:3;margin:0;padding:14px 14px 10px;
+  background:var(--paper-1);border-radius:var(--r-window);box-shadow:var(--panel-shadow);
+  transform:translateY(-50%) scale(.97);opacity:0;transition:opacity .2s var(--ease),transform .2s var(--ease)}
+.qr:not([hidden]){opacity:1;transform:translateY(-50%) scale(1)}
+.qr img{width:min(240px,36vw);height:auto;border-radius:var(--r-ui)}
+/* no text-transform here: the caption carries the literal WeChat ID, and uppercasing
+   "TeddyGorrr" into "TEDDYGORRR" misrepresents the thing someone has to type. */
+.qr figcaption{font-family:var(--f-mono);font-size:var(--micro);letter-spacing:.06em;
+  color:var(--ink-600);text-align:center;margin-top:9px}
+/* Under 768px the deck is vertical and the scene scrolls, so the QR joins the flow instead
+   of floating. A centred overlay here sat on top of the H2 and both contact buttons. */
+@media (max-width:768px){
+  .qr{position:static;transform:none;opacity:1;margin:6px auto 0;right:auto;top:auto;
+    box-shadow:none;border:1px solid var(--line-1)}
+  .qr:not([hidden]){transform:none}
+  .qr img{width:min(200px,52vw)}
+}
 .contact-meta{margin-top:clamp(24px,4vh,48px);padding-top:16px;border-top:1px solid var(--border);
   display:flex;gap:20px;flex-wrap:wrap;font-family:var(--f-mono);font-size:var(--micro);
   letter-spacing:.05em;color:var(--text-quiet);text-transform:uppercase}
 .ghost--contact{font-size:clamp(60px,13vw,190px);line-height:.82;white-space:normal;width:max-content}
 
-/* ============ REVEAL ============ */
-.js .reveal{opacity:0;transform:translateY(14px)}
-.js .reveal.is-in{opacity:1;transform:none;transition:opacity .5s var(--ease),transform .5s var(--ease)}
-.js .reveal.d1{transition-delay:.05s}.js .reveal.d2{transition-delay:.1s}
-.js .reveal.d3{transition-delay:.15s}.js .reveal.d4{transition-delay:.2s}
-.js .reveal.d5{transition-delay:.25s}.js .reveal.d6{transition-delay:.3s}
 @media (prefers-reduced-motion:reduce){
   *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;
     transition-duration:.01ms!important;scroll-behavior:auto!important}
-  .js .reveal{opacity:1;transform:none}
   .dot--live{animation:none}
 }
 
@@ -584,13 +605,17 @@ select.field{height:40px;padding:0 10px;font-size:13px;font-family:var(--f-body)
 .work-panel.is-live .work-intro{margin-bottom:10px}
 .work-panel.is-live .cell--result,.work-panel.is-live .cell--evidence{display:none}
 
-/* no-js / vertical fallback: show every tab's content as a document */
+/* no-js / vertical fallback: show every tab's content as a document.
+   base.css declares [hidden]{display:none!important}, so these two have to be
+   !important too: author-vs-author, the !important layer wins, and inside it
+   html.no-js .work-panel[hidden] (0,3,1) outranks [hidden] (0,1,0). Without the
+   !important this entire fallback was silently dead. */
 html.no-js .switcher{display:none}
-html.no-js .work-panel[hidden]{display:grid}
+html.no-js .work-panel[hidden]{display:grid!important}
 html.no-js .work-panel{border-top:1px solid var(--border);padding-top:26px;margin-top:26px}
 html.no-js .work-panel .panel--live{display:none}
 html.no-js .tabs{display:none}
-html.no-js [role="tabpanel"][hidden]{display:block}
+html.no-js [role="tabpanel"][hidden]{display:block!important}
 html.no-js .demo-input{border-right:0;border-bottom:1px solid var(--line-2)}
 
 /* ============ SCENE 2 FIT (must land inside one viewport) ============ */
@@ -820,8 +845,6 @@ body.doc{padding-top:var(--header-h);padding-bottom:0;overflow-x:clip}
 @media (max-width:1050px){.doc-demo .demo{grid-template-columns:1fr}}
 
 /* profile */
-.pf-quote{font-family:var(--f-serif);font-style:italic;font-size:clamp(24px,3.4vw,44px);
-  line-height:1.25;letter-spacing:-.01em;max-width:24ch;margin-bottom:clamp(28px,5vh,56px)}
 .pf-not{display:grid;gap:14px}
 .pf-not li{list-style:none;display:grid;grid-template-columns:auto 1fr;gap:14px;
   font-family:var(--f-cjk);font-size:var(--body);line-height:1.72;color:var(--text-secondary)}

@@ -86,17 +86,19 @@ export async function runReview({ text, brandId }, rules, onStep) {
   }
   const inputHash = [...text].reduce((h, c) => ((h * 31 + c.charCodeAt(0)) | 0), 5381).toString(16);
   const logs = [];
+  /* One pass over the draft. The loop below only advances the visual pipeline, so the
+     per-step analyse() call was six identical full analyses feeding latencyMs with work
+     that changes nothing. */
+  const result = analyse(text, brandId, rules);
   for (let s = 0; s < REVIEW_STEPS.length; s++) {
     onStep && onStep(s, 'running');
     await sleep(300 + (s === 2 ? 420 : 0) + (s === 4 ? 260 : 0));
     onStep && onStep(s, 'done');
-    const r = analyse(text, brandId, rules);
-    if (s === 1) logs.push('retrieved ' + r.rulesRetrieved + ' rules · brand=' + brandId);
-    if (s === 2) logs.push('risk ' + r.findings.filter((f) => f.sev === 'fail').length + ' · spec ' + r.findings.filter((f) => f.sev === 'warn').length + ' · tone ' + r.findings.filter((f) => f.sev === 'human').length);
-    if (s === 3) logs.push('ranked ' + r.verdict.total + ' findings');
+    if (s === 1) logs.push('retrieved ' + result.rulesRetrieved + ' rules · brand=' + brandId);
+    if (s === 2) logs.push('risk ' + result.findings.filter((f) => f.sev === 'fail').length + ' · spec ' + result.findings.filter((f) => f.sev === 'warn').length + ' · tone ' + result.findings.filter((f) => f.sev === 'human').length);
+    if (s === 3) logs.push('ranked ' + result.verdict.total + ' findings');
     if (s === 4) logs.push('draft feedback ready');
   }
-  const result = analyse(text, brandId, rules);
   const latencyMs = Math.round(performance.now() - t0);
   track('demo_complete', { product: 'review', ms: latencyMs, result_count: result.verdict.total });
   return { ...result, product: 'review', inputHash, latencyMs, logs, engine: 'local-rules-v4', cached: false };
