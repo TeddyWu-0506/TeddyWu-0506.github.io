@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>图文审核 · AI Content Review — 把品牌规则变成机器能执行的判断 · Teddy Wu</title>
+<meta name="description" content="达人内容 AI 审核系统。单条审核 10min→3min（口径见页内）。粘贴稿件即可试用，含规则命中、置信度与人工兜底。">
+<link rel="canonical" href="https://teddywu.site/work/content-review/">
+<meta property="og:type" content="article"><meta property="og:locale" content="zh_CN">
+<meta property="og:title" content="图文审核 · AI Content Review — 把品牌规则变成机器能执行的判断 · Teddy Wu"><meta property="og:description" content="达人内容 AI 审核系统。单条审核 10min→3min（口径见页内）。粘贴稿件即可试用，含规则命中、置信度与人工兜底。"><meta property="og:url" content="/work/content-review/">
+<meta property="og:image" content="/assets/img/og-home.png"><meta property="og:image:alt" content="图文审核 · AI Content Review — 把品牌规则变成机器能执行的判断 · Teddy Wu">
+<meta name="twitter:card" content="summary_large_image"><meta name="theme-color" content="#F2F0EA">
+<link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/assets/css/fonts.css"><link rel="stylesheet" href="/assets/css/tokens.css">
+<link rel="stylesheet" href="/assets/css/base.css"><link rel="stylesheet" href="/assets/css/deck.css">
+<link rel="stylesheet" href="/assets/css/components.css"><link rel="stylesheet" href="/assets/css/pages.css">
+<script>document.documentElement.className='js'</script>
+</head>
+<body class="doc">
+<header class="doc-head" data-theme="paper">
+  <a class="brand" href="/"><span class="brand-mark">TW</span><span class="brand-rule" aria-hidden="true"></span><span class="brand-sub">Product Dossier</span></a>
+  <nav class="nav" aria-label="页面导航"><a href="/#work">← 返回作品台</a><a href="/profile/">履历</a><a href="/#contact">联系</a></nav>
+</header>
+<main class="doc-main">
+
+<section class="doc-hero">
+  <div><a class="back" href="/#work">← 返回作品台</a>
+    <p class="kicker">SELECTED WORK 01 · 2026</p>
+    <h1 class="product-name" style="margin:14px 0 6px">Content Review</h1>
+    <p class="work-cn-name">图文审核</p></div>
+  <div><p class="doc-thesis">把散在人和文档里的品牌规则，变成机器能执行的判断。</p>
+    <p class="doc-status">本地演示 · 样例数据 · 线上版本服务 P&amp;G 汰渍全平台投放</p>
+    <p style="margin-top:18px"><a class="btn btn--solid" href="#demo">直接跑一次 <span class="ar">↘</span></a></p></div>
+</section>
+<dl class="doc-meta"><div><dt>Role</dt><dd>产品定义与设计 / 规则建模 / 落地</dd></div><div><dt>Timeline</dt><dd>2025.03 — 至今</dd></div><div><dt>Team</dt><dd>我一个人 + 借用工程同学的接口</dd></div><div><dt>Stack</dt><dd>RAG 知识库 · 分层 Prompt · 飞书 / 腾讯文档 CLI · HITL</dd></div></dl>
+<section class="sec"><div class="sec-grid">
+  <div><span class="sec-kicker">01 / Context</span><h2>这不是客户委托，<br>是我自己的日常。</h2></div>
+  <div class="prose"><p>2024 年 9 月起我在阳狮盛世长城负责 P&amp;G 汰渍的全平台 Creator / KOL 营销，月均 @@scale.creators@@ 位达人、月消耗 150 万以上。达人稿件的审核是我自己每天在做的事，不是别人的需求。</p><p>利益相关方有四类：品牌方（定卖点与红线）、MCN 与达人（交稿与改稿）、投放执行（催进度）、我（决定过不过）。规则散落在品牌 brief、历史返稿记录、平台规则文档，以及几位老手的记忆里。</p><p>这个产品没有立项、没有排期、没有工程资源。它是我从 2025 年 3 月开始搭、边用边改出来的。</p></div></div></section>
+<section class="sec"><div class="sec-grid">
+  <div><span class="sec-kicker">02 / The problem, priced</span><h2>每月约 90 个人时，花在同一个动作上。</h2></div>
+  <div><div class="prose"><p>单条小红书图文从收到初稿到给出可执行意见，中位耗时 8–10 分钟。听起来不长，但月均约 @@problem.volume@@。</p><p>更贵的是返稿：一稿通过率只有 10%，意味着绝大多数稿件要走第二轮、第三轮，每轮都是同样的核对动作。</p></div><div class="cost"><div><b>8–10min</b><span>单条审核中位耗时</span></div><div><b>×@@problem.volume@@/月</b><span>月均素材量</span></div><div><b>≈90 人时/月</b><span>折算人力成本</span></div><div><b>10%</b><span>一稿通过率</span></div></div></div></div></section>
+<section class="sec"><div class="sec-grid">
+  <div><span class="sec-kicker">03 / What I decided</span><h2>四个决定，和它们各自的代价。</h2></div>
+  <div class="dec"><div class="dec-item"><div><p class="dec-q">规则放哪里<span class="vs">RAG 召回 vs 写死在 Prompt vs fine-tune 一个审核模型</span></p></div><div class="dec-a"><p><strong>选了：</strong>RAG 召回 + 分层 Prompt。每条规则是一个带语义摘要的 chunk，按品牌与类目检索后注入。</p><p><strong>为什么：</strong>规则每周都在变——品牌改名、卖点调整、平台红线更新。可标注样本只有约 400 条，fine-tune 会直接过拟合到旧规则上。</p><dl><dt>放弃</dt><dd>放弃 fine-tune 的推理成本优势，以及长上下文下模型自身的一致性。</dd><dt>代价</dt><dd>每次审核都要走检索，延迟增加约 40%；规则库本身成了一个新的、需要人维护的成本中心。</dd></dl></div></div><div class="dec-item"><div><p class="dec-q">一条长 Prompt 还是三层<span class="vs">单条长 Prompt vs 分层 Prompt</span></p></div><div class="dec-a"><p><strong>选了：</strong>拆成三层：风险识别、规范校验、优化建议。每层只管一件事，输出必须是结构化字段。</p><p><strong>为什么：</strong>把 40 条规则塞进一条 Prompt，模型会漏，而且漏了以后你不知道它漏在哪。分层以后可以定位到「规范校验层漏了产品名」。</p><dl><dt>放弃</dt><dd>放弃单次调用省下的成本与时延。</dd><dt>代价</dt><dd>调用量约 2.2 倍；额外要做一层结果合并与去重。</dd></dl></div></div><div class="dec-item"><div><p class="dec-q">人工兜底放在哪<span class="vs">最后一步 vs 中间插入</span></p></div><div class="dec-a"><p><strong>选了：</strong>放在最后一步。置信度低于阈值、规则库未命中、新品牌冷启动，三种情况转人工。</p><p><strong>为什么：</strong>中间插入会打断可解释性——人打开稿件时不知道前面已经改了什么，只能全部重看一遍，等于没省时间。</p><dl><dt>放弃</dt><dd>放弃在中间环节提前修正错误召回的机会。</dd><dt>代价</dt><dd>召回错误会一路带到结论，人工看到时 token 已经花掉了。</dd></dl></div></div><div class="dec-item"><div><p class="dec-q">意见输出到哪里<span class="vs">飞书文档评论双向同步 vs 自建审核面板</span></p></div><div class="dec-a"><p><strong>选了：</strong>集成飞书 / 腾讯文档 CLI，审核意见直接写回稿件所在处。</p><p><strong>为什么：</strong>审核意见必须落在稿件在的地方。要人复制粘贴的产品，两周后就没人用了。</p><dl><dt>放弃</dt><dd>放弃自建面板在展示与信息架构上的自由度。</dd><dt>代价</dt><dd>被飞书 API 的限流绑住，批量场景必须排队。</dd></dl></div></div></div></div></section>
+<section class="sec"><div class="sec-grid">
+  <div><span class="sec-kicker">04 / How it works</span><h2>一条稿件走过的五步。</h2></div>
+  <div class="flow"><div class="flow-step"><span class="flow-n">01</span><div><h3>收稿</h3><p>从飞书 / 腾讯文档批量导入，抽取正文、话题标签与图片 OCR 文本，统一成一份结构化素材对象。</p><span class="flow-tag">你在 demo 里粘贴的那段文字，就是这一步的产物</span></div></div><div class="flow-step"><span class="flow-n">02</span><div><h3>规则召回</h3><p>品牌规则标签库 + 多品牌 SOP 知识库做向量检索。关键做法是给每个 chunk 补一段语义摘要——不加摘要时召回率只有 78%，补了以后稳定在 @@review.recall@@。</p><span class="flow-tag">召回率 @@review.recall@@</span></div></div><div class="flow-step"><span class="flow-n">03</span><div><h3>分层校验</h3><p>风险识别（广告法红线、绝对化表述）→ 规范校验（产品名逐字匹配、卖点命中、话题规范）→ 优化建议（开头钩子、信息结构）。</p></div></div><div class="flow-step"><span class="flow-n">04</span><div><h3>结构化输出</h3><p>每条意见固定带：规则 ID、原文位置、建议改写、置信度。没有结构的输出无法被下游消费，也无法统计哪条规则最常被忽略。</p></div></div><div class="flow-step"><span class="flow-n">05</span><div><h3>人工兜底与回流</h3><p>知识库盲区自动触发人工；人工的采纳与忽略作为增量样本回流知识库。这一步决定系统是越来越准，还是越来越没人信。</p><span class="flow-tag">HITL</span></div></div></div></div></section>
+<section class="sec" id="demo"><div class="sec-grid">
+  <div><span class="sec-kicker">05 / Try it</span><h2>自己跑一次。</h2>
+    <p class="prose" style="margin-top:16px">本地规则引擎，无模型调用、无网络请求。输出结构与线上系统一致，用于说明判断链路。</p></div>
+  <div><div class="doc-demo"><div class="demo-host" data-demo="review" data-source="case" data-case-url="/work/content-review/"></div></div></div></div></section>
+<section class="sec"><div class="sec-grid">
+  <div><span class="sec-kicker">06 / Results, with receipts</span><h2>数字，和它的口径。</h2></div>
+  <div><div class="res"><div class="res-row"><b>@@review.time@@</b><em>单条审核耗时</em><span>中位耗时 · 约 @@problem.volume@@/月 · 2025.03–2025.08</span></div><div class="res-row"><b>80% → 40%</b><em>返稿素材占比</em><span>需返稿素材 / 总素材 · 同期对比</span></div><div class="res-row"><b>10% → 30%</b><em>一稿通过率</em><span>一次过审占比 · 相对提升 200%</span></div><div class="res-row"><b>@@review.recall@@</b><em>规则召回率</em><span>3 个品牌、约 400 条规则下的测试集结果</span></div><div class="res-row is-down"><b>61%</b><em>新品牌冷启动召回率</em><span>规则数 &lt; 40 条的品牌。未达成项：目前直接转人工，不硬用模型。</span></div></div>
+    <div class="grid6" style="margin-top:30px"><div class="cell cell--result" role="button" tabindex="0" data-prov="prov" aria-controls="prov" aria-expanded="false">
+      <span class="cell-label">业务结果</span><p class="cell-stat"><span class="stat">@@review.time@@</span></p>
+      <p class="cell-body">审核效率 +70%</p><span class="cell-arrow">口径 +</span>
+      <div class="provenance" id="prov">@@review.prov@@</div></div></div></div></div></section>
+<section class="sec"><div class="sec-grid">
+  <div><span class="sec-kicker">07 / What broke</span><h2>它坏过三次。</h2></div>
+  <div class="dec"><div class="dec-item"><div><p class="dec-q">品牌改名后，规则全失效</p></div><div class="dec-a"><p>汰渍一个子系列更名，规则库里的 product 精确名没同步，两周内漏检 30 多条稿件——而且系统报的是「通过」。这是最危险的一类故障：不是报错，是假通过。</p><p><strong>怎么改：</strong>产品名改为必填精确匹配项，并加入每周从品牌 brief 文档自动同步的任务；同时把「规则库未命中」从通过改为转人工。</p></div></div><div class="dec-item"><div><p class="dec-q">「温和」被判成违规词</p></div><div class="dec-a"><p>早期用一份通用绝对化词表，把洗护类目里合规的「温和不刺激」也拦了。返稿量一度上升，品牌方开始质疑系统。</p><p><strong>怎么改：</strong>词表按类目拆分，洗护类目单独维护白名单。这件事教会我：规则库的粒度就是产品的准确率。</p></div></div><div class="dec-item"><div><p class="dec-q">冷启动品牌根本不能用</p></div><div class="dec-a"><p>新品牌规则不足 40 条时，检索噪声大于信号，召回率只有 61%，给出的意见比人工更不可靠。</p><p><strong>怎么改：</strong>当前处理是硬阈值：规则数不足 40 条的品牌直接走人工，不进模型。这个限制我写进了产品说明，没有藏起来。</p></div></div></div>
+  <div class="prose" style="grid-column:1/-1"><p style="margin-top:26px"><strong>下一步：</strong>多品牌规则冲突的仲裁机制还没做——当同一位达人同时服务两个品牌、且红线不一致时，系统现在只会挑一条。我倾向于先做人工仲裁队列，把决策样本攒够再谈自动化。</p></div></div></section>
+<footer style="display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;padding:24px 0 40px;border-top:1px solid var(--border);font-family:var(--f-mono);font-size:var(--micro);letter-spacing:.05em;text-transform:uppercase;color:var(--text-quiet)">
+  <span>© 2026 Teddy Wu</span><span>本地演示 · 样例数据</span><span><a href="/#contact" style="border-bottom:1px solid currentColor">联系 →</a></span>
+</footer>
+</main>
+<script type="module">
+import { mountDemo } from '/assets/js/demo-runtime.js';
+import { bindCta } from '/assets/js/analytics.js';
+bindCta();
+document.querySelectorAll('[data-demo]').forEach(mountDemo);
+document.querySelectorAll('[data-prov]').forEach(t=>t.addEventListener('click',()=>{
+  const b=document.getElementById(t.getAttribute('aria-controls'));
+  const o=b.classList.toggle('is-open'); t.setAttribute('aria-expanded',String(o));
+}));
+</script>
+</body></html>

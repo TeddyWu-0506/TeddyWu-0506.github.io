@@ -1,0 +1,272 @@
+<!doctype html>
+<html lang="zh-CN" class="no-js">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Teddy Wu — AI 产品经理 · 把重复的判断做成能运行的系统</title>
+<meta name="description" content="AI 产品经理 Teddy Wu 的作品台。两套从达人营销一线流程做出来的 AI 系统：图文审核与达人推荐，可在线直接试用。">
+<meta name="author" content="Teddy Wu">
+<link rel="canonical" href="https://teddywu.site/">
+<meta property="og:type" content="website"><meta property="og:locale" content="zh_CN">
+<meta property="og:site_name" content="Teddy Wu"><meta property="og:url" content="https://teddywu.site/">
+<meta property="og:title" content="Teddy Wu — AI 产品经理 · 把重复的判断做成能运行的系统">
+<meta property="og:description" content="两套从达人营销一线流程做出来的 AI 系统，可在线直接试用。">
+<meta property="og:image" content="/assets/img/og-home.png"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Teddy Wu — AI 产品经理作品台，两个可运行的 AI 系统">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#F2F0EA">
+<link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+<link rel="preload" href="/assets/fonts/BricolageGrotesque-normal-700.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/InterTight-normal-400.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/img/portrait-480.jpg" as="image" imagesrcset="/assets/img/portrait-480.jpg 480w, /assets/img/portrait-849.jpg 849w" imagesizes="(max-width:768px) 92vw, 46vw" fetchpriority="high">
+<link rel="stylesheet" href="/assets/css/fonts.css">
+<link rel="stylesheet" href="/assets/css/tokens.css">
+<link rel="stylesheet" href="/assets/css/base.css">
+<link rel="stylesheet" href="/assets/css/deck.css">
+<link rel="stylesheet" href="/assets/css/components.css">
+<link rel="stylesheet" href="/assets/css/pages.css">
+<script>document.documentElement.className='js';
+/* watchdog: ES modules can fail (file://, blocked CDN, syntax error). Without this the
+   deck renders four visibility:hidden scenes = a blank page. */
+window.__deckReady=false;
+setTimeout(function(){
+  if(window.__deckReady)return;
+  document.documentElement.classList.add('no-js');
+  document.documentElement.classList.remove('js');
+},1600);</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"Person","name":"Teddy Wu","alternateName":"吴天翼","jobTitle":"AI Product Manager",
+ "url":"https://teddywu.site/","email":"mailto:1502110191@qq.com","slogan":"I make AI useful.",
+ "knowsLanguage":["zh-CN","en"],"address":{"@type":"PostalAddress","addressLocality":"Guangzhou","addressCountry":"CN"},
+ "knowsAbout":["AI Product Management","Retrieval-Augmented Generation","Human-in-the-loop Design","Creator Marketing","Workflow Automation"],
+ "makesOffer":[{"@type":"Offer","itemOffered":{"@type":"SoftwareApplication","name":"AI Content Review","applicationCategory":"BusinessApplication"}},
+               {"@type":"Offer","itemOffered":{"@type":"SoftwareApplication","name":"AI Creator Match","applicationCategory":"BusinessApplication"}}]}
+</script>
+</head>
+<body>
+<a class="skip" href="#identity">跳到主要内容</a>
+
+<header class="site-header" data-theme="paper">
+  <a class="brand" href="/#identity" data-scene-link="identity" aria-label="TW Teddy Wu 首页">
+    <span class="brand-mark">TW</span><span class="brand-rule" aria-hidden="true"></span>
+    <span class="brand-sub">AI Product Manager &amp; Product Builder</span>
+  </a>
+  <nav class="nav" aria-label="主导航">
+    <a href="/#identity" data-scene-link="identity">{{nav.identity}}</a>
+    <a href="/#work" data-scene-link="work">{{nav.work}}</a>
+    <a href="/#trajectory" data-scene-link="trajectory">{{nav.trajectory}}</a>
+    <a href="/#contact" data-scene-link="contact">{{nav.contact}}</a>
+  </nav>
+  <a class="btn btn--solid btn--sm header-cta" href="/#work" data-scene-link="work" data-track="header_try_demo">{{cta.header}} <span class="ar">↘</span></a>
+</header>
+
+<main class="stage" id="stage">
+<div class="scene-stack">
+
+<!-- ══════════════ 01 IDENTITY ══════════════ -->
+<section class="scene scene--identity is-active" id="identity" data-scene="identity" data-hash="identity" data-label="IDENTITY" data-theme="paper" role="region" aria-labelledby="identity-title">
+  <div class="scene-body"><div class="stage-inner scene-pad">
+    <div class="id-left">
+      <p class="id-year">{{identity.year}}</p>
+      <h1 class="name resolve" id="identity-title"><span class="b">{{identity.name1}}</span><br><span class="c">{{identity.name2}}</span></h1>
+      <p class="id-eyebrow"><span class="dot dot--live" aria-hidden="true"></span>{{identity.eyebrow}}</p>
+      <div>
+        <h2 class="h2" lang="zh-CN">{{identity.h2}}</h2>
+        <p class="lede" style="margin-top:18px">{{identity.lede}}</p>
+      </div>
+      <div class="id-actions">
+        <a class="btn btn--solid" href="/#work" data-scene-link="work" data-track="hero_work">{{cta.work}} <span class="ar">↘</span></a>
+        <a class="btn btn--link" href="/#trajectory" data-scene-link="trajectory" data-track="hero_traj">{{cta.traj}}</a>
+      </div>
+      <p class="id-status"><span class="dot dot--live" aria-hidden="true"></span>{{identity.status}}</p>
+    </div>
+    <div class="portrait">
+      <div class="portrait-frame portrait-frame--illus">
+        <img src="/assets/img/portrait-849.jpg" srcset="/assets/img/portrait-480.jpg 480w, /assets/img/portrait-849.jpg 849w" sizes="(max-width:768px) 92vw, 46vw" alt="Teddy Wu 的肖像照" width="849" height="849" fetchpriority="high" decoding="async">
+        <p class="portrait-cap">{{identity.caption}}</p>
+      </div>
+    </div>
+  </div></div>
+</section>
+
+<!-- ══════════════ 02 WORK ══════════════ -->
+<section class="scene scene--work" id="work" data-scene="work" data-hash="work" data-label="WORK" data-theme="paper" role="region" aria-labelledby="work-title">
+  <div class="scene-body"><div class="stage-inner scene-pad">
+    <div class="work-head">
+      <h2 class="kicker" id="work-title" style="font-size:var(--caption)">SELECTED WORK · 2026</h2>
+      <p class="kicker">两个已落地 · 一个在建</p>
+    </div>
+    <div class="switcher resolve" role="tablist" aria-label="作品切换">
+      <button role="tab" id="tab-cr" aria-controls="p-cr" aria-selected="true" data-project-tab="content-review">
+        <span class="sw-idx">01</span><span class="sw-name">Content Review</span><span class="sw-cn">图文审核</span><span class="sw-state">本地演示 · 样例数据</span></button>
+      <button role="tab" id="tab-cm" aria-controls="p-cm" aria-selected="false" data-project-tab="creator-match">
+        <span class="sw-idx">02</span><span class="sw-name">Creator Match</span><span class="sw-cn">达人推荐</span><span class="sw-state">本地演示 · 样例数据</span></button>
+      <button role="tab" id="tab-al" aria-controls="p-al" aria-selected="false" data-project-tab="agent-loop">
+        <span class="sw-idx">03</span><span class="sw-name">Agent Loop</span><span class="sw-cn">复盘回流</span><span class="sw-state">设计中 · 无演示</span></button>
+    </div>
+
+    <div class="work-panel" id="p-cr" role="tabpanel" aria-labelledby="tab-cr" data-project="content-review">
+      <div class="work-left resolve-copy">
+        <div class="work-intro">
+          <span class="kicker">AI CONTENT REVIEW PRODUCT</span>
+          <h3 class="product-name" lang="en">Content Review</h3>
+          <p class="work-cn-name">图文审核</p>
+          <p class="work-thesis">把散在人和文档里的品牌规则，变成机器能执行的判断。</p>
+        </div>
+        <div class="grid6">
+          <div class="cell"><span class="cell-label">{{p0c0label}}</span><p class="cell-body">{{p0c0body}}</p></div>
+          <div class="cell"><span class="cell-label">{{p0c1label}}</span><p class="cell-body">{{p0c1body}}</p></div>
+          <div class="cell"><span class="cell-label">{{p0c2label}}</span><p class="cell-body">{{p0c2body}}</p></div>
+          <div class="cell cell--result" role="button" tabindex="0" data-prov="prov-cr" aria-controls="prov-cr" aria-expanded="false">
+            <span class="cell-label">{{p2c3label}}</span>
+            <p class="cell-stat"><span class="stat">10min → 3min</span></p>
+            <p class="cell-body">审核效率 +70% · 返稿占比 80%→40%</p>
+            <span class="cell-arrow">口径 +</span>
+            <div class="provenance" id="prov-cr">口径：单条小红书图文从收到初稿到给出可执行意见的中位耗时。样本 约 600 条/月。时间窗 2025.03–2025.08。一稿通过率 10%→30%。</div>
+          </div>
+          <div class="cell cell--evidence"><span class="cell-label">{{p0c3label}}</span><p class="cell-body">{{p0c3body}}</p><div class="work-cta">{{p0c3cta}}</div></div>
+          <div class="cell"><span class="cell-label">{{p0c4label}}</span><p class="cell-body">{{p0c4body}}</p></div>
+        </div>
+      </div>
+      <div class="panel panel--preview resolve-focus" data-preview="review" aria-hidden="true"></div>
+      <div class="panel panel--live" data-demo="review" data-source="deck" data-case-url="/work/content-review/" hidden></div>
+    </div>
+
+    <div class="work-panel" id="p-cm" role="tabpanel" aria-labelledby="tab-cm" data-project="creator-match" hidden>
+      <div class="work-left resolve-copy">
+        <div class="work-intro">
+          <span class="kicker">AI CREATOR MATCH PRODUCT</span>
+          <h3 class="product-name" lang="en">Creator Match</h3>
+          <p class="work-cn-name">达人推荐</p>
+          <p class="work-thesis">把「我凭感觉知道谁合适」，变成可检索、可解释、可复盘的候选池。</p>
+        </div>
+        <div class="grid6">
+          <div class="cell"><span class="cell-label">{{p0c0label}}</span><p class="cell-body">{{p1c0body}}</p></div>
+          <div class="cell"><span class="cell-label">{{p0c1label}}</span><p class="cell-body">{{p1c1body}}</p></div>
+          <div class="cell"><span class="cell-label">{{p0c2label}}</span><p class="cell-body">{{p1c2body}}</p></div>
+          <div class="cell cell--result" role="button" tabindex="0" data-prov="prov-cm" aria-controls="prov-cm" aria-expanded="false">
+            <span class="cell-label">{{p2c3label}}</span>
+            <p class="cell-stat"><span class="stat">30min → 5min</span></p>
+            <p class="cell-body">选号效率 +83% · 中选率 30%→50%</p>
+            <span class="cell-arrow">口径 +</span>
+            <div class="provenance" id="prov-cm">口径：从收到 brief 到产出可提交候选池的中位耗时。样本 月均 200+ 达人筛选。时间窗 2025.06–2026.06。候选池匹配率 85%。</div>
+          </div>
+          <div class="cell cell--evidence"><span class="cell-label">{{p0c3label}}</span><p class="cell-body">{{p1c3body}}</p><div class="work-cta">{{p1c3cta}}</div></div>
+          <div class="cell"><span class="cell-label">{{p0c4label}}</span><p class="cell-body">{{p1c4body}}</p></div>
+        </div>
+      </div>
+      <div class="panel panel--preview resolve-focus" data-preview="match" aria-hidden="true"></div>
+      <div class="panel panel--live" data-demo="match" data-source="deck" data-case-url="/work/creator-match/" hidden></div>
+    </div>
+
+    <div class="work-panel" id="p-al" role="tabpanel" aria-labelledby="tab-al" data-project="agent-loop" hidden>
+      <div class="work-left resolve-copy">
+        <div class="work-intro">
+          <span class="kicker">IN DESIGN · NO DEMO YET</span>
+          <h3 class="product-name" lang="en">Agent Loop</h3>
+          <p class="work-cn-name">复盘回流</p>
+          <p class="work-thesis">把投放复盘变成下一轮选号的输入，而不是一个没人再打开的 PDF。</p>
+        </div>
+        <div class="grid6">
+          <div class="cell"><span class="cell-label">{{p0c0label}}</span><p class="cell-body">{{p2c0body}}</p></div>
+          <div class="cell"><span class="cell-label">{{p0c1label}}</span><p class="cell-body">{{p2c1body}}</p></div>
+          <div class="cell"><span class="cell-label">{{p0c2label}}</span><p class="cell-body">{{p2c2body}}</p></div>
+          <div class="cell"><span class="cell-label">{{p2c3label}}</span><p class="cell-stat"><span class="stat">{{p2c3stat}}</span></p><p class="cell-body">{{p2c3body}}</p></div>
+          <div class="cell"><span class="cell-label">{{p0c3label}}</span><p class="cell-body">{{p2c4body}}</p><div class="work-cta">{{p2c4cta}}</div></div>
+          <div class="cell"><span class="cell-label">{{p0c4label}}</span><p class="cell-body">{{p2c5body}}</p></div>
+        </div>
+      </div>
+      <div class="panel panel--preview resolve-focus"><div class="app"><div class="app-doc">
+        <span class="kicker">NO DEMO · IN DESIGN</span>
+        <h4>这一格是空的，因为还没做出来。</h4>
+        <p>我不给未上线的东西配数字。等它有了，这里会换成可运行的界面。</p>
+        <span class="app-tag">honesty over polish</span></div></div></div>
+    </div>
+  </div></div>
+</section>
+
+<!-- ══════════════ 03 TRAJECTORY ══════════════ -->
+<section class="scene scene--trajectory" id="trajectory" data-scene="trajectory" data-hash="trajectory" data-label="TRAJECTORY" data-theme="paper" role="region" aria-labelledby="traj-title">
+  <div class="scene-body"><div class="stage-inner scene-pad" style="position:relative">
+    <p class="kicker">CAREER / METHOD</p>
+    <div class="traj-head" style="margin-top:14px">
+      <h2 class="h2" id="traj-title">{{trajectory.h2}}</h2>
+      <div class="tabs" role="tablist" aria-label="轨迹切换">
+        <button role="tab" id="tt-c" aria-controls="tp-c" aria-selected="true">职业经历</button>
+        <button role="tab" id="tt-m" aria-controls="tp-m" aria-selected="false">工作方法</button>
+      </div>
+    </div>
+    <div id="tp-c" role="tabpanel" aria-labelledby="tt-c">
+      <div class="career resolve-view">
+        <div class="career-col"><span class="cc-idx">{{career0idx}}</span><h3 class="cc-org">{{career0org}}</h3><p class="cc-role">{{career0role}}</p><p class="cc-scope">{{career0scope}}</p><p class="cc-judge">{{career0judge}}</p><div class="cc-tags"><span>{{career0tag0}}</span><span>{{career0tag1}}</span><span>{{career0tag2}}</span></div></div>
+        <div class="career-col"><span class="cc-idx">{{career1idx}}</span><h3 class="cc-org">{{career1org}}</h3><p class="cc-role">{{career1role}}</p><p class="cc-scope">{{career1scope}}</p><p class="cc-judge">{{career1judge}}</p><div class="cc-tags"><span>{{career1tag0}}</span><span>{{career1tag1}}</span></div></div>
+        <div class="career-col"><span class="cc-idx">{{career2idx}}</span><h3 class="cc-org">{{career2org}}</h3><p class="cc-role">{{career2role}}</p><p class="cc-scope">{{career2scope}}</p><p class="cc-judge">{{career2judge}}</p><div class="cc-tags"><span>{{career2tag0}}</span><span>{{career2tag1}}</span></div></div>
+        <div class="career-col"><span class="cc-idx">{{career3idx}}</span><h3 class="cc-org">{{career3org}}</h3><p class="cc-role">{{career3role}}</p><p class="cc-scope">{{career3scope}}</p><p class="cc-judge">{{career3judge}}</p><div class="cc-tags"><span>{{career3tag0}}</span><span>{{career3tag1}}</span><span>{{career3tag2}}</span></div></div>
+      </div>
+      <p class="kicker" style="margin-top:26px">产品定义 · 体验设计 · AI 产品开发 · <a href="/profile/" data-track="full_profile" style="border-bottom:1px solid currentColor">查看完整履历 →</a></p>
+    </div>
+    <div id="tp-m" role="tabpanel" aria-labelledby="tt-m" hidden>
+      <div class="methods resolve-view">
+        <div class="method"><span class="method-n">{{method0n}}</span><div><h4>{{method0t}}</h4><p>{{method0d}}</p></div></div>
+        <div class="method"><span class="method-n">{{method1n}}</span><div><h4>{{method1t}}</h4><p>{{method1d}}</p></div></div>
+        <div class="method"><span class="method-n">{{method2n}}</span><div><h4>{{method2t}}</h4><p>{{method2d}}</p></div></div>
+        <div class="method"><span class="method-n">{{method3n}}</span><div><h4>{{method3t}}</h4><p>{{method3d}}</p></div></div>
+        <div class="method"><span class="method-n">{{method4n}}</span><div><h4>{{method4t}}</h4><p>{{method4d}}</p></div></div>
+        <div class="risk-note"><h5>{{risk.t}}</h5><p>{{risk.d}}</p></div>
+      </div>
+    </div>
+    <p class="ghost ghost--br" aria-hidden="true">TW</p>
+  </div></div>
+</section>
+
+<!-- ══════════════ 04 CONTACT ══════════════ -->
+<section class="scene scene--contact" id="contact" data-scene="contact" data-hash="contact" data-label="CONTACT" data-theme="ink" role="region" aria-labelledby="contact-title">
+  <div class="scene-body"><div class="stage-inner">
+    <div class="contact-pad resolve">
+      <p class="kicker">{{contact.kicker}}</p>
+      <p class="id-eyebrow">{{contact.label}}</p>
+      <h2 class="h2" id="contact-title">{{contact.h2}}</h2>
+      <p class="lede">{{contact.sub}}</p>
+      <div class="contact-links">
+        <a class="btn btn--link" href="mailto:1502110191@qq.com?subject=From%20teddywu.site" data-track="email_click">发送邮件 <span class="ar">↗</span></a>
+        <button class="btn btn--link" data-copy="TeddyGorrr" data-track="wechat_copy">微信 <span class="ar">↗</span></button>
+        <a class="btn btn--link" href="/profile/" data-track="profile_click">完整履历 <span class="ar">↗</span></a>
+      </div>
+      <div class="contact-meta">
+        <span>© <span data-year>2026</span> Teddy Wu</span><span>Guangzhou</span>
+        <span>Built as a static site</span><span>Demos use sample data</span><span>No cookies. No tracking of what you paste.</span>
+      </div>
+    </div>
+    <p class="ghost ghost--contact ghost--br" aria-hidden="true">I MAKE<br>AI USEFUL</p>
+  </div></div>
+</section>
+
+</div>
+<span class="veil" aria-hidden="true"><i></i></span>
+</main>
+
+<div class="rail" data-theme="paper">
+  <p class="rail-index"><span class="cur">01</span> <span class="tot">/ 04</span></p>
+  <div class="rail-segs" role="group" aria-label="场景进度">
+    <button class="rail-seg w10 is-current" data-scene-link="identity" aria-label="第 1 屏 身份" aria-current="true"><i></i></button>
+    <button class="rail-seg w22" data-scene-link="work" aria-label="第 2 屏 作品"><i></i></button>
+    <button class="rail-seg w16" data-scene-link="trajectory" aria-label="第 3 屏 轨迹"><i></i></button>
+    <button class="rail-seg w06" data-scene-link="contact" aria-label="第 4 屏 联系"><i></i></button>
+  </div>
+  <details class="rail-jump"><summary><span class="cur">01</span> / 04 · IDENTITY</summary>
+    <div class="rail-menu">
+      <a href="/#identity" data-scene-link="identity">01 身份</a><a href="/#work" data-scene-link="work">02 作品</a>
+      <a href="/#trajectory" data-scene-link="trajectory">03 轨迹</a><a href="/#contact" data-scene-link="contact">04 联系</a>
+    </div></details>
+  <p class="rail-name">IDENTITY</p>
+  <div class="rail-nav">
+    <p class="rail-hint">{{rail.hint}}</p>
+    <button class="rail-arrow" data-deck="prev" aria-label="上一屏" disabled>←</button>
+    <button class="rail-arrow" data-deck="next" aria-label="下一屏">→</button>
+  </div>
+  <p class="rail-live" aria-live="polite"></p>
+</div>
+<p id="scene-announce" class="sr-only" aria-live="polite"></p>
+
+<script type="module" src="/assets/js/main.js"></script>
+</body></html>

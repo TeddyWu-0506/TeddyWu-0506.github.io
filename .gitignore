@@ -1,0 +1,9 @@
+dist/
+.build-check/
+__pycache__/
+tools/__pycache__/
+tools/_tokens.json
+tools/extract.py
+PLAN.md
+archive/
+.DS_Store

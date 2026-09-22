@@ -1,0 +1,14 @@
+{
+ "review.time": "10min → 3min",
+ "review.prov": "口径：单条小红书图文从收到初稿到给出可执行意见的中位耗时。样本 约 600 条/月。时间窗 2025.03–2025.08。一稿通过率 10%→30%。",
+ "review.eff": "审核效率 +70% · 返稿占比 80%→40%",
+ "review.recall": "92%",
+ "match.time": "30min → 5min",
+ "match.prov": "口径：从收到 brief 到产出可提交候选池的中位耗时。样本 月均 200+ 达人筛选。时间窗 2025.06–2026.06。候选池匹配率 85%。",
+ "match.eff": "选号效率 +83% · 中选率 30%→50%",
+ "match.pool": "85%",
+ "index.size": "20",
+ "scale.creators": "200+",
+ "scale.spend": "150W+",
+ "problem.volume": "600 条"
+}
