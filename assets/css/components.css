@@ -300,16 +300,9 @@ select.field{height:40px;padding:0 10px;font-size:13px;font-family:var(--f-body)
   letter-spacing:.05em;color:var(--text-quiet);text-transform:uppercase}
 .ghost--contact{font-size:clamp(60px,13vw,190px);line-height:.82;white-space:normal;width:max-content}
 
-/* ============ REVEAL ============ */
-.js .reveal{opacity:0;transform:translateY(14px)}
-.js .reveal.is-in{opacity:1;transform:none;transition:opacity .5s var(--ease),transform .5s var(--ease)}
-.js .reveal.d1{transition-delay:.05s}.js .reveal.d2{transition-delay:.1s}
-.js .reveal.d3{transition-delay:.15s}.js .reveal.d4{transition-delay:.2s}
-.js .reveal.d5{transition-delay:.25s}.js .reveal.d6{transition-delay:.3s}
 @media (prefers-reduced-motion:reduce){
   *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;
     transition-duration:.01ms!important;scroll-behavior:auto!important}
-  .js .reveal{opacity:1;transform:none}
   .dot--live{animation:none}
 }
 

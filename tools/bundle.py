@@ -12,13 +12,19 @@ import base64, json, os, re, sys
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 os.chdir(ROOT)
 sys.path.insert(0, os.path.join(ROOT, 'tools'))
+# build.py owns the fact table, the token render and the deploy URL. Importing it keeps
+# 'where does this site live' and 'who owns 85%' down to exactly one answer.
+from build import SITE_URL, render
 
 CSS_SRC = 'dist/assets/css/site.css'   # build.py already flattened the cascade
-# load order matters: dependencies first, entry last
-JS = ['analytics.js', 'reveal.js', 'engine-review.js', 'engine-match.js',
+# load order matters: dependencies first, entry last.
+# Read from dist/, not assets/: build.py has already resolved the @@fact@@ tokens, and a
+# token surviving into the bundle would print literally on the page.
+JS = ['analytics.js', 'engine-review.js', 'engine-match.js',
       'demo-runtime.js', 'deck.js', 'main.js']
 DATA = ['creators.json', 'rules.json', 'demo-samples.json']
-SITE = 'https://teddywu.site'
+# Same knob as build.py: whatever the build targets is what the offline file links to.
+SITE = SITE_URL
 MIME = {'woff2': 'font/woff2', 'jpg': 'image/jpeg', 'png': 'image/png', 'svg': 'image/svg+xml'}
 
 
@@ -31,7 +37,7 @@ def data_uri(path):
 def flatten_js():
     out = []
     for f in JS:
-        src = open('assets/js/' + f, encoding='utf-8').read()
+        src = open('dist/assets/js/' + f, encoding='utf-8').read()
         src = re.sub(r'^\s*import\s+\{[^}]*\}\s+from\s+[\'"][^\'"]+[\'"];?\s*$', '', src, flags=re.M)
         src = re.sub(r'^\s*import\s+[\'"][^\'"]+[\'"];?\s*$', '', src, flags=re.M)
         src = re.sub(r'^\s*export\s+(default\s+)?', '', src, flags=re.M)

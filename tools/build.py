@@ -18,14 +18,24 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 FACTS = json.load(open(os.path.join(ROOT, 'assets/data/facts.json'), encoding='utf-8'))
 PAGES = ['index.html', '404.html', 'work/content-review/index.html', 'work/creator-match/index.html',
          'profile/index.html', 'demo/review/index.html', 'demo/match/index.html']
-PASS_THROUGH = ['site.webmanifest', 'assets/favicon.svg']
-ASSET_DIRS = ['assets/js', 'assets/data', 'assets/fonts', 'assets/img']
+# Loose files under assets/ that pages link to directly. The resume PDF belongs here and
+# silently 404'd in production because ASSET_DIRS only ever walked subdirectories.
+PASS_THROUGH = ['site.webmanifest', 'assets/favicon.svg', 'assets/Teddy-Wu-Resume.pdf']
+ASSET_DIRS = ['assets/data', 'assets/fonts', 'assets/img']
+# JS is rendered through the same token pass as HTML. A fact that can only be reached by
+# editing the engine is a fact with two owners, and facts.json is supposed to be the one.
+JS_DIR = 'assets/js'
 # One stylesheet, in cascade order. Six render-blocking <link>s cost ~900ms of
 # critical path for a site this size; a single file removes the chain entirely.
 CSS_ORDER = ['fonts.css', 'tokens.css', 'base.css', 'deck.css', 'components.css', 'pages.css']
 CSS_LINK_RE = re.compile(
     r'\s*<link rel="stylesheet" href="/assets/css/(?:' + '|'.join(CSS_ORDER) + r')">')
 TOKEN = re.compile(r'@@([\w.]+)@@')
+# Root-absolute references, one pattern per file type. --check uses these to prove that
+# every link in the built tree actually resolves against the built tree.
+REF_HTML = re.compile('(?:href|src)="(/[^"#?]+)')
+REF_JS = re.compile(r"""fetch\(['"](/[^'"]+)['"]\)""")
+REF_CSS = re.compile(r"""url\(['"]?(/[^'")]+)""")
 # One place to change when the domain moves. Sources keep the canonical brand URL;
 # the build rewrites it so github.io and a future custom domain need no edits.
 SITE_URL = os.environ.get('SITE_URL', 'https://teddywu-0506.github.io').rstrip('/')
@@ -45,6 +55,10 @@ def clean(p):
 
 
 def build(outdir):
+    # Start from an empty tree. copytree(dirs_exist_ok=True) only ever adds, so a deleted
+    # source file - or a renamed one - survived in dist/ forever and kept getting served.
+    clean(outdir)
+    os.makedirs(outdir, exist_ok=True)
     for rel in PAGES:
         src = os.path.join(ROOT, rel)
         dst = os.path.join(outdir, rel)
@@ -65,6 +79,14 @@ def build(outdir):
         s = os.path.join(ROOT, ad)
         if not os.path.isdir(s): continue
         shutil.copytree(s, os.path.join(outdir, ad), dirs_exist_ok=True)
+
+    jsrc = os.path.join(ROOT, JS_DIR)
+    jdst = os.path.join(outdir, JS_DIR)
+    if os.path.isdir(jsrc):
+        os.makedirs(jdst, exist_ok=True)
+        for f in sorted(glob.glob(os.path.join(jsrc, '*.js'))):
+            open(os.path.join(jdst, os.path.basename(f)), 'w', encoding='utf-8').write(
+                render(open(f, encoding='utf-8').read()))
 
     cssdir = os.path.join(outdir, 'assets/css'); os.makedirs(cssdir, exist_ok=True)
     parts = []
@@ -101,6 +123,9 @@ def check():
     bad = 0
     srcs = [p for p in glob.glob(os.path.join(ROOT, '**/*.html'), recursive=True)
             if 'archive' not in p and '.git' not in p and 'dist' not in p and '.build-check' not in p]
+    # The engine is part of the fact surface too: it renders 候选池匹配率 straight to the
+    # visitor, so a hard-coded number there is exactly as much a drift risk as one in HTML.
+    srcs += sorted(glob.glob(os.path.join(ROOT, JS_DIR, '*.js')))
     for p in srcs:
         body = open(p, encoding='utf-8').read()
         leaked = [k for k in FACTS
@@ -108,7 +133,9 @@ def check():
         if leaked:
             print(f'   LEAK  {os.path.relpath(p, ROOT):40} raw values for: {leaked}'); bad += 1
     unresolved, used = 0, set()
-    for p in glob.glob(os.path.join(tmp, '**/*.html'), recursive=True):
+    dist_doc = (glob.glob(os.path.join(tmp, '**/*.html'), recursive=True)
+                + glob.glob(os.path.join(tmp, '**/*.js'), recursive=True))
+    for p in dist_doc:
         body = open(p, encoding='utf-8').read()
         unresolved += len(TOKEN.findall(body))
         used |= {k for k in FACTS if FACTS[k] in body}
@@ -134,6 +161,41 @@ def check():
         for m in re.finditer(r'<div class="panel panel--preview[^"]*"[^>]*>', body):
             if not re.match(r'<div class="panel panel--preview[^"]*"[^>]*>\s*<div class="app"', body[m.start():m.start()+400]):
                 print('   preview panel is not wrapped in .app:', os.path.relpath(p,tmp)); bad += 1
+    # Every root-absolute reference must resolve inside dist. This is the check that was
+    # missing when the resume PDF went live as a 404: the file existed in the repo, the
+    # link was authored, and nothing proved the two ended up in the same tree.
+    refs = set()
+    for pat, ext in ((REF_HTML, 'html'), (REF_JS, 'js'), (REF_CSS, 'css')):
+        for p in glob.glob(os.path.join(tmp, '**/*.' + ext), recursive=True):
+            body = open(p, encoding='utf-8').read()
+            refs |= {(os.path.relpath(p, tmp), u) for u in pat.findall(body)}
+    missing = []
+    for rel, u in sorted(refs):
+        tgt = os.path.join(tmp, u.lstrip('/'))
+        if os.path.exists(tgt):
+            continue
+        if u.endswith('/') and (os.path.exists(os.path.join(tgt, 'index.html'))
+                                or os.path.exists(tgt + '.html')):
+            continue
+        if not u.endswith('.') and os.path.exists(tgt + '.html'):
+            continue
+        missing.append((rel, u))
+    if missing:
+        print('   BROKEN REF in dist (%d):' % len(missing))
+        for rel, u in missing[:8]: print('      ', rel, '->', u)
+        bad += 1
+    else:
+        print('   all %d root-absolute refs resolve in dist' % len(refs))
+
+    # The six <link>s must have collapsed into exactly one site.css. CSS_LINK_RE matches
+    # an exact attribute layout, so a reordered tag would silently leave render-blocking
+    # requests in the page instead of failing the build.
+    stale_css = re.compile('/assets/css/(?:' + '|'.join(CSS_ORDER) + r')\.css')
+    stale = [os.path.relpath(p, tmp) for p in glob.glob(os.path.join(tmp, '**/*.html'), recursive=True)
+             if stale_css.search(open(p, encoding='utf-8').read())]
+    if stale:
+        print('   CSS NOT COLLAPSED in:', stale); bad += 1
+
     # Anti-drift: a prose string that lives in BOTH a data file and an authored page is
     # a dead copy waiting to go stale. This exact bug shipped once (content.json held the
     # six-cell copy that nothing read while index.html held the real one).

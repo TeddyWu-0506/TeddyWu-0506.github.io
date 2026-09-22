@@ -1,9 +1,7 @@
 import { createDeck } from './deck.js';
-import { initReveal } from './reveal.js';
 import { bindCta, track } from './analytics.js';
 import { mountDemo, mountPreview } from './demo-runtime.js';
 
-initReveal();
 bindCta();
 
 /* Nothing at this level may wait on the network. The inline script in <head> has already

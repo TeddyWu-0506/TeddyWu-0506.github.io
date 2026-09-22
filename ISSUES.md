@@ -24,7 +24,7 @@
 | 方案 | 新增 `ROOT_ASSETS = ['Teddy-Wu-Resume.pdf']` 白名单并在 `build()` 里拷贝。**同时给 `check()` 补一条不变量**：扫描全部 authored HTML 的 `href`/`src` 根绝对路径，任何在 dist 中不存在的目标即 fail。这条漏检才是根问题——PDF 只是第一个受害者 |
 | 验证 | `build.py --check` 通过；`dist/assets/Teddy-Wu-Resume.pdf` 存在；删掉该文件后 `--check` 必须 fail（证明不变量真的在守） |
 | 依赖 | **需确认 D-2**：PDF 首页含手机号 `13680369508`，且体积 4.2 MB |
-| 状态 | ☐ |
+| 状态 | ◐ 机制已完成（批次 B），是否上线待 D-2 |
 
 ### I-02 独立 demo 页没有样例 chip，分享出去的深链是残缺的
 
@@ -76,7 +76,7 @@
 | 方案 | `bundle.py` 改为从同一个地方读 `SITE_URL`（默认值与 `build.py` 一致），并把默认值指向**当前真实可解析**的 `https://teddywu-0506.github.io`。`build.py` 里 `BRAND_URL → SITE_URL` 的重写机制保留，源码继续写品牌域名，构建期决定实际域名 |
 | 验证 | `bundle.py` 输出的 `teddy-wu.html` 里 grep 不到未解析域名；`curl -I` 其内链目标返回 200 |
 | 依赖 | **需确认 D-1**：`teddywu.site` 是准备启用的自定义域名，还是废弃占位 |
-| 状态 | ☐|
+| 状态 | ☐ |
 
 ---
 
@@ -153,14 +153,14 @@
 - **现象**：`assets/js/demo-runtime.js:264` 写死「候选池匹配率 85%」，而 `facts.json` 已有 `match.pool`，`work/creator-match/index.html:53` 用 `@@match.pool@@` 渲染。`build.py --check` 只扫 HTML，不扫 JS——这正是 `PLAN.md:872`「五处数字必须一致」的漏洞。
 - **方案**：`build.py` 对 `ASSET_DIRS` 里的 `assets/js/*.js` 同样做 token 替换（JS 里写 `'@@match.pool@@'`），并把 leak 检测的文件集合扩到 `assets/js/*.js`。
 - **验证**：改 `facts.json` 的 `match.pool` 后重建，demo 输出同步变化；在 JS 里手写 `85%` 会让 `--check` fail。
-- **状态**：☐
+- **状态**：☑ 批次 B
 
 ### I-14 `reveal.js` 整份是死代码
 
 - **现象**：全站没有任何 `.reveal` 元素（HTML/JS 均无），`components.css:304-312` 的 6 条规则永不命中。`revealScene()` 里 `if (n++ < 6) el.classList.add('is-in'); else el.classList.add('is-in');` 两个分支完全一样；`seen` WeakSet 在 `initReveal` 里从不写入。
 - **方案**：删除 `assets/js/reveal.js`、`bundle.py` JS 列表里的 `reveal.js`、`components.css` 的 `.reveal*` 规则、`deck.js` 的三处 `revealScene` 调用与 `main.js` 的 `initReveal`。场景动效已由 `deck.css` 的 `resolve` 系列承担，不需要第二套。
 - **验证**：重建后 `bundle.py` 的 `node --check` 通过；CLS 仍为 0。
-- **状态**：☐
+- **状态**：☑ 批次 B
 
 ### I-15 `track()` 只入队，无人消费
 
@@ -188,7 +188,7 @@
 - **现象**：`index.html:174` 与 `:179` 写 `多支路召回 40` / `40→8`，而 demo 实测 `poolSize 19 → retrieved 19 → top 8`。`engine-match.js` 的 `retrieved: Math.min(pool.length, 40)` 在 20 条索引上永远取不到 40。
 - **方案**：预览面板改为与 demo 同源的真实数字（`@@index.size@@` 已渲染 20，补一个 `recall → rank` 的诚实表述），`retrieved` 的 40 上限常量删掉——它是从线上系统抄来的，本地索引撑不起来。这条与 `PLAN.md` 的诚实性原则（R12）直接相关：面试官真去点 demo，看到的必须是同一个数。
 - **验证**：预览面板数字与 demo log 一致。
-- **状态**：☐
+- **状态**：☑ 批次 B
 
 ### I-19 README 与实际相反
 
@@ -210,7 +210,15 @@
 - **验证**：移动 390px 下重截 demo 结果图，逐格确认可读且不破版。
 - **状态**：☐
 
-### I-22 零散项
+### I-23 `build.py` 从不清理 dist，删掉的源文件会永远留在产物里
+
+- **现象**：`build()` 用 `shutil.copytree(..., dirs_exist_ok=True)`，只增不删。删掉 `assets/js/reveal.js` 之后 `dist/assets/js/reveal.js` 依然存在并被本地 dev server 服务。
+- **根因**：没有"产物树等于源树"的承诺。CI 侧靠 `rsync -a --delete` 兜住了，所以线上没坏，但本地 dist 会无限累积陈旧文件，任何基于 dist 的判断都不可信。
+- **方案（已做）**：`build()` 开头 `clean(outdir)`。dist 是生成物，README 已明令不得手改。
+- **验证**：重建后 `dist/assets/js/` 只剩 6 个文件；Playwright 断言 `/assets/js/reveal.js` 返回 404。
+- **状态**：☑ 批次 B
+
+### I-22 零散项（续）
 
 - `index.html:33` JSON-LD 的 `email` 与 `:250` `mailto:?subject=From%20teddywu.site` 归入 D-1 一起处理。
 - `robots.txt` `Disallow: /api/` 指向不存在的路径（Phase 2 预留，保留但在注释里说明）。
@@ -236,6 +244,18 @@
 
 - **批次 A（完成）** I-04 → I-03 → I-02 + I-05 → I-16 → I-17。回归 22/22 通过（no-js 四格可达、JS 开启时 hidden 语义未坏、移动端 summary 跟随场景、独立 demo 页 chip=3 且 `?case=&run=1` 深链可自动运行、`demo-samples.json` 永久挂起时 deck 仍可用并给出诚实错误、复制后箭头样式保留、`analyse()` 单次通过且 findings 不变）。
 - 执行中新增一项计划外修正：`loadSamples()` 加 8s 超时。永久挂起的请求会永远停在「样例加载中」，比失败更糟，所以给它一个兜底。
+
+## 执行记录
+
+- **批次 A（完成）** I-04 → I-03 → I-02 + I-05 → I-16 → I-17。回归 22/22。commit `c29ae49`。
+  计划外新增一项：`loadSamples()` 加 8s 超时。永久挂起的请求会永远停在「样例加载中」，比失败更糟。
+- **批次 B（完成）** I-13 → I-01 机制 → I-18 → I-14 → I-23 → I-22 的 CSS 合并断言。回归 32/32。
+  两条新不变量都做了**反向验证**，证明它们真的会拦而不是永远通过：把 `assets/Teddy-Wu-Resume.pdf`
+  从源树移走，`--check` 报 `BROKEN REF in dist: profile/index.html -> /assets/Teddy-Wu-Resume.pdf`
+  并 exit 1；把 `85%` 硬编码回引擎，`--check` 报 `LEAK assets/js/demo-runtime.js raw values for:
+  ['match.pool']` 并 exit 1。恢复后重新通过。
+  `bundle.py` 现在从 `dist/assets/js/` 取已渲染 token 的 JS，并 `from build import SITE_URL`，
+  域名与 fact 各自只剩一个主人。
 
 ## 修正批次
 

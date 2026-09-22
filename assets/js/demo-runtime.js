@@ -300,8 +300,8 @@ function renderMatch(box, r, host) {
     </div>`).join('');
   box.innerHTML = `<div class="verdict"><b>${r.results.length} 位候选</b>
       <span>按「${esc(r.brief.scene)}」重排${r.ref ? ' · 参考：' + esc(r.ref.name) : ''}</span>
-      <span>候选池匹配率 85%（口径见完整项目）</span></div>
-    <p class="finding-why" style="margin-bottom:12px">召回 ${r.retrieved} → 重排 ${r.results.length} · 索引为 ${r.poolSize} 条脱敏样例，非线上全量</p>
+      <span>候选池匹配率 @@match.pool@@（口径见完整项目）</span></div>
+    <p class="finding-why" style="margin-bottom:12px">索引 ${r.poolSize} 条脱敏样例，全量参与召回与重排 → 输出 ${r.results.length} 位候选（非线上全量）</p>
     <div class="creators">${rows}</div>
     <div class="panel-note">结构化字段过滤 + 场景加权重排 · 本地无模型调用</div>`;
   box.querySelectorAll('[data-act=x]').forEach((b) => b.addEventListener('click', () => {

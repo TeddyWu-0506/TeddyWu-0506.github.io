@@ -1,4 +1,3 @@
-import { revealScene } from './reveal.js';
 import { track } from './analytics.js';
 
 const DECK_MQ = '(min-width: 769px)';
@@ -76,7 +75,6 @@ export function createDeck({ onScene } = {}) {
     if (deckMode) {
       cut();
       scenes[i]._t = Date.now();
-      revealScene(scenes[i]);
       const h = scenes[i].querySelector('h2,h1');
       if (h && !document.activeElement.closest('input,textarea,select')) h.setAttribute('tabindex', '-1');
     } else {
@@ -96,7 +94,7 @@ export function createDeck({ onScene } = {}) {
     stack.classList.toggle('is-vertical', !deckMode);
     document.body.classList.toggle('is-deck', deckMode);
     if (!deckMode) {
-      scenes.forEach((s) => { s.classList.add('is-active'); revealScene(s); });
+      scenes.forEach((s) => s.classList.add('is-active'));
       setChromeTheme('paper');
       segs.forEach((s, n) => { s.classList.toggle('is-passed', n < i); s.classList.toggle('is-current', n === i); });
     } else {
@@ -182,7 +180,7 @@ export function createDeck({ onScene } = {}) {
   i = fromHash();
   document.body.classList.toggle('is-deck', deckMode);
   stage.classList.toggle('is-vertical', !deckMode);
-  scenes.forEach((s, n) => { if (n === i || !deckMode) { s.classList.add('is-active'); revealScene(s); } });
+  scenes.forEach((s, n) => { if (n === i || !deckMode) s.classList.add('is-active'); });
   scenes[i]._t = Date.now();
   paintDeck();
   if (liveEl) liveEl.textContent = `第 ${i + 1} / ${scenes.length} 屏：${scenes[i].dataset.label || ''}`;
