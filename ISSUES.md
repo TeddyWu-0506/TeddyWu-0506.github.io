@@ -24,7 +24,7 @@
 | 方案 | 新增 `ROOT_ASSETS = ['Teddy-Wu-Resume.pdf']` 白名单并在 `build()` 里拷贝。**同时给 `check()` 补一条不变量**：扫描全部 authored HTML 的 `href`/`src` 根绝对路径，任何在 dist 中不存在的目标即 fail。这条漏检才是根问题——PDF 只是第一个受害者 |
 | 验证 | `build.py --check` 通过；`dist/assets/Teddy-Wu-Resume.pdf` 存在；删掉该文件后 `--check` 必须 fail（证明不变量真的在守） |
 | 依赖 | **需确认 D-2**：PDF 首页含手机号 `13680369508`，且体积 4.2 MB |
-| 状态 | ◐ 机制已完成（批次 B），是否上线待 D-2 |
+| 状态 | ◐ 机制完成；是否上线待 D-2 |
 
 ### I-02 独立 demo 页没有样例 chip，分享出去的深链是残缺的
 
@@ -76,7 +76,7 @@
 | 方案 | `bundle.py` 改为从同一个地方读 `SITE_URL`（默认值与 `build.py` 一致），并把默认值指向**当前真实可解析**的 `https://teddywu-0506.github.io`。`build.py` 里 `BRAND_URL → SITE_URL` 的重写机制保留，源码继续写品牌域名，构建期决定实际域名 |
 | 验证 | `bundle.py` 输出的 `teddy-wu.html` 里 grep 不到未解析域名；`curl -I` 其内链目标返回 200 |
 | 依赖 | **需确认 D-1**：`teddywu.site` 是准备启用的自定义域名，还是废弃占位 |
-| 状态 | ☐ |
+| 状态 | ◐ 机制完成（bundle 已共用 SITE_URL）；默认域名待 D-1 |
 
 ---
 
@@ -87,26 +87,26 @@
 - **现象**：微信、Twitter/X、LinkedIn、Slack 的抓取器基本都要求绝对 URL。全站 `og:image` 为 `/assets/img/og-home.png`；`og:url` 在子页为相对（`/profile/`、`/demo/review/`、`/404`）。首页 `og:url` 因 `BRAND_URL` 重写侥幸是绝对的，子页不是。
 - **方案**：`build.py` 增加一步——以 `SITE_URL` 为 base，把 `og:image`、`og:url`、`twitter:image` 的相对值统一补成绝对；`twitter:domain` 一并校正。这样源码保持相对写法（换域名零成本），产物是绝对的。
 - **验证**：`dist/**/*.html` 里 `og:image` 与 `og:url` 全部以 `SITE_URL` 开头；`--check` 加一条断言防止回退。
-- **状态**：☐
+- **状态**：☑ 批次 C
 
 ### I-08 两张专用 OG 图做好了但零引用
 
 - **现象**：`assets/img/og-review.png`、`og-match.png`（均 1200×630，与声明一致）无任何文件引用，所有子页共用 `og-home.png`。
 - **方案**：按 `PLAN.md §22.2` 落实——`/work/content-review/` 与 `/demo/review/` 用 `og-review.png`，`/work/creator-match/` 与 `/demo/match/` 用 `og-match.png`，其余用 `og-home.png`。
 - **验证**：三张图各至少被两个页面引用；`--check` 断言 `assets/img/` 下无零引用图片。
-- **状态**：☐
+- **状态**：☑ 批次 C
 
 ### I-09 `sitemap.xml` lastmod 全部停在 2026-09-20
 
 - **方案**：`build.py` 用 git 生成 lastmod——对每个 `PAGES` 取 `git log -1 --format=%cd --date=short -- <path>`，构建期写进 sitemap。CI 里 `actions/checkout` 有完整历史，可行；若浅克隆导致失败则回退到工作流日期。
 - **验证**：改动某页后重建，该条 lastmod 前进，其余不变。
-- **状态**：☐
+- **状态**：☑ 批次 C
 
 ### I-10 `site.webmanifest` 声明 `standalone` 却没有 `icons`
 
 - **方案**：从 `assets/favicon.svg` 导出 192/512 PNG 图标补进 manifest，并在 HTML 补 `apple-touch-icon`。图标文件归入 `ASSET_DIRS` 覆盖范围（`assets/icons/`）。
 - **验证**：Chrome DevTools 的 manifest 面板无 error；Lighthouse PWA 图标项通过。
-- **状态**：☐
+- **状态**：☑ 批次 C
 
 ---
 
@@ -134,7 +134,7 @@
 
 **验证**：重建后逐族 `md5` 互不相同；`document.fonts` 里每个声明的 face 都能被实际用到；Playwright 断言 `.btn` 与 `.name` 的渲染宽度差来自真实字重（对比 `font-synthesis-weight: none` 前后）。
 
-**状态**：☐
+**状态**：☐ 待决策
 
 ### I-12 重复与零引用图片
 
@@ -142,7 +142,7 @@
 - `assets/avatar.jpg`、`assets/img/portrait.jpg`（76 KB）零引用。
 - **方案**：删 `assets/` 根下的重复 QR；`portrait.jpg` / `avatar.jpg` 移入 `archive/`。QR 是否要在联系区露出见 **D-4**。
 - **验证**：`--check` 新增"零引用图片即 fail"，与 I-08 共用同一条不变量。
-- **状态**：☐
+- **状态**：☐ 待决策
 
 ---
 
@@ -167,7 +167,7 @@
 - **现象**：`assets/js/analytics.js:2` 把事件 push 进 `window.__ev`，`window.plausible` 从未加载（全站无该 script 标签）。结果既没有埋点，数组又随会话无限增长。`PLAN.md §23.1` 是明确要接 Plausible 的，所以这是"Phase 未做"而非"设计错误"。
 - **方案**：给队列加上限（如 200 条环形）与 `pagehide` 冲刷钩子；Plausible script 标签留到域名定了再接（见 **D-5**）。页脚「No cookies. No tracking of what you paste.」的表述保持真实——当前确实什么都没上传。
 - **验证**：长会话压测下 `window.__ev.length` 有界。
-- **状态**：☐
+- **状态**：☑ 批次 E
 
 ### I-16 复制微信号会吃掉箭头的样式
 
@@ -194,21 +194,21 @@
 
 - **现象**：`README.md:3` 写「静态 HTML + CSS + vanilla ES modules，**无构建步骤**」，紧接着第 5 行就要求 `python3 tools/build.py`；内容表里还列着已在 HEAD `9ff5974` 删掉的 `assets/data/content.json`。
 - **方案**：删掉"无构建步骤"，第一句就讲清"源码 + facts.json → dist"；内容表改指 `demo-samples.json` / `rules.json` / `creators.json`。
-- **状态**：☐
+- **状态**：☑ 批次 E
 
 ### I-20 `.gitignore` 与实际跟踪状态矛盾，生成物被提交
 
 - **现象**：`tools/tokenize.py` 与 `tools/_tokens.json` 写在 `.gitignore` 里但**已被 git 跟踪**，忽略规则形同虚设。`templates_out.json` 是 `extract.py` 的一次性产物，被跟踪且零引用。
 - **方案**：`git rm --cached templates_out.json` 并加入忽略；`tokenize.py` / `_tokens.json` 是 `facts_rules.py` 的配套工具链，从 `.gitignore` 里摘掉声明（保留跟踪）；`extract.py` 若是一次性迁移脚本，移入 `archive/`。
 - **验证**：`git status --ignored` 与 `git ls-files` 不再互相打脸。
-- **状态**：☐
+- **状态**：☑ 批次 E
 
 ### I-21 9px 等宽小字成片
 
 - **现象**：`components.css` 有 8 处 `font-size:9px`（`.sev`、`.finding-why`、`.crow-main span`、`.crow-facts span`、`.cc-tags span`、`.app-metrics span`、`.sw-state`、`.cell-label`），且 `.finding-why` 是承载"依据"正文语义的角色。`--micro` 本身是 10px。
 - **方案**：统一提到 `--micro`（10px），`.finding-why` 提到 `--caption`（12px）。深色面板上的小字对比度已够（`#9A9C93` on ink ≈ 5.7:1），问题只在字号。
 - **验证**：移动 390px 下重截 demo 结果图，逐格确认可读且不破版。
-- **状态**：☐
+- **状态**：☑ 批次 E
 
 ### I-23 `build.py` 从不清理 dist，删掉的源文件会永远留在产物里
 
@@ -242,20 +242,31 @@
 
 ## 执行记录
 
-- **批次 A（完成）** I-04 → I-03 → I-02 + I-05 → I-16 → I-17。回归 22/22 通过（no-js 四格可达、JS 开启时 hidden 语义未坏、移动端 summary 跟随场景、独立 demo 页 chip=3 且 `?case=&run=1` 深链可自动运行、`demo-samples.json` 永久挂起时 deck 仍可用并给出诚实错误、复制后箭头样式保留、`analyse()` 单次通过且 findings 不变）。
-- 执行中新增一项计划外修正：`loadSamples()` 加 8s 超时。永久挂起的请求会永远停在「样例加载中」，比失败更糟，所以给它一个兜底。
+| 批次 | 内容 | 回归 | commit |
+|---|---|---|---|
+| **A** | I-04 → I-03 → I-02 + I-05 → I-16 → I-17 | 22/22 | `c29ae49` |
+| **B** | I-13 → I-01 机制 → I-18 → I-14 → I-23 → I-22 的 CSS 合并断言 | 32/32 | `0b8db87` |
+| **C + E** | I-07 → I-08 → I-09 → I-10 → I-06 机制 ‖ I-19 → I-20 → I-15 → I-21 → I-22 零散项 | 59/59 | `ea61fff` |
+| **D** | I-11 字体、I-12 资产 | — | **待 D-2 / D-3 / D-4** |
 
-## 执行记录
+### 执行中的计划外发现
 
-- **批次 A（完成）** I-04 → I-03 → I-02 + I-05 → I-16 → I-17。回归 22/22。commit `c29ae49`。
-  计划外新增一项：`loadSamples()` 加 8s 超时。永久挂起的请求会永远停在「样例加载中」，比失败更糟。
-- **批次 B（完成）** I-13 → I-01 机制 → I-18 → I-14 → I-23 → I-22 的 CSS 合并断言。回归 32/32。
-  两条新不变量都做了**反向验证**，证明它们真的会拦而不是永远通过：把 `assets/Teddy-Wu-Resume.pdf`
-  从源树移走，`--check` 报 `BROKEN REF in dist: profile/index.html -> /assets/Teddy-Wu-Resume.pdf`
-  并 exit 1；把 `85%` 硬编码回引擎，`--check` 报 `LEAK assets/js/demo-runtime.js raw values for:
-  ['match.pool']` 并 exit 1。恢复后重新通过。
-  `bundle.py` 现在从 `dist/assets/js/` 取已渲染 token 的 JS，并 `from build import SITE_URL`，
-  域名与 fact 各自只剩一个主人。
+- **I-23**（已修）：`build()` 从不清理 `dist/`，`copytree(dirs_exist_ok=True)` 只增不删，删掉的源文件会永远留在产物里被本地 dev server 服务。CI 侧靠 `rsync -a --delete` 兜住了，线上没坏。
+- **`loadSamples()` 8s 超时**（已加）：永久挂起的请求会永远停在「样例加载中」，比失败更糟。
+- **`.shell .sev{font-size:11px}`**：独立 demo 页对这一格有既有的字号提升，所以 I-21 的断言改成下限而不是精确值。固定单屏场景里的 9px 是 PLAN A9 的有意压缩，**没有动**。
+
+### 不变量的反向验证
+
+新增的每条不变量都故意破坏过一次，证明它们真的会拦而不是永远通过：
+
+| 破坏动作 | `--check` 反应 |
+|---|---|
+| 把 `assets/Teddy-Wu-Resume.pdf` 从源树移走 | `BROKEN REF in dist: profile/index.html -> /assets/Teddy-Wu-Resume.pdf`，exit 1 |
+| 把 `85%` 硬编码回 `demo-runtime.js` | `LEAK assets/js/demo-runtime.js raw values for: ['match.pool']`，exit 1 |
+| 去掉 `absolutize()` 调用 | 7 个页面全部报 `SOCIAL TAG NOT ABSOLUTE`，exit 1 |
+| 让 `absolutize()` 漏掉闭引号 | 同一断言以 `1/2` 的计数差报出来（这条是我自己写坏时它抓到的） |
+
+恢复后全部重新通过。
 
 ## 修正批次
 
