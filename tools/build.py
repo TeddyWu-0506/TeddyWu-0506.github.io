@@ -405,8 +405,10 @@ def check():
             if line.strip(): print('     ', line)
         bad += 1
     else:
-        print('   resume PDF agrees with the fact table (%d claims checked)'
-              % out.count('  OK'))
+        # Count on lstripped lines: `out.strip()` above eats the first line's indent, so a
+        # naive substring count under-reports coverage by exactly one claim.
+        checked = sum(1 for ln in out.splitlines() if ln.lstrip().startswith('OK'))
+        print('   resume PDF agrees with the fact table (%d claims checked)' % checked)
 
     clean(tmp)
     print('   invariants hold' if not bad and not unresolved else '   INVARIANT VIOLATION')
