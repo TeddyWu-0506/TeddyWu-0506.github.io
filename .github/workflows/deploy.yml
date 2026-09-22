@@ -1,42 +1,49 @@
-name: build and deploy
+name: build and publish
 
+# Pages for a username.github.io repo is locked to the legacy branch source, so a
+# workflow cannot hand GitHub an artifact. Instead: author on src, and this job
+# builds dist/ and pushes it to main, which is the branch Pages serves.
+# Never edit main by hand - it is generated.
 on:
   push:
-    branches: [main]
+    branches: [src]
   workflow_dispatch:
 
 permissions:
-  contents: read
-  pages: write
-  id-token: write
-
-concurrency:
-  group: pages
-  cancel-in-progress: true
+  contents: write
 
 jobs:
-  build:
+  publish:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      # node ships on the GitHub runner; bundle.py shells out to `node --check`
-      - name: Verify the fact single-source invariants
-        run: python tools/build.py && python tools/build.py --check
+
+      - name: Enforce the fact single-source invariants
+        run: |
+          python tools/build.py
+          python tools/build.py --check
+
       - name: Build the offline single-file bundle
         run: python tools/bundle.py
-      - uses: actions/upload-pages-artifact@v3
-        with:
-          path: dist
 
-  deploy:
-    needs: build
-    runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.out.outputs.page_url }}
-    steps:
-      - id: out
-        uses: actions/deploy-pages@v4
+      - name: Publish dist to main
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          git clone --quiet --branch main --single-branch \
+            "https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" deploy
+          rsync -a --delete --exclude '.git' dist/ deploy/
+          cd deploy
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add -A
+          if git diff --cached --quiet; then
+            echo "Nothing changed; skipping publish."
+            exit 0
+          fi
+          git commit -m "build: publish ${GITHUB_SHA}"
+          git push origin HEAD:main
