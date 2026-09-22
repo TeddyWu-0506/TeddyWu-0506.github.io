@@ -27,6 +27,9 @@ jobs:
 
       - name: Enforce the fact single-source invariants
         run: |
+          # pypdf is pure Python and only used to read the resume's text layer, so the CV
+          # cannot drift away from the site's numbers unnoticed.
+          python -m pip install --quiet pypdf
           python tools/build.py
           python tools/build.py --check
 

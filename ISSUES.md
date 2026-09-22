@@ -24,7 +24,7 @@
 | 方案 | 新增 `ROOT_ASSETS = ['Teddy-Wu-Resume.pdf']` 白名单并在 `build()` 里拷贝。**同时给 `check()` 补一条不变量**：扫描全部 authored HTML 的 `href`/`src` 根绝对路径，任何在 dist 中不存在的目标即 fail。这条漏检才是根问题——PDF 只是第一个受害者 |
 | 验证 | `build.py --check` 通过；`dist/assets/Teddy-Wu-Resume.pdf` 存在；删掉该文件后 `--check` 必须 fail（证明不变量真的在守） |
 | 依赖 | **需确认 D-2**：PDF 首页含手机号 `13680369508`，且体积 4.2 MB |
-| 状态 | ◐ 机制完成；是否上线待 D-2 |
+| 状态 | ☑ 批次 D |
 
 ### I-02 独立 demo 页没有样例 chip，分享出去的深链是残缺的
 
@@ -76,7 +76,7 @@
 | 方案 | `bundle.py` 改为从同一个地方读 `SITE_URL`（默认值与 `build.py` 一致），并把默认值指向**当前真实可解析**的 `https://teddywu-0506.github.io`。`build.py` 里 `BRAND_URL → SITE_URL` 的重写机制保留，源码继续写品牌域名，构建期决定实际域名 |
 | 验证 | `bundle.py` 输出的 `teddy-wu.html` 里 grep 不到未解析域名；`curl -I` 其内链目标返回 200 |
 | 依赖 | **需确认 D-1**：`teddywu.site` 是准备启用的自定义域名，还是废弃占位 |
-| 状态 | ◐ 机制完成（bundle 已共用 SITE_URL）；默认域名待 D-1 |
+| 状态 | ☑ 批次 D |
 
 ---
 
@@ -134,7 +134,7 @@
 
 **验证**：重建后逐族 `md5` 互不相同；`document.fonts` 里每个声明的 face 都能被实际用到；Playwright 断言 `.btn` 与 `.name` 的渲染宽度差来自真实字重（对比 `font-synthesis-weight: none` 前后）。
 
-**状态**：☐ 待决策
+**状态**：☑ 批次 D
 
 ### I-12 重复与零引用图片
 
@@ -142,7 +142,7 @@
 - `assets/avatar.jpg`、`assets/img/portrait.jpg`（76 KB）零引用。
 - **方案**：删 `assets/` 根下的重复 QR；`portrait.jpg` / `avatar.jpg` 移入 `archive/`。QR 是否要在联系区露出见 **D-4**。
 - **验证**：`--check` 新增"零引用图片即 fail"，与 I-08 共用同一条不变量。
-- **状态**：☐ 待决策
+- **状态**：☑ 批次 D
 
 ---
 
@@ -228,6 +228,47 @@
 
 ---
 
+### I-24 `tools/tokenize.py` 遮蔽标准库，且**导入即改写授权源文件**
+
+- **现象**：任何把 `tools/` 放进 `sys.path` 的进程，只要间接 `import tokenize`（stdlib 的 `inspect` 就会），这个一次性迁移脚本就被当作模块执行——而它会 `open(page,'w')` 重写站点的授权 HTML。
+- **根因**：`build.py` 开头 `sys.path.insert(0, tools目录)`，于是 `tools/tokenize.py` 抢在标准库前面。文件名撞了标准库，加上模块级裸执行代码，两个条件同时成立。
+- **发现方式**：跑 `tools/fonts.py` 时它自己打印出了 `replacements per fact:` ——一个不该运行的脚本的输出。
+- **方案（已做）**：改名 `tools/apply_facts.py`；主体包进 `main()` + `__main__` 守卫；改用 `build.discover_pages()` 而不是第二份写死的页面清单；`--check` 新增"tools/ 下不得有遮蔽标准库的模块名"。
+- **验证**：故意放一个 `tools/inspect.py`，`--check` 报 `STDLIB SHADOW in tools/: ['inspect']` 并 exit 1。
+- **状态**：☑ 批次 D
+
+### I-25 `assets/avatar.jpg` 与 `assets/img/portrait.jpg` 字节完全相同且零引用
+
+- **发现方式**：批次 D 新增的"不得有两个资产字节相同"不变量，第一次运行就抓出来的。我上一轮只注意到两者都零引用，没意识到它们是同一个文件。
+- **方案（已做）**：连同 I-12 的重复 QR、未用的 Newsreader 一起移入 `archive/`，不删除。
+- **状态**：☑ 批次 D
+
+### I-26 ★ 简历 PDF 与站内 `scale.spend` 冲突（**只有你能裁定**）
+
+- **现象**：PDF 写「月均消耗 **100 万+**」，`facts.json` 的 `scale.spend` 是 **`150W+`**。
+- **为什么重要**：`PLAN.md:872` 把这类不一致列为本站代价最高的失误——面试官手上同时有 PDF 和网页。
+- **方案（已做）**：新增 `tools/check_resume.py`，从 PDF 文本层提取并核对 5 项声明，接入 `--check`；CI 加 `pip install pypdf`。注意 PDF 文本层用的是兼容汉字（`⽉均` 而非 `月均`），所以必须先 NFKC 归一化，否则正则全部匹配不到、检查会假通过。
+- **当前状态**：闸门**主动失败**，直到你告诉我哪个数字是真的。改 `facts.json` 或换 PDF，二选一。
+- **状态**：⚠ 闸门已建，数字待你裁定
+
+## 已代做的决策（按你的两条核心要求）
+
+| # | 决策 | 定的是什么 |
+|---|---|---|
+| D-1 | 域名 | 不赌 `teddywu.site`。`detect_site_url()` 按 `SITE_URL` → `CF_PAGES_URL`/`PAGES_URL` → `GITHUB_REPOSITORY` → 当前生产地址解析。GH Pages 与 CF Pages 都零配置，换域名不改文件 |
+| D-2 | 简历 PDF | 上线，并从 4.20 MB 压到 447 KB（-89%）。元凶是一页简历里塞了 3488×3488 的头像 JPEG，缩到 360px 后视觉无差别。手机号 `13680369508` 随 PDF 公开，这是站内唯一新增的暴露面（邮箱与微信号本来就公开） |
+| D-3 | 字体 | 走 A：重新导出真实字重。6 个 woff2 现在各自是 500/700/400/600/400/500，无重复，字体体积 217 KB → 131 KB。新增 `tools/fonts.py` 可重跑，`--verify` 会读 `OS/2.usWeightClass` 核对文件名声明 |
+| D-4 | 微信二维码 | 露出。联系区拆成「复制微信号」+「扫码加我」两个动作，桌面浮层、移动入流，均实测无遮挡。QR 从 704×658 非正方形重裁为 400×400 带静区，133 KB → 52 KB。这是对 `PLAN.md:1143`「只复制」的一处偏离，理由是国内招聘的实际接触面在微信 |
+| D-5 | Plausible | **不接**。你的目标是快速部署与低维护，第三方分析账号是长期运维负担，而页脚已经承诺「No cookies. No tracking」。`track()` 出口保留并加了 200 条上限，将来要接是两行的事 |
+
+## 可维护性改动（你的第二条核心要求）
+
+- **页面自动发现**：`discover_pages()` 走目录，加一页不用改 `build.py`。写死清单的失败方式是静默的——新页面不参与构建、不参与 token 渲染、不参与泄漏检测，等于不存在。
+- **`tools/fonts.py`**：字体可重跑、可校验，不再靠手工下载。
+- **`tools/check_resume.py`**：PDF 与 fact 表可机器核对。
+- **README 重写**：补 GH Pages 与 CF Pages 两套部署参数、域名解析顺序、「加一个页面」「加一个 demo」的步骤、`--check` 全部 11 条不变量清单。
+- **`_headers` 由构建生成**：CF Pages 的缓存与安全头策略跟着产物走。刻意不给未做内容哈希的资产写 `immutable`。
+
 ## 待确认决策
 
 | # | 决策 | 影响条目 | 我准备的默认做法 |
@@ -247,7 +288,7 @@
 | **A** | I-04 → I-03 → I-02 + I-05 → I-16 → I-17 | 22/22 | `c29ae49` |
 | **B** | I-13 → I-01 机制 → I-18 → I-14 → I-23 → I-22 的 CSS 合并断言 | 32/32 | `0b8db87` |
 | **C + E** | I-07 → I-08 → I-09 → I-10 → I-06 机制 ‖ I-19 → I-20 → I-15 → I-21 → I-22 零散项 | 59/59 | `ea61fff` |
-| **D** | I-11 字体、I-12 资产 | — | **待 D-2 / D-3 / D-4** |
+| **D** | I-11 → I-12 → I-24 → I-25 → I-26 + D-1…D-5 全部落地 | 80/80 | 见下 |
 
 ### 执行中的计划外发现
 

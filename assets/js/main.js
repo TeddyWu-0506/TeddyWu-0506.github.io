@@ -89,6 +89,15 @@ document.addEventListener('click', (e) => {
   }
 });
 
+/* ---- QR reveal (contact scene) ---- */
+document.addEventListener('click', (e) => {
+  const t = e.target.closest('[data-qr]'); if (!t) return;
+  const box = document.getElementById(t.getAttribute('aria-controls')); if (!box) return;
+  const open = box.hasAttribute('hidden');
+  if (open) box.removeAttribute('hidden'); else box.setAttribute('hidden', '');
+  t.setAttribute('aria-expanded', String(open));
+});
+
 /* ---- header stuck ---- */
 const header = document.querySelector('.site-header,.doc-head');
 if (header) { const on = () => header.classList.toggle('is-stuck', window.scrollY > 12);

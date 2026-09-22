@@ -295,6 +295,26 @@ select.field{height:40px;padding:0 10px;font-size:13px;font-family:var(--f-body)
   align-content:center;padding-block:var(--s-section)}
 .contact-links{display:flex;gap:clamp(20px,3vw,40px);flex-wrap:wrap;margin-top:clamp(10px,2vh,20px)}
 .contact-links .btn--link .ar{font-family:var(--f-mono)}
+/* The contact scene is exactly one viewport tall, so the QR overlays rather than pushing
+   the grid. It sits on a paper card because a QR needs a light, quiet field to scan
+   against - the ink theme would eat the margin. */
+.qr{position:absolute;right:0;top:50%;z-index:3;margin:0;padding:14px 14px 10px;
+  background:var(--paper-1);border-radius:var(--r-window);box-shadow:var(--panel-shadow);
+  transform:translateY(-50%) scale(.97);opacity:0;transition:opacity .2s var(--ease),transform .2s var(--ease)}
+.qr:not([hidden]){opacity:1;transform:translateY(-50%) scale(1)}
+.qr img{width:min(240px,36vw);height:auto;border-radius:var(--r-ui)}
+/* no text-transform here: the caption carries the literal WeChat ID, and uppercasing
+   "TeddyGorrr" into "TEDDYGORRR" misrepresents the thing someone has to type. */
+.qr figcaption{font-family:var(--f-mono);font-size:var(--micro);letter-spacing:.06em;
+  color:var(--ink-600);text-align:center;margin-top:9px}
+/* Under 768px the deck is vertical and the scene scrolls, so the QR joins the flow instead
+   of floating. A centred overlay here sat on top of the H2 and both contact buttons. */
+@media (max-width:768px){
+  .qr{position:static;transform:none;opacity:1;margin:6px auto 0;right:auto;top:auto;
+    box-shadow:none;border:1px solid var(--line-1)}
+  .qr:not([hidden]){transform:none}
+  .qr img{width:min(200px,52vw)}
+}
 .contact-meta{margin-top:clamp(24px,4vh,48px);padding-top:16px;border-top:1px solid var(--border);
   display:flex;gap:20px;flex-wrap:wrap;font-family:var(--f-mono);font-size:var(--micro);
   letter-spacing:.05em;color:var(--text-quiet);text-transform:uppercase}

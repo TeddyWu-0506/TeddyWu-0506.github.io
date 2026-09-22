@@ -10,7 +10,10 @@
   --f-display:"Bricolage Grotesque","Helvetica Neue",Arial,sans-serif;
   --f-body:"Inter Tight",Inter,-apple-system,"Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
   --f-mono:"JetBrains Mono",ui-monospace,"SFMono-Regular",Consolas,monospace;
-  --f-serif:Newsreader,Georgia,"Times New Roman",serif;
+  /* System serif on purpose. Newsreader was declared for this slot and shipped 24 KB of
+     woff2 that no page ever fetched - every <em> in the site is CJK and fell through to
+     PingFang anyway. Same intent, one fewer asset to keep honest. */
+  --f-serif:Georgia,"Times New Roman","Songti SC",serif;
   --f-cjk:"PingFang SC","Hiragino Sans GB","Microsoft YaHei","Noto Sans CJK SC",sans-serif;
 
   /* LAYER 3 · COMPONENT */

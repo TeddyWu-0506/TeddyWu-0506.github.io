@@ -16,8 +16,30 @@ from facts_rules import RULES
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 FACTS = json.load(open(os.path.join(ROOT, 'assets/data/facts.json'), encoding='utf-8'))
-PAGES = ['index.html', '404.html', 'work/content-review/index.html', 'work/creator-match/index.html',
-         'profile/index.html', 'demo/review/index.html', 'demo/match/index.html']
+SKIP_DIR = re.compile(r'(^|/)(archive|dist|node_modules|templates|__pycache__)(/|$)|^\.')
+
+
+def discover_pages():
+    """Every authored page, found rather than remembered.
+
+    A hardcoded list is the quiet kind of maintenance trap: add a fifth work dossier,
+    forget to edit build.py, and the new page is never built, never token-rendered and
+    never leak-checked - it just silently does not exist as far as the site is concerned.
+    """
+    out = []
+    for dirpath, dirnames, filenames in os.walk(ROOT):
+        dirnames[:] = sorted(d for d in dirnames if not d.startswith('.'))
+        for f in sorted(filenames):
+            if not f.endswith('.html'):
+                continue
+            rel = os.path.relpath(os.path.join(dirpath, f), ROOT).replace(os.sep, '/')
+            if not SKIP_DIR.search(rel):
+                out.append(rel)
+    # index.html first so build output reads in navigation order
+    return sorted(out, key=lambda p: (p != 'index.html', p))
+
+
+PAGES = discover_pages()
 # Loose files under assets/ that pages link to directly. The resume PDF belongs here and
 # silently 404'd in production because ASSET_DIRS only ever walked subdirectories.
 PASS_THROUGH = ['site.webmanifest', 'assets/favicon.svg', 'assets/Teddy-Wu-Resume.pdf']
@@ -44,10 +66,34 @@ OG_REL = re.compile('(<meta property="og:(?:image|url)" content=")(/)([^"]*)(")'
 # counts, so a substitution that eats a quote fails the build instead of shipping a page
 # whose next <meta> has silently merged into the image URL.
 OG_STRICT = re.compile('<meta property="og:(?:image|url)" content="(https?://[^"]*)">')
-# One place to change when the domain moves. Sources keep the canonical brand URL;
-# the build rewrites it so github.io and a future custom domain need no edits.
-SITE_URL = os.environ.get('SITE_URL', 'https://teddywu-0506.github.io').rstrip('/')
+# Sources keep writing the canonical brand URL; the build rewrites it to wherever this
+# deployment actually lives, so a domain move costs zero edits. Resolution order is
+# explicit override, then the host's own environment, then the current production URL.
 BRAND_URL = 'https://teddywu.site'
+DEV_FALLBACK = 'https://teddywu-0506.github.io'
+
+
+def detect_site_url(env=os.environ):
+    if env.get('SITE_URL'):
+        return env['SITE_URL'].rstrip('/')
+    # Cloudflare Pages tells you the canonical URL of the deployment it just built.
+    if env.get('CF_PAGES_URL'):
+        return env['CF_PAGES_URL'].rstrip('/')
+    if env.get('PAGES_URL'):                       # common convention for other static hosts
+        return env['PAGES_URL'].rstrip('/')
+    # GitHub Pages: user/org repos serve from the apex, project repos from a sub-path.
+    if env.get('GITHUB_ACTIONS') == 'true':
+        repo = (env.get('GITHUB_REPOSITORY') or '').strip()
+        if repo:
+            owner, _, name = repo.partition('/')
+            owner, name = owner.lower(), name.lower()
+            if name == owner + '.github.io':
+                return 'https://' + name
+            return 'https://' + owner + '.github.io/' + name
+    return DEV_FALLBACK
+
+
+SITE_URL = detect_site_url()
 
 
 def render(text, facts=FACTS):
@@ -115,6 +161,23 @@ def build(outdir):
         if not os.path.exists(s): continue
         d = os.path.join(outdir, rel); os.makedirs(os.path.dirname(d), exist_ok=True)
         shutil.copyfile(s, d)
+    # Cloudflare Pages reads this; GitHub Pages ignores it and serves it as a plain file,
+    # which is harmless. Generated rather than committed so the cache policy cannot drift
+    # away from what the build actually emits.
+    #
+    # No content hashes yet, so assets get one day, not a year: "immutable" on a file whose
+    # name never changes is a stuck stylesheet until the visitor force-reloads.
+    open(os.path.join(outdir, '_headers'), 'w', encoding='utf-8').write(
+        '/*\n'
+        '  Cache-Control: public, max-age=0, must-revalidate\n'
+        '  X-Content-Type-Options: nosniff\n'
+        '  Referrer-Policy: strict-origin-when-cross-origin\n'
+        '  X-Frame-Options: DENY\n'
+        '  Permissions-Policy: camera=(), microphone=(), geolocation=()\n'
+        '\n'
+        '/assets/*\n'
+        '  Cache-Control: public, max-age=86400\n')
+
     for ad in ASSET_DIRS:
         s = os.path.join(ROOT, ad)
         if not os.path.isdir(s): continue
@@ -249,6 +312,50 @@ def check():
     if stale:
         print('   CSS NOT COLLAPSED in:', stale); bad += 1
 
+    # Two byte-identical assets is how "500 and 700 are the same font" and "the QR code
+    # exists twice" both got in. Cheap to detect, and nothing else in the pipeline looks
+    # at file bytes at all.
+    import hashlib
+    byhash = {}
+    for dirpath, dirnames, filenames in os.walk(os.path.join(ROOT, 'assets')):
+        dirnames[:] = [d for d in dirnames if d != '__pycache__']
+        for f in filenames:
+            fp = os.path.join(dirpath, f)
+            h = hashlib.md5(open(fp, 'rb').read()).hexdigest()
+            byhash.setdefault(h, []).append(os.path.relpath(fp, ROOT))
+    dupes = [v for v in byhash.values() if len(v) > 1]
+    if dupes:
+        print('   DUPLICATE ASSETS (identical bytes, one owner each):')
+        for d in dupes: print('      ', ' == '.join(d))
+        bad += 1
+
+    # A 4.2 MB resume PDF inside a 1-page download is the kind of thing that only shows up
+    # as a recruiter on hotel wifi. Budget per shipped file, not per tree, so the offender
+    # names itself.
+    BUDGET = 1500 * 1024
+    heavy = []
+    for dirpath, _, filenames in os.walk(tmp):
+        for f in filenames:
+            fp = os.path.join(dirpath, f)
+            if os.path.getsize(fp) > BUDGET:
+                heavy.append('%s %.1f MB' % (os.path.relpath(fp, tmp), os.path.getsize(fp) / 1048576))
+    if heavy:
+        print('   OVER %d KB PER-FILE BUDGET:' % (BUDGET // 1024), heavy); bad += 1
+
+    # A module in tools/ that shadows a stdlib name is a landmine, not a naming problem:
+    # build.py puts tools/ first on sys.path, so the shadow fires inside someone else's
+    # import. This repo already shipped one that rewrote the authored pages that way.
+    import sysconfig
+    stdlib = set(getattr(sys, 'stdlib_module_names', set()))
+    if not stdlib:
+        stdlib = {m for m in os.listdir(os.path.join(sysconfig.get_paths()['stdlib']))
+                  if m.endswith('.py')} | {m for m in os.listdir(sysconfig.get_paths()['stdlib'])
+                                           if os.path.isdir(os.path.join(sysconfig.get_paths()['stdlib'], m))}
+    shadow = [f[:-3] for f in os.listdir(os.path.join(ROOT, 'tools'))
+              if f.endswith('.py') and f[:-3] in stdlib]
+    if shadow:
+        print('   STDLIB SHADOW in tools/:', shadow, '- rename it, imports will hit this first'); bad += 1
+
     # Anti-drift: a prose string that lives in BOTH a data file and an authored page is
     # a dead copy waiting to go stale. This exact bug shipped once (content.json held the
     # six-cell copy that nothing read while index.html held the real one).
@@ -283,6 +390,24 @@ def check():
             print(f'   index.size matches creators.json ({n} rows)')
     except FileNotFoundError:
         pass
+    # The resume PDF is a binary blob, so no HTML-side invariant can see the numbers inside
+    # it. PLAN 872 calls a mismatch between the CV and the site the most expensive mistake
+    # on this project, so the cross-check runs here when it can, and says so when it cannot
+    # - a guard that quietly does not exist is worse than one that announces itself.
+    r = subprocess.run([sys.executable, os.path.join(ROOT, 'tools', 'check_resume.py')],
+                       capture_output=True, text=True)
+    out = (r.stdout or '').strip()
+    if 'SKIPPED' in out:
+        print('   resume cross-check SKIPPED (pip install pypdf) - CV numbers unverified')
+    elif r.returncode:
+        print('   RESUME / SITE NUMBER CONFLICT:')
+        for line in out.split('\n'):
+            if line.strip(): print('     ', line)
+        bad += 1
+    else:
+        print('   resume PDF agrees with the fact table (%d claims checked)'
+              % out.count('  OK'))
+
     clean(tmp)
     print('   invariants hold' if not bad and not unresolved else '   INVARIANT VIOLATION')
     return 1 if (bad or unresolved) else 0
