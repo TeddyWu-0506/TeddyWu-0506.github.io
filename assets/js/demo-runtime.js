@@ -284,7 +284,7 @@ function renderMatch(box, r, host) {
     <div class="crow ${c.best ? 'is-best' : ''}" data-crow="${c.id}">
       <span class="crow-rank">${String(c.rank).padStart(2, '0')}</span>
       <span class="crow-av" style="background:${av(c.name)}">${esc(c.avatar)}</span>
-      <span class="crow-main"><b>${esc(c.name)}</b><span>${esc(c.category || c.topics.join(' · '))} · ${c.tier} ${wan(c.followers)} · 女粉 ${c.female_pct ?? '—'}%</span></span>
+      <span class="crow-main"><b>${esc(c.name)}</b><span>${esc(c.category || c.topics.join(' · '))} · ${c.tier} ${wan(c.followers)} · 女粉 ${c.female_pct != null ? c.female_pct + '%' : '未提供'}</span></span>
       <span class="crow-score">${c.score}%</span>
       <button class="crow-x" aria-expanded="false" data-act="x" title="展开逐维解释">${c.best ? '★' : '+'}</button>
       <div class="crow-detail">

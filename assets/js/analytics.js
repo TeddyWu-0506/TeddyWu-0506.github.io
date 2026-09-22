@@ -1,4 +1,8 @@
-/* privacy-first event outlet. Works with or without Plausible loaded. */
+/* privacy-first event outlet. Works with or without Plausible loaded.
+   Plausible itself is NOT wired yet - see ISSUES.md D-5, which waits on the domain
+   decision. Until then this is a bounded ring, not an unbounded log: a visitor who leaves
+   the tab open for a week should not be growing an array nothing ever reads. */
+const CAP = 200;
 const queue = (window.__ev = []);
 export function track(name, props = {}) {
   const clean = {};
@@ -6,6 +10,7 @@ export function track(name, props = {}) {
     if (typeof v === 'string' && v.length > 120) continue;      // never ship pasted text
     clean[k] = typeof v === 'number' ? Math.round(v) : v;
   }
+  if (queue.length >= CAP) queue.shift();
   queue.push([name, clean, Date.now()]);
   try { if (window.plausible) window.plausible(name, { props: clean }); } catch (_) {}
 }

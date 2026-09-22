@@ -4,5 +4,19 @@
  "start_url": "/",
  "display": "standalone",
  "background_color": "#F2F0EA",
- "theme_color": "#F2F0EA"
+ "theme_color": "#F2F0EA",
+ "icons": [
+  {
+   "src": "/assets/icons/icon-192.png",
+   "sizes": "192x192",
+   "type": "image/png"
+  },
+  {
+   "src": "/assets/icons/icon-512.png",
+   "sizes": "512x512",
+   "type": "image/png",
+   "purpose": "any maskable"
+  }
+ ],
+ "description": "AI 产品经理 Teddy Wu 的作品台：图文审核与达人推荐，两套可在线试用的系统。"
 }

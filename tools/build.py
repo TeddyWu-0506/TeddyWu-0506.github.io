@@ -21,7 +21,7 @@ PAGES = ['index.html', '404.html', 'work/content-review/index.html', 'work/creat
 # Loose files under assets/ that pages link to directly. The resume PDF belongs here and
 # silently 404'd in production because ASSET_DIRS only ever walked subdirectories.
 PASS_THROUGH = ['site.webmanifest', 'assets/favicon.svg', 'assets/Teddy-Wu-Resume.pdf']
-ASSET_DIRS = ['assets/data', 'assets/fonts', 'assets/img']
+ASSET_DIRS = ['assets/data', 'assets/fonts', 'assets/img', 'assets/icons']
 # JS is rendered through the same token pass as HTML. A fact that can only be reached by
 # editing the engine is a fact with two owners, and facts.json is supposed to be the one.
 JS_DIR = 'assets/js'
@@ -36,6 +36,14 @@ TOKEN = re.compile(r'@@([\w.]+)@@')
 REF_HTML = re.compile('(?:href|src)="(/[^"#?]+)')
 REF_JS = re.compile(r"""fetch\(['"](/[^'"]+)['"]\)""")
 REF_CSS = re.compile(r"""url\(['"]?(/[^'")]+)""")
+# Crawlers resolve og:image and og:url against nothing at all - a leading slash is simply
+# dropped, and the card renders without its picture. Sources keep writing /assets/... so a
+# domain move costs no edits; the build is where those become absolute.
+OG_REL = re.compile('(<meta property="og:(?:image|url)" content=")(/)([^"]*)(")')
+# A well-formed social tag, closing quote included. --check compares the loose and strict
+# counts, so a substitution that eats a quote fails the build instead of shipping a page
+# whose next <meta> has silently merged into the image URL.
+OG_STRICT = re.compile('<meta property="og:(?:image|url)" content="(https?://[^"]*)">')
 # One place to change when the domain moves. Sources keep the canonical brand URL;
 # the build rewrites it so github.io and a future custom domain need no edits.
 SITE_URL = os.environ.get('SITE_URL', 'https://teddywu-0506.github.io').rstrip('/')
@@ -47,6 +55,36 @@ def render(text, facts=FACTS):
     if unknown:
         raise KeyError('unknown fact token(s): ' + ', '.join(unknown))
     return TOKEN.sub(lambda m: facts[m.group(1)], text)
+
+
+def git_mtime(rel):
+    """Date of the last commit that touched `rel`, or None if git cannot say."""
+    try:
+        r = subprocess.run(['git', 'log', '-1', '--format=%cd', '--date=short', '--', rel],
+                           cwd=ROOT, capture_output=True, text=True, timeout=15)
+        return r.stdout.strip() or None
+    except Exception:
+        return None
+
+
+def stamp_sitemap(text):
+    """Rewrite each <lastmod> from git.
+
+    A hand-maintained lastmod is a date somebody typed once. It quietly turns into a lie
+    the first time a page changes, and a stale sitemap is worse than no sitemap because it
+    trains the crawler to stop trusting this one.
+    """
+    def one(m):
+        loc, authored = m.group(1), m.group(2)
+        path = re.sub(r'^https?://[^/]+', '', loc).strip('/')
+        rel = (path + '/' if path else '') + 'index.html'
+        d = git_mtime(rel) or (authored or '').strip()
+        return '<url><loc>%s</loc><lastmod>%s</lastmod></url>' % (loc, d)
+    return re.sub(r'<url><loc>([^<]+)</loc>(?:<lastmod>([^<]*)</lastmod>)?</url>', one, text)
+
+
+def absolutize(text):
+    return OG_REL.sub(lambda m: m.group(1) + SITE_URL + m.group(2) + m.group(3) + m.group(4), text)
 
 
 def clean(p):
@@ -64,12 +102,14 @@ def build(outdir):
         dst = os.path.join(outdir, rel)
         os.makedirs(os.path.dirname(dst), exist_ok=True)
         open(dst, 'w', encoding='utf-8').write(
-            render(open(src, encoding='utf-8').read()).replace(BRAND_URL, SITE_URL))
+            absolutize(render(open(src, encoding='utf-8').read()).replace(BRAND_URL, SITE_URL)))
     for rel in ('robots.txt', 'sitemap.xml'):
         sp = os.path.join(ROOT, rel)
-        if os.path.exists(sp):
-            open(os.path.join(outdir, rel), 'w', encoding='utf-8').write(
-                open(sp, encoding='utf-8').read().replace(BRAND_URL, SITE_URL))
+        if not os.path.exists(sp): continue
+        body = open(sp, encoding='utf-8').read().replace(BRAND_URL, SITE_URL)
+        if rel == 'sitemap.xml':
+            body = stamp_sitemap(body)
+        open(os.path.join(outdir, rel), 'w', encoding='utf-8').write(body)
     for rel in PASS_THROUGH:
         s = os.path.join(ROOT, rel)
         if not os.path.exists(s): continue
@@ -186,6 +226,19 @@ def check():
         bad += 1
     else:
         print('   all %d root-absolute refs resolve in dist' % len(refs))
+
+    # A relative og:image/og:url is the kind of bug that passes every local test and only
+    # shows up as a blank card in WeChat or Slack weeks later. The loose-vs-strict count
+    # also catches a malformed tag, which a relativity check alone would wave through.
+    social = []
+    for p in glob.glob(os.path.join(tmp, '**/*.html'), recursive=True):
+        body = open(p, encoding='utf-8').read()
+        loose = len(re.findall('<meta property="og:(?:image|url)"', body))
+        strict = len(OG_STRICT.findall(body))
+        if loose != strict:
+            social.append('%s (%d/%d social tags well-formed and absolute)' % (os.path.relpath(p, tmp), strict, loose))
+    if social:
+        print('   SOCIAL TAG NOT ABSOLUTE:', social); bad += 1
 
     # The six <link>s must have collapsed into exactly one site.css. CSS_LINK_RE matches
     # an exact attribute layout, so a reordered tag would silently leave render-blocking
