@@ -16,6 +16,11 @@ export function createDeck({ onScene } = {}) {
   const navs   = [...document.querySelectorAll('[data-scene-link]')];
   const idxEl  = rail?.querySelector('.rail-index .cur');
   const nameEl = rail?.querySelector('.rail-name');
+  /* The mobile rail hides .rail-index and .rail-name and shows only this <summary>,
+     so it needs its own handles - under 768px it is the one progress signal there is. */
+  const sumEl      = rail?.querySelector('.rail-jump > summary');
+  const sumNumEl   = sumEl?.querySelector('.cur');
+  const sumLabelEl = sumEl?.querySelector('.sum-label');
   const liveEl = rail?.querySelector('.rail-live');
   const prevB  = rail?.querySelector('[data-deck="prev"]');
   const nextB  = rail?.querySelector('[data-deck="next"]');
@@ -53,6 +58,10 @@ export function createDeck({ onScene } = {}) {
     });
     if (idxEl) idxEl.textContent = String(i + 1).padStart(2, '0');
     if (nameEl) nameEl.textContent = scenes[i].dataset.label || '';
+    /* Write the two spans, never the summary's textContent - that would flatten .cur
+       into a bare text node and cost it the styling it shares with .rail-index. */
+    if (sumNumEl) sumNumEl.textContent = String(i + 1).padStart(2, '0');
+    if (sumLabelEl) sumLabelEl.textContent = scenes[i].dataset.label || '';
     if (prevB) prevB.disabled = i === 0;
     if (nextB) nextB.disabled = i === scenes.length - 1;
     setChromeTheme(themeOf(scenes[i]));

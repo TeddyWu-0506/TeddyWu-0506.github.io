@@ -324,13 +324,17 @@ select.field{height:40px;padding:0 10px;font-size:13px;font-family:var(--f-body)
 .work-panel.is-live .work-intro{margin-bottom:10px}
 .work-panel.is-live .cell--result,.work-panel.is-live .cell--evidence{display:none}
 
-/* no-js / vertical fallback: show every tab's content as a document */
+/* no-js / vertical fallback: show every tab's content as a document.
+   base.css declares [hidden]{display:none!important}, so these two have to be
+   !important too: author-vs-author, the !important layer wins, and inside it
+   html.no-js .work-panel[hidden] (0,3,1) outranks [hidden] (0,1,0). Without the
+   !important this entire fallback was silently dead. */
 html.no-js .switcher{display:none}
-html.no-js .work-panel[hidden]{display:grid}
+html.no-js .work-panel[hidden]{display:grid!important}
 html.no-js .work-panel{border-top:1px solid var(--border);padding-top:26px;margin-top:26px}
 html.no-js .work-panel .panel--live{display:none}
 html.no-js .tabs{display:none}
-html.no-js [role="tabpanel"][hidden]{display:block}
+html.no-js [role="tabpanel"][hidden]{display:block!important}
 html.no-js .demo-input{border-right:0;border-bottom:1px solid var(--line-2)}
 
 /* ============ SCENE 2 FIT (must land inside one viewport) ============ */

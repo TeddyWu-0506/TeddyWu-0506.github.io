@@ -23,6 +23,25 @@ const stateHTML = {
 
 async function loadJSON(p) { const r = await fetch(p); if (!r.ok) throw new Error(p); return r.json(); }
 
+/* The sample drafts are needed by every review host on the deck AND by the standalone
+   /demo/review/ page, which has no main.js to seed a global for it. Loading them here -
+   lazily, once, and never on the critical path of page wiring - is what makes the
+   shareable deep link actually shareable. A failure clears the cache so retry can work. */
+let samplesCache = null;
+/* A request that never answers is worse than one that fails: the row would sit on
+   样例加载中… forever. 8s is generous for a 6 KB static file on any real connection. */
+const SAMPLES_TIMEOUT_MS = 8000;
+function loadSamples() {
+  if (!samplesCache) {
+    samplesCache = Promise.race([
+      loadJSON('/assets/data/demo-samples.json').then((d) => (d && d.samples) || []),
+      new Promise((_, reject) => setTimeout(() => reject(new Error('timeout')), SAMPLES_TIMEOUT_MS)),
+    ]);
+    samplesCache.catch(() => { samplesCache = null; });
+  }
+  return samplesCache;
+}
+
 /* ------------------------------------------------------------------ MOUNT */
 export function mountDemo(host) {
   host._mounted = true;
@@ -67,13 +86,16 @@ export function mountDemo(host) {
           <option value="unknown">未收录品牌（测试兜底）</option>
         </select>
       </div>
-      <div class="chip-row" style="margin-top:14px" data-samples></div>`;
+      <div class="chip-row" style="margin-top:14px" data-samples><span class="hint">样例加载中…</span></div>`;
     actions.innerHTML = `<button class="btn btn--solid" data-act="run">运行审核 <span class="ar">↘</span></button>
       <span class="hint" data-hint>⌘ / Ctrl + Enter</span>`;
     const ta = form.querySelector('textarea');
-    const samples = window.__SAMPLES__?.samples || [];
-    form.querySelector('[data-samples]').innerHTML = samples.map((s) =>
-      `<button class="chip" data-sample="${s.id}" type="button">${esc(s.label)}</button>`).join('');
+    const samplesRow = form.querySelector('[data-samples]');
+    let samples = [];
+    const paintSamples = () => {
+      samplesRow.innerHTML = samples.map((s) =>
+        `<button class="chip" data-sample="${s.id}" type="button">${esc(s.label)}</button>`).join('');
+    };
     form.addEventListener('click', (e) => {
       const b = e.target.closest('[data-sample]'); if (!b) return;
       const s = samples.find((x) => x.id === b.dataset.sample); if (!s) return;
@@ -103,8 +125,10 @@ export function mountDemo(host) {
       if (e.target.closest('[data-act=fallback]') && samples[0]) { ta.value = samples[0].text; run(); }
     });
     ta.addEventListener('keydown', (e) => { if ((e.metaKey || e.ctrlKey) && e.key === 'Enter') { e.preventDefault(); run(); } });
-    /* deep link: /demo/review/?case=tide-detergent&run=1  (PLAN 16.1 shareable result state) */
-    {
+    /* deep link: /demo/review/?case=tide-detergent&run=1  (PLAN 16.1 shareable result state).
+       It can only resolve after the sample list exists, which is exactly why it used to
+       fail silently on the standalone page. */
+    const applyDeepLink = () => {
       const q = new URLSearchParams(location.search); const cid = q.get('case');
       if (cid && samples.some((s) => s.id === cid)) {
         const s = samples.find((x) => x.id === cid);
@@ -113,7 +137,22 @@ export function mountDemo(host) {
         if (q.get('brand')) form.querySelector('[data-in=brandId]').value = q.get('brand');
         if (q.get('run') === '1') setTimeout(run, 250);
       }
-    }
+    };
+
+    loadSamples().then((list) => {
+      samples = list;
+      paintSamples();
+      applyDeepLink();
+    }).catch(() => {
+      samplesRow.innerHTML = '<span class="hint">样例加载失败 · 仍可直接粘贴稿件运行</span> '
+        + '<button class="btn btn--link btn--sm" data-act="samples-retry" type="button">重试</button>';
+    });
+    samplesRow.addEventListener('click', (e) => {
+      if (!e.target.closest('[data-act=samples-retry]')) return;
+      samplesRow.innerHTML = '<span class="hint">样例加载中…</span>';
+      loadSamples().then((list) => { samples = list; paintSamples(); applyDeepLink(); })
+        .catch(() => samplesRow.innerHTML = '<span class="hint">样例仍然加载失败 · 可直接粘贴稿件运行</span>');
+    });
   } else {
     form.innerHTML = `<div style="display:grid;gap:14px">
       <div><span class="f-label">投放场景</span><div class="chip-row" data-in="scene">
