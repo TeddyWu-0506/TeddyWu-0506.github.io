@@ -449,10 +449,16 @@ html.no-js .demo-input{border-right:0;border-bottom:1px solid var(--line-2)}
 .panel,.shell .demo,.doc-demo{
   --text-primary:var(--paper-1); --text-secondary:#A9ACA3; --text-quiet:#9A9C93;
   --border:#34372F; --accent:var(--signal-500); --dot:var(--signal-500);
+  /* bg tokens must flip too: .chip.is-on paints with --text-primary and reads with
+     --bg-page, so scoping only the text tokens produced white-on-white labels */
+  --bg-page:var(--ink-900); --bg-surface:#1B1D19;
+  --btn-bg:var(--paper-1); --btn-fg:var(--ink-900);
   color:var(--text-primary)}
 .app,.app-window{
   --text-primary:var(--ink-900); --text-secondary:#55574F; --text-quiet:#63655D;
   --border:#D9D5CB; --accent:#4F6E10; --dot:var(--signal-700);
+  --bg-page:var(--paper-1); --bg-surface:var(--paper-2);
+  --btn-bg:var(--ink-900); --btn-fg:var(--paper-1);
   background:var(--paper-1); color:var(--text-primary)}
 /* result rows follow their surface, not a hardcoded grey */
 .crow-rank{color:var(--text-quiet)}
