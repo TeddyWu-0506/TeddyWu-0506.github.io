@@ -325,6 +325,15 @@ export function mountReviewProduct(host) {
   }
   const refreshAudit = () => { const z = app.querySelector('[data-auditzone]'); if (z) z.innerHTML = auditArea(); const cta = app.querySelector('[data-cta-btn]'); if (cta) { cta.textContent = S.auditing ? '审核中...' : '🚀 开始 AI 审核'; cta.disabled = S.auditing || !S.loaded; } };
   const refreshPreview = () => { const pz = app.querySelector('[data-previewzone]'); if (pz) pz.innerHTML = S.blocks.map(previewBlock).join(''); };
+  /* 预览列嵌在 .qc-main-workspace 滚动容器里，scrollIntoView 会连左区一起滚；
+     这里手动只滚 .qc-doc-preview-column 自身，把目标 block 居中。 */
+  function locateBlock(blockId) {
+    const col = app.querySelector('.qc-doc-preview-column');
+    const el = col && col.querySelector(`[data-pb="${blockId}"]`);
+    if (!col || !el) return;
+    const cr = col.getBoundingClientRect(), er = el.getBoundingClientRect();
+    col.scrollTop += (er.top - cr.top) - (col.clientHeight / 2 - er.height / 2);
+  }
   const topNav = () => `<nav class="qc-top-nav">
     <div class="qc-top-nav-left"><img src="${A}/logo-dark.png" alt="Logo" class="qc-top-nav-logo">
       <h1 class="qc-top-nav-title">浅层内容QC工具<span>（图文稿件版）</span></h1>
@@ -668,8 +677,7 @@ export function mountReviewProduct(host) {
     if (pb) { S.hlBlock = pb.dataset.pb; refreshPreview(); return; }
     const card = t.closest('[data-card]');
     if (card && !t.closest('textarea') && !t.closest('button')) {
-      const iss = S.issues[+card.dataset.card]; if (iss) { S.hlBlock = iss.block; S.hlText = iss.before; refreshPreview();
-        const el = app.querySelector(`[data-pb="${iss.block}"]`); el && el.scrollIntoView({ behavior: 'smooth', block: 'center' }); } }
+      const iss = S.issues[+card.dataset.card]; if (iss) { S.hlBlock = iss.block; S.hlText = iss.before; refreshPreview(); locateBlock(iss.block); } }
   });
   app.addEventListener('change', (e) => {
     const b = e.target.closest('[data-brief]'); if (b) { S.brief = b.value; render(); return; }
@@ -695,8 +703,7 @@ export function mountReviewProduct(host) {
     if (card && !card._bound) { card._bound = 1;
       card.addEventListener('mouseleave', () => { if (S.hlBlock) { S.hlBlock = null; S.hlText = null; refreshPreview(); } }, { once: true }); }
     if (card) { const iss = S.issues[+card.dataset.card];
-      if (iss && S.hlBlock !== iss.block) { S.hlBlock = iss.block; S.hlText = iss.before; refreshPreview();
-        const pb = app.querySelector(`[data-pb="${iss.block}"]`); pb && pb.scrollIntoView({ behavior: 'smooth', block: 'center' }); } }
+      if (iss && S.hlBlock !== iss.block) { S.hlBlock = iss.block; S.hlText = iss.before; refreshPreview(); locateBlock(iss.block); } }
   });
   render();
 }
