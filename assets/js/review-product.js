@@ -332,7 +332,9 @@ export function mountReviewProduct(host) {
     const el = col && col.querySelector(`[data-pb="${blockId}"]`);
     if (!col || !el) return;
     const cr = col.getBoundingClientRect(), er = el.getBoundingClientRect();
-    col.scrollTop += (er.top - cr.top) - (col.clientHeight / 2 - er.height / 2);
+    const top = col.scrollTop + (er.top - cr.top) - (col.clientHeight / 2 - er.height / 2);
+    const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    col.scrollTo({ top, behavior: reduced ? 'auto' : 'smooth' });
   }
   const topNav = () => `<nav class="qc-top-nav">
     <div class="qc-top-nav-left"><img src="${A}/logo-dark.png" alt="Logo" class="qc-top-nav-logo">
