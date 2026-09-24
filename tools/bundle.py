@@ -21,7 +21,7 @@ CSS_SRC = 'dist/assets/css/site.css'   # build.py already flattened the cascade
 # Read from dist/, not assets/: build.py has already resolved the @@fact@@ tokens, and a
 # token surviving into the bundle would print literally on the page.
 JS = ['analytics.js', 'engine-review.js', 'engine-match.js',
-      'review-product.js', 'demo-runtime.js', 'deck.js', 'main.js']
+      'review-product.js', 'match-product.js', 'demo-runtime.js', 'deck.js', 'main.js']
 DATA = ['creators.json', 'rules.json', 'demo-samples.json']
 # Same knob as build.py: whatever the build targets is what the offline file links to.
 SITE = SITE_URL

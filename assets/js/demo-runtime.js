@@ -1,4 +1,5 @@
 import { mountReviewProduct } from './review-product.js';
+import { mountMatchProduct } from './match-product.js';
 import { runMatch, categories } from './engine-match.js';
 import { track } from './analytics.js';
 
@@ -27,6 +28,7 @@ export function mountDemo(host) {
   host._mounted = true;
   const product = host.dataset.demo;
   if (product === 'review') { mountReviewProduct(host); return; }
+  if (product === 'match') { mountMatchProduct(host); return; }
   const source = host.dataset.source || 'deck';
   const steps = STEPS_MATCH;
   host.innerHTML = `<div class="demo">

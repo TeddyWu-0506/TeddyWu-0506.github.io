@@ -49,7 +49,7 @@ ASSET_DIRS = ['assets/data', 'assets/fonts', 'assets/img', 'assets/icons', 'asse
 JS_DIR = 'assets/js'
 # One stylesheet, in cascade order. Six render-blocking <link>s cost ~900ms of
 # critical path for a site this size; a single file removes the chain entirely.
-CSS_ORDER = ['fonts.css', 'tokens.css', 'base.css', 'deck.css', 'components.css', 'qc-product.css', 'pages.css']
+CSS_ORDER = ['fonts.css', 'tokens.css', 'base.css', 'deck.css', 'components.css', 'qc-product.css', 'match-product.css', 'pages.css']
 CSS_LINK_RE = re.compile(
     r'\s*<link rel="stylesheet" href="/assets/css/(?:' + '|'.join(CSS_ORDER) + r')">')
 TOKEN = re.compile(r'@@([\w.]+)@@')
