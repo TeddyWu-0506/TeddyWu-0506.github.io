@@ -85,7 +85,7 @@ html.no-js .scene-body, .stage.is-vertical .scene-body{overflow:visible;min-heig
 .rail-segs{display:flex;align-items:center;gap:8px;flex:1;max-width:440px}
 .rail-seg{position:relative;height:2px;background:transparent;overflow:hidden}
 .rail-seg::after{content:'';position:absolute;inset:-11px 0;cursor:pointer}
-.rail-seg.w10{flex:10 1 0}.rail-seg.w22{flex:22 1 0}.rail-seg.w16{flex:16 1 0}.rail-seg.w06{flex:6 1 0}
+.rail-seg.w10{flex:10 1 0}.rail-seg.w18{flex:18 1 0}.rail-seg.w22{flex:22 1 0}.rail-seg.w16{flex:16 1 0}.rail-seg.w06{flex:6 1 0}
 .rail-seg i{display:block;height:100%;width:100%;background:var(--border);
   transform:scaleX(0);transform-origin:left;opacity:.3;
   transition:opacity .35s ease,transform .7s var(--ease-scene)}

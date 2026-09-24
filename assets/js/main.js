@@ -69,25 +69,44 @@ document.addEventListener('keydown', (e) => {
   if (t && (e.key === 'Enter' || e.key === ' ')) { e.preventDefault(); toggleProv(t); }
 });
 
-/* ---- demo open / close inside the work panel ---- */
-document.addEventListener('click', (e) => {
-  const open = e.target.closest('[data-demo-open]');
-  const close = e.target.closest('[data-demo-close]');
-  if (open) {
-    const panel = open.closest('.work-panel');
-    panel.classList.add('is-live');
-    const host = panel.querySelector('[data-demo]');
-    if (host) { host.hidden = false; if (!host._mounted) mountDemo(host); }
-    setTimeout(() => (panel.querySelector('textarea,select') || host)?.focus?.({ preventScroll: true }), 60);
-    track('demo_open', { product: host?.dataset.demo || '', source: host?.dataset.source || 'deck' });
-  }
-  if (close) {
-    const panel = close.closest('.work-panel');
-    panel.classList.remove('is-live');
-    const host = panel.querySelector('[data-demo]'); if (host) host.hidden = true;
-    panel.querySelector('[data-demo-open]')?.focus();
-  }
-});
+/* ---- demo modal: the deck never shows the demo inline; the launch button opens it ---- */
+const sbModal = document.getElementById('sb-modal');
+if (sbModal) {
+  const sbHost = document.getElementById('sb-demo-host');
+  const sbTitle = document.getElementById('sb-modal-title');
+  const sbClose = document.getElementById('sb-close');
+  const META = {
+    'content-review': { product: 'review', title: 'Content QC Dev Platform · 产品交互 Demo · Mock 数据', caseUrl: '/work/content-review/' },
+    'creator-match':  { product: 'match',  title: 'KOL Recommend System · 本地 Demo · 样例数据', caseUrl: '/work/creator-match/' },
+  };
+  let mountedKey = null, lastTrigger = null;
+  const closeSb = () => { sbModal.hidden = true; lastTrigger && lastTrigger.focus(); };
+  document.addEventListener('click', (e) => {
+    const open = e.target.closest('[data-demo-open]');
+    if (open) {
+      const key = { review: 'content-review', match: 'creator-match' }[open.dataset.demoProduct]
+        || (open.closest('[data-project]') || {}).dataset?.project || 'content-review';
+      const meta = META[key];
+      if (mountedKey !== key) {
+        sbHost.innerHTML = '';
+        delete sbHost._mounted;
+        sbHost.dataset.demo = meta.product;
+        sbHost.dataset.source = 'deck';
+        sbHost.dataset.caseUrl = meta.caseUrl;
+        mountDemo(sbHost);
+        mountedKey = key;
+      }
+      sbTitle.textContent = meta.title;
+      lastTrigger = open;
+      sbModal.hidden = false;
+      track('demo_open', { product: meta.product, source: 'deck' });
+      setTimeout(() => sbClose.focus(), 30);
+      return;
+    }
+    if (!sbModal.hidden && (e.target.closest('#sb-close') || e.target.closest('.sb-modal-bg'))) closeSb();
+  });
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && !sbModal.hidden) closeSb(); });
+}
 
 /* ---- QR reveal (contact scene) ---- */
 document.addEventListener('click', (e) => {

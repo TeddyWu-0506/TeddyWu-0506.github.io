@@ -43,13 +43,13 @@ PAGES = discover_pages()
 # Loose files under assets/ that pages link to directly. The resume PDF belongs here and
 # silently 404'd in production because ASSET_DIRS only ever walked subdirectories.
 PASS_THROUGH = ['site.webmanifest', 'assets/favicon.svg', 'assets/Teddy-Wu-Resume.pdf']
-ASSET_DIRS = ['assets/data', 'assets/fonts', 'assets/img', 'assets/icons']
+ASSET_DIRS = ['assets/data', 'assets/fonts', 'assets/img', 'assets/icons', 'assets/qc']
 # JS is rendered through the same token pass as HTML. A fact that can only be reached by
 # editing the engine is a fact with two owners, and facts.json is supposed to be the one.
 JS_DIR = 'assets/js'
 # One stylesheet, in cascade order. Six render-blocking <link>s cost ~900ms of
 # critical path for a site this size; a single file removes the chain entirely.
-CSS_ORDER = ['fonts.css', 'tokens.css', 'base.css', 'deck.css', 'components.css', 'pages.css']
+CSS_ORDER = ['fonts.css', 'tokens.css', 'base.css', 'deck.css', 'components.css', 'qc-product.css', 'pages.css']
 CSS_LINK_RE = re.compile(
     r'\s*<link rel="stylesheet" href="/assets/css/(?:' + '|'.join(CSS_ORDER) + r')">')
 TOKEN = re.compile(r'@@([\w.]+)@@')

@@ -56,6 +56,11 @@
   :root{--gutter:40px;--name-xl:124px;--h2-cjk:62px;--product-name:74px;--h3:27px;--h4:19px;
     --body-l:18px;--body:16px;--caption:12px;--stat-l:48px;--stat:28px;--ghost:170px;
     --s-section:56px;--s-block:36px}
+
+/* Short viewports: display type scales with the frame so deck scenes keep fitting. */
+@media (min-width:769px) and (max-height:1000px){
+  :root{--name-xl:clamp(96px,12.8vh,148px);--h2-cjk:clamp(42px,6vh,72px);--product-name:clamp(40px,6.2vh,88px);--s-section:clamp(28px,4.5vh,64px)}
+}
 }
 @media (max-width:768px){
   :root{--gutter:28px;--header-h:58px;--rail-h:52px;

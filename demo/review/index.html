@@ -2,44 +2,147 @@
 <html lang="zh-CN">
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>试用 AI 图文审核 demo · Teddy Wu</title>
-<meta name="description" content="粘贴一段达人稿件，看 AI 如何按品牌规则给出可执行意见。无需注册。">
+<title>试用 AI 内容审核系统 demo · 手绘故事版 · Teddy Wu</title>
+<meta name="description" content="五格手绘故事版：业务痛点、梳理流程、vibecoding 做 MVP、上线团队使用、收集反馈迭代。第六格：点一下按钮，在弹窗里直接跑一次本地 demo。">
 <link rel="canonical" href="https://teddywu.site/demo/review/">
 <meta property="og:type" content="article"><meta property="og:locale" content="zh_CN">
-<meta property="og:title" content="试用 AI 图文审核 demo · Teddy Wu"><meta property="og:description" content="粘贴一段达人稿件，看 AI 如何按品牌规则给出可执行意见。无需注册。"><meta property="og:url" content="/demo/review/">
-<meta property="og:image" content="/assets/img/og-review.png"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta property="og:image:alt" content="试用 AI 图文审核 demo · Teddy Wu">
+<meta property="og:title" content="试用 AI 内容审核系统 demo · 手绘故事版 · Teddy Wu"><meta property="og:description" content="从业务痛点到反馈迭代的闭环故事版，demo 在弹窗中一键运行。"><meta property="og:url" content="/demo/review/">
+<meta property="og:image" content="/assets/img/og-review.png"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta property="og:image:alt" content="试用 AI 内容审核系统 demo · 手绘故事版 · Teddy Wu">
 <meta name="twitter:card" content="summary_large_image"><meta name="theme-color" content="#F2F0EA">
 <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="/assets/icons/apple-touch-icon.png">
 <link rel="stylesheet" href="/assets/css/fonts.css"><link rel="stylesheet" href="/assets/css/tokens.css">
 <link rel="stylesheet" href="/assets/css/base.css"><link rel="stylesheet" href="/assets/css/deck.css">
-<link rel="stylesheet" href="/assets/css/components.css"><link rel="stylesheet" href="/assets/css/pages.css">
+<link rel="stylesheet" href="/assets/css/components.css"><link rel="stylesheet" href="/assets/css/qc-product.css"><link rel="stylesheet" href="/assets/css/pages.css">
 <script>document.documentElement.className='js'</script>
 </head>
 <body class="doc">
 <header class="doc-head" data-theme="paper">
   <a class="brand" href="/"><span class="brand-mark">TW</span><span class="brand-rule" aria-hidden="true"></span><span class="brand-sub">Product Dossier</span></a>
-  <nav class="nav" aria-label="页面导航"><a href="/#work">← 返回作品台</a><a href="/profile/">履历</a><a href="/#contact">联系</a></nav>
+  <nav class="nav" aria-label="页面导航"><a href="/#story">← 返回作品台</a><a href="/profile/">履历</a><a href="/#contact">联系</a></nav>
 </header>
 <main class="doc-main">
 
 <div class="shell">
   <div class="shell-head">
-    <div><p class="kicker">LIVE DEMO · NO SIGNUP</p>
-      <h1>Content Review</h1>
-      <p class="lede" style="margin-top:10px;font-size:var(--body-s)">粘贴一段达人稿件，看 AI 如何按品牌规则给出可执行意见。无需注册。</p></div>
-    <p class="shell-note">本地规则引擎 · 无模型调用 · 输出结构与线上系统一致</p>
+    <div><p class="kicker">STORYBOARD · 一个系统是怎么长出来的</p>
+      <h1>Content QC System</h1>
+      <p class="lede" style="margin-top:10px;font-size:var(--body-s)">内容审核系统。从每天重复的审核动作，到一套团队真正在用的系统——五格故事，一个闭环。</p></div>
+    <p class="shell-note">数字口径见<a href="/work/content-review/" style="border-bottom:1px solid currentColor">完整项目档案</a></p>
   </div>
-  <div class="demo-host" data-demo="review" data-source="standalone" data-case-url="/work/content-review/"></div>
+
+  <section class="story" aria-label="闭环故事版：业务痛点、梳理流程、Vibecoding 做 MVP、上线团队使用、收集反馈迭代">
+    <div class="story-kicker"><span class="t">闭环故事版</span><span class="m">Pain → Map → Build → Ship → Iterate → ↺</span></div>
+    <div class="story-grid">
+
+      <article class="sb-card sb-c1" style="--rot:-.6deg">
+        <div class="sb-head"><span class="sb-n">01</span><span class="sb-en">Pain</span></div>
+        <h3>业务痛点</h3>
+        <svg class="sb-art" viewBox="0 0 140 84" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="46" cy="20" r="7"/><path d="M46 27v16M46 33l13 7M46 33l-12 8M46 43l9 12M46 43l-9 12"/><path d="M8 68h124M20 68v12M120 68v12"/><rect x="24" y="52" width="24" height="14" rx="1.5"/><path d="M20 66h34"/><path d="M92 62h30M94 54h26M98 46h18"/><circle cx="124" cy="18" r="8"/><path d="M124 13v5l3.5 2"/><path d="M58 10l2 4M64 8l2 4"/></svg>
+        <p>月均 @@problem.volume@@稿件全人工过：<span class="hl">8–10min/条</span>。规则散在老手脑子里和不同文档里，一稿通过率只有 10%。</p>
+        <span class="sb-chip">8–10min/条</span>
+      </article>
+
+      <div class="sb-arrow sb-a12" aria-hidden="true"><svg viewBox="0 0 56 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 13c12-4 22 3 34-1 5-1 10 0 15 1"/><path d="M45 5l8 8-9 5"/></svg></div>
+
+      <article class="sb-card sb-card--b sb-c2" style="--rot:.5deg">
+        <div class="sb-head"><span class="sb-n">02</span><span class="sb-en">Map</span></div>
+        <h3>梳理流程</h3>
+        <svg class="sb-art" viewBox="0 0 140 84" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="14" y="8" width="86" height="54" rx="2"/><rect x="24" y="18" width="18" height="12" rx="1.5"/><rect x="52" y="18" width="18" height="12" rx="1.5"/><rect x="78" y="18" width="14" height="12" rx="1.5"/><path d="M44 24h6M72 24h4"/><path d="M47 21l3 3-3 3M74 21l3 3-3 3"/><path d="M24 44h40M24 52h30M18 44h3M18 52h3"/><circle cx="120" cy="34" r="7"/><path d="M120 41v18M120 47l-14-8M120 59l-6 14M120 59l6 14"/></svg>
+        <p>先不谈 AI，把「感觉不对」拆成可判定清单：收稿 → 规则召回 → 三层校验 → 低置信转人工 → 意见写回文档。</p>
+        <span class="sb-chip">5 步审核链路</span>
+      </article>
+
+      <div class="sb-arrow sb-a23" aria-hidden="true"><svg viewBox="0 0 56 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 13c12-4 22 3 34-1 5-1 10 0 15 1"/><path d="M45 5l8 8-9 5"/></svg></div>
+
+      <article class="sb-card sb-c3" style="--rot:-.4deg">
+        <div class="sb-head"><span class="sb-n">03</span><span class="sb-en">Build</span></div>
+        <h3>Vibecoding 做 MVP</h3>
+        <svg class="sb-art" viewBox="0 0 140 84" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="34" y="10" width="96" height="58" rx="3"/><path d="M34 22h96"/><circle cx="42" cy="16" r="1.6"/><circle cx="49" cy="16" r="1.6"/><path d="M46 34l9 7-9 7"/><path d="M62 48h22"/><path d="M14 22l2.6 5.4L22 30l-5.4 2.6L14 38l-2.6-5.4L6 30l5.4-2.6z"/><circle cx="20" cy="52" r="6"/><path d="M20 58v12M20 62l12-6M20 70l-6 9M20 70l6 9"/></svg>
+        <p>一个人 + 借用工程接口：<span class="hl">RAG 召回</span>规则而非 fine-tune，三层 Prompt 各管一件事，本地引擎先跑对输出结构。</p>
+        <span class="sb-chip">RAG + 分层 Prompt</span>
+      </article>
+
+      <div class="sb-arrow sb-arrow--d sb-a34" aria-hidden="true"><svg viewBox="0 0 24 52" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3c-2 10 2 20 0 32"/><path d="M5 37l7 11 7-10"/></svg></div>
+
+      <article class="sb-card sb-card--b sb-c4" style="--rot:.6deg">
+        <div class="sb-head"><span class="sb-n">04</span><span class="sb-en">Ship</span></div>
+        <h3>上线团队使用</h3>
+        <svg class="sb-art" viewBox="0 0 140 84" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 64h112M16 64v12M108 64v12"/><rect x="22" y="48" width="20" height="12" rx="1.5"/><path d="M18 60h28"/><circle cx="32" cy="32" r="6"/><path d="M32 38v10M32 44l8 4"/><rect x="70" y="48" width="20" height="12" rx="1.5"/><path d="M66 60h28"/><circle cx="80" cy="32" r="6"/><path d="M80 38v10M80 44l-8 4"/><path d="M126 8v48"/><path d="M126 8h12l-4.5 5.5L138 19h-12"/></svg>
+        <p>服务 P&amp;G 汰渍全平台投放。单条审核 <span class="hl">@@review.time@@</span>，返稿占比 80%→40%，一稿通过率 10%→30%。</p>
+        <span class="sb-chip">@@review.time@@</span>
+      </article>
+
+      <div class="sb-arrow sb-a45" aria-hidden="true"><svg viewBox="0 0 56 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M53 13c-12-4-22 3-34-1-5-1-10 0-15 1"/><path d="M11 5l-8 8 9 5"/></svg></div>
+
+      <article class="sb-card sb-c5" style="--rot:-.5deg">
+        <div class="sb-head"><span class="sb-n">05</span><span class="sb-en">Iterate</span></div>
+        <h3>收集反馈迭代</h3>
+        <svg class="sb-art" viewBox="0 0 140 84" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="24" cy="30" r="7"/><path d="M24 37v16M24 42l12 6M24 53l-7 13M24 53l7 13"/><circle cx="116" cy="30" r="7"/><path d="M116 37v16M116 42l-12 6M116 53l-7 13M116 53l7 13"/><rect x="40" y="5" width="30" height="18" rx="3"/><path d="M48 23l-4 7 9-3"/><path d="M51 14a5 5 0 1 1 1.4 3.5"/><path d="M50 18.5l.8-4 4 1"/><rect x="72" y="5" width="30" height="18" rx="3"/><path d="M94 23l4 7-9-3"/><path d="M79 14l4 4 8-8"/><path d="M40 66c18 12 42 12 60 0" stroke-dasharray="5 6"/><path d="M96 62l5 5-7 3"/></svg>
+        <p>采纳和忽略都是数据。召回率 <span class="hl">@@review.recall@@</span>；新品牌的红线与卖点持续写回规则库，系统跟着业务长大。</p>
+        <span class="sb-chip">召回率 @@review.recall@@</span>
+      </article>
+
+      <div class="sb-loop" aria-hidden="true"><svg viewBox="0 0 260 150" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M252 140C190 154 84 156 48 128 20 106 18 64 30 30" stroke-dasharray="6 7"/><path d="M22 38l8-14 8 12"/><text x="150" y="132" text-anchor="middle" font-size="12" fill="currentColor" stroke="none">规则又更新了 · 回到 01</text></svg></div>
+
+      <p class="sb-loopback">↺ 回到第 01 格——规则又更新了，故事继续。</p>
+    </div>
+  </section>
+
+  <section class="sb-frame6" style="margin-top:clamp(18px,3vh,36px)">
+    <p class="kicker">第六格 · 你自己跑一次</p>
+    <div class="sb-launch">
+      <div>
+        <p class="sb-launch-big">这套系统此刻就在这个页面上，<br>弹窗里本地跑给你看。</p>
+        <p class="sb-launch-sub">还原真实产品三栏工作台：导入稿件 → AI 流式审核 → 逐条批准/编辑 → 同步写回高亮 · 全程 Mock，不发起真实请求</p>
+      </div>
+      <div class="sb-launch-cta"><svg class="sb-launch-arrow" viewBox="0 0 90 46" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 6c18 20 40 30 72 28"/><path d="M70 24l11 10-14 6"/></svg>
+        <button type="button" class="btn sb-launch-btn" id="sb-open" data-track="open_demo_review" aria-haspopup="dialog" aria-controls="sb-modal">▶ 打开 Demo 试用 <span class="ar">↗</span></button>
+      </div>
+    </div>
+  </section>
+
   <div class="shell-foot">
     <span>作者 Teddy Wu · AI 产品经理</span>
     <a href="/" style="border-bottom:1px solid currentColor">teddywu.site →</a>
     <a href="/work/content-review/" style="border-bottom:1px solid currentColor">这个系统怎么搭的 →</a>
   </div>
 </div>
+
+<div class="sb-modal" id="sb-modal" role="dialog" aria-modal="true" aria-label="Content QC System 本地 Demo" hidden>
+  <div class="sb-modal-bg" data-close></div>
+  <div class="sb-modal-panel">
+    <div class="sb-modal-bar">
+      <p class="t">Content QC Dev Platform · 产品交互 Demo · Mock 数据</p>
+      <button type="button" class="sb-modal-close" id="sb-close">✕ 关闭</button>
+    </div>
+    <div class="demo-host" data-demo="review" data-source="standalone" data-case-url="/work/content-review/"></div>
+  </div>
+</div>
+
 <script type="module">
 import { mountDemo } from '/assets/js/demo-runtime.js';
 import { bindCta } from '/assets/js/analytics.js';
-bindCta(); document.querySelectorAll('[data-demo]').forEach(mountDemo);
+bindCta();
+const modal = document.getElementById('sb-modal');
+const openB = document.getElementById('sb-open');
+const closeB = document.getElementById('sb-close');
+const host = modal.querySelector('.demo-host');
+let mounted = false;
+function openModal() {
+  if (!mounted) { mountDemo(host); mounted = true; }
+  modal.hidden = false;
+  document.body.style.overflow = 'hidden';
+  closeB.focus();
+}
+function closeModal() {
+  modal.hidden = true;
+  document.body.style.overflow = '';
+  openB.focus();
+}
+openB.addEventListener('click', openModal);
+closeB.addEventListener('click', closeModal);
+modal.querySelector('[data-close]').addEventListener('click', closeModal);
+document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && !modal.hidden) closeModal(); });
 </script>
 </body></html>
