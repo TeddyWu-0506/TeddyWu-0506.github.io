@@ -48,13 +48,31 @@
     <span class="brand-sub">AI Product Manager &amp; Product Builder</span>
   </a>
   <nav class="nav" aria-label="主导航">
-    <a href="/#identity" data-scene-link="identity">身份</a>
-    <a href="/#story" data-scene-link="story">故事版</a>
-    <a href="/#trajectory" data-scene-link="trajectory">轨迹</a>
-    <a href="/#contact" data-scene-link="contact">联系</a>
+    <a href="/#identity" data-scene-link="identity">我是谁</a>
+    <a href="/#story" data-scene-link="story">我和 AI 的故事</a>
+    <a href="/#trajectory" data-scene-link="trajectory">我的工作轨迹</a>
+    <a href="/#contact" data-scene-link="contact">联系我</a>
   </nav>
-  <a class="btn btn--solid btn--sm header-cta" href="/#story" data-scene-link="story" data-track="header_try_demo">跑一次 demo <span class="ar">↘</span></a>
+  <button type="button" class="btn btn--solid btn--sm header-cta" id="pd-open">体验产品 Demo <span class="ar">↘</span></button>
 </header>
+
+<div class="pd-modal" id="pd-modal" hidden>
+  <div class="pd-bg" data-pd-close></div>
+  <div class="pd-panel" role="dialog" aria-modal="true" aria-label="体验产品 Demo">
+    <header class="pd-head"><div><p class="pd-kicker">PRODUCT DEMO · SAMPLE DATA</p><h3>两套系统，亲手跑一遍</h3></div><button type="button" class="ccx-x" data-pd-close>✕ 关闭</button></header>
+    <div class="pd-grid">
+      <button type="button" class="pd-card" data-pd="review">
+        <img src="/assets/img/demo-qc.jpg" width="1400" height="787" alt="Content QC System 审核界面预览：左侧问题卡片流，右侧文档预览高亮" loading="lazy">
+        <div class="pd-body"><h4>Content QC System<span>内容审核</span></h4><p>导入稿件即出审核意见：RAG 规则库 + 分层 Prompt，逐条批准 / 拒绝 / 编辑，一键回写飞书文档。</p><div class="pd-tags"><span>审核 10min → 3min</span><span>规则召回率 92%</span><span>Mock 数据</span></div><span class="pd-go">打开 Demo <b>↗</b></span></div>
+      </button>
+      <button type="button" class="pd-card" data-pd="match">
+        <img src="/assets/img/demo-kol.jpg" width="1400" height="787" alt="KOL Recommend System 推荐界面预览：对话式需求确认与达人匹配卡片" loading="lazy">
+        <div class="pd-body"><h4>KOL Recommend System<span>达人推荐</span></h4><p>说出需求即回匹配达人：关键词识别 + 分步点选，按品类、场景、人群、预算真实过滤，导出深度数据。</p><div class="pd-tags"><span>选号 30min → 5min</span><span>候选匹配率 85%</span><span>样例达人库</span></div><span class="pd-go">打开 Demo <b>↗</b></span></div>
+      </button>
+    </div>
+    <p class="pd-foot">弹窗中本地运行 · 样例数据不发起真实 API 调用 · 随时可关</p>
+  </div>
+</div>
 
 <main class="stage" id="stage">
 <div class="scene-stack">
@@ -163,24 +181,75 @@
       <div class="tabs" role="tablist" aria-label="轨迹切换">
         <button role="tab" id="tt-c" aria-controls="tp-c" aria-selected="true">职业经历</button>
         <button role="tab" id="tt-m" aria-controls="tp-m" aria-selected="false">工作方法</button>
+        <button role="tab" id="tt-e" aria-controls="tp-e" aria-selected="false">产品方法论</button>
       </div>
     </div>
     <div id="tp-c" role="tabpanel" aria-labelledby="tt-c">
       <div class="career resolve-view">
-        <div class="career-col"><span class="cc-idx">01 / 2024.09 — NOW</span><h3 class="cc-org"><img class="cc-logo" src="/assets/icons/logo-publicis.png" width="22" height="22" alt="" loading="lazy">阳狮集团 · 盛世长城</h3><p class="cc-role">Senior Media Executive / AIPM</p><p class="cc-scope">P&amp;G 汰渍全平台 Creator / KOL 营销</p><p class="cc-judge">规模让我必须把工作交给系统。</p><div class="cc-tags"><span>月200+达人</span><span>@@scale.spend@@月消耗</span><span>两套系统 0-1</span></div></div>
-        <div class="career-col"><span class="cc-idx">02 / 2023.04 — 2024.07</span><h3 class="cc-org"><img class="cc-logo" src="/assets/icons/logo-bluefocus.png" width="22" height="22" alt="" loading="lazy">蓝色光标</h3><p class="cc-role">高级客户执行</p><p class="cc-scope">脉动、简爱百万级达人投放，头部 KOL 全案</p><p class="cc-judge">第一次意识到重复劳动是流程问题，不是我的问题。</p><div class="cc-tags"><span>头部KOL全案</span><span>SOP 沉淀</span></div></div>
-        <div class="career-col"><span class="cc-idx">03 / 2021.11 — 2023.03</span><h3 class="cc-org"><img class="cc-logo" src="/assets/icons/logo-moli.png" width="22" height="22" alt="" loading="lazy">茉莉数科</h3><p class="cc-role">客户执行</p><p class="cc-scope">宝洁潘婷、飘柔抖音官号全链路运营</p><p class="cc-judge">内容合规不是「感觉不对」，是可以写成清单的。</p><div class="cc-tags"><span>官号运营</span><span>合规清单</span></div></div>
+        <div class="career-col"><span class="cc-idx">01 / 2024.09 — NOW</span><h3 class="cc-org"><img class="cc-logo" src="/assets/icons/logo-publicis.png" width="22" height="22" alt="" loading="lazy">阳狮集团<button type="button" class="cc-more" data-exp="p1" aria-label="查看详细经历：阳狮"><span class="ccm-t">查看详情</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M7 17L17 7M9 7h8v8" stroke-linecap="round" stroke-linejoin="round"/></svg></button></h3><p class="cc-role">Senior Media Executive / AIPM</p><p class="cc-scope">P&amp;G 汰渍全平台 Creator / KOL 营销</p><p class="cc-judge">真正上手 AI 是从这里开始，一做就是两套系统。</p><div class="cc-tags"><span>月200+达人</span><span>@@scale.spend@@月消耗</span><span>两套系统 0-1</span></div></div>
+        <div class="career-col"><span class="cc-idx">02 / 2023.04 — 2024.07</span><h3 class="cc-org"><img class="cc-logo" src="/assets/icons/logo-bluefocus.png" width="22" height="22" alt="" loading="lazy">蓝色光标<button type="button" class="cc-more" data-exp="bf" aria-label="查看详细经历：蓝色光标"><span class="ccm-t">查看详情</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M7 17L17 7M9 7h8v8" stroke-linecap="round" stroke-linejoin="round"/></svg></button></h3><p class="cc-role">高级客户执行</p><p class="cc-scope">脉动、简爱百万级达人投放，头部 KOL 全案</p><p class="cc-judge">那时 AI 只是「知道有、用过一点」，重复劳动我倒先记住了。</p><div class="cc-tags"><span>头部KOL全案</span><span>SOP 沉淀</span></div></div>
+        <div class="career-col"><span class="cc-idx">03 / 2021.11 — 2023.03</span><h3 class="cc-org"><img class="cc-logo" src="/assets/icons/logo-moli.png" width="22" height="22" alt="" loading="lazy">茉莉数科<button type="button" class="cc-more" data-exp="ml" aria-label="查看详细经历：茉莉数科"><span class="ccm-t">查看详情</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M7 17L17 7M9 7h8v8" stroke-linecap="round" stroke-linejoin="round"/></svg></button></h3><p class="cc-role">客户执行</p><p class="cc-scope">宝洁潘婷、飘柔抖音官号全链路运营</p><p class="cc-judge">内容合规不是「感觉不对」，是可以写成清单的。</p><div class="cc-tags"><span>官号运营</span><span>合规清单</span></div></div>
       </div>
       <p class="kicker" style="margin-top:26px">产品定义 · 体验设计 · AI 产品开发 · <a href="/profile/" data-track="full_profile" style="border-bottom:1px solid currentColor">查看完整履历 →</a></p>
     </div>
     <div id="tp-m" role="tabpanel" aria-labelledby="tt-m" hidden>
       <div class="methods resolve-view">
         <div class="method"><span class="method-n">01</span><div><h4>先量成本，再谈方案</h4><p>我不用「效率提升」开头。先算清楚：这个动作每月重复多少次、每次多少人时。算不出来，它就不值得做产品。</p></div></div>
-        <div class="method"><span class="method-n">02</span><div><h4>把隐性规则写成可判定条目</h4><p>老手说「这条不对劲」，我得问出到底是哪个词不对、属于哪一类、能不能举反例。写不出来就不该上模型。</p></div></div>
-        <div class="method"><span class="method-n">03</span><div><h4>给模型一个岗位，不是一个愿望</h4><p>拆成风险识别、规范校验、优化建议三层，每层只管一件事，输出必须是结构化字段。一层出错不牵连另外两层。</p></div></div>
-        <div class="method"><span class="method-n">04</span><div><h4>在模型不确定的地方留人</h4><p>置信度低于阈值、规则库没命中、新品牌冷启动——这三种情况必须转人工，而不是硬猜。兜底是产品设计的一部分。</p></div></div>
-        <div class="method"><span class="method-n">05</span><div><h4>让结果可复盘</h4><p>采纳和忽略都是数据。没有回流的审核系统，三个月后就会退化成没人信的提示器。</p></div></div>
+        <div class="method"><span class="method-n">02</span><div><h4>把隐性经验写成可判定的规则</h4><p>老手说「这条不对劲」，我得问出是哪个词不对、属于哪一类、反例是什么。写不成 SOP 的事，谈不上自动化，更谈不上产品化。</p></div></div>
+        <div class="method"><span class="method-n">03</span><div><h4>把大问题拆成小流程</h4><p>模糊的需求，拆到每一步有明确的输入输出、出错能定位到环节。先用最小方案跑通最短链路，再谈扩展——两套系统都是这么从 MVP 长出来的。</p></div></div>
+        <div class="method"><span class="method-n">04</span><div><h4>先设计兜底，再设计体验</h4><p>哪些环节必须有人确认、自动化到哪里为止、出了错谁来接——这些先于功能写进方案。没人敢负责的产品，不会有人用。</p></div></div>
+        <div class="method"><span class="method-n">05</span><div><h4>让每个动作都可复盘</h4><p>采纳、拒绝、修改，都是值得留下的信号。把数据回流跑起来，产品才会越用越准，而不是上线即巅峰。</p></div></div>
         <div class="risk-note"><h5>我现在最清楚的风险</h5><p>规则召回率 @@review.recall@@ 是在 3 个品牌、约 400 条规则下测的。品牌数继续增加时它会掉——多品牌规则冲突的仲裁我还没解决。</p></div>
+      </div>
+    </div>
+    <div id="tp-e" role="tabpanel" aria-labelledby="tt-e" hidden>
+      <div class="era">
+        <p class="era-claim">业务不只是需求的提出者，<em>还可以是工具的创造者</em>。<span>—— 从业务问题到 AI 工具 · 阳狮内部分享</span></p>
+        <div class="era-grid">
+          <section class="era-col">
+            <p class="era-colhead">五步路径 · 一个业务人怎么把问题做成产品</p>
+            <ol class="era-steps">
+              <li class="era-step">
+                <svg class="era-ico" viewBox="0 0 44 44" aria-hidden="true"><path d="M24 4L12 24h8l-4 16 16-22h-9z" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/><circle cx="35" cy="10" r="3" fill="none" stroke="var(--dot)" stroke-width="2"/></svg>
+                <div><h5><b>发现痛点</b><span>01</span></h5><p>审一篇稿 8-10 分钟、筛一次号 30 分钟——每天都重复的事，才值得被改变。</p></div>
+              </li>
+              <li class="era-step">
+                <svg class="era-ico" viewBox="0 0 44 44" aria-hidden="true"><circle cx="9" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="2.2"/><circle cx="34" cy="22" r="4" fill="none" stroke="currentColor" stroke-width="2.2"/><circle cx="12" cy="34" r="4" fill="none" stroke="var(--dot)" stroke-width="2.2"/><path d="M13 13.5l17 6.5M30.5 25.5l-15 6.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-dasharray="3 3"/></svg>
+                <div><h5><b>梳理工作流</b><span>02</span></h5><p>先不碰工具，把流程摊开：哪一步、靠什么判断、错了会怎样。画得出来，才交得出去。</p></div>
+              </li>
+              <li class="era-step">
+                <svg class="era-ico" viewBox="0 0 44 44" aria-hidden="true"><path d="M6 22c5-8 12-12 16-12s11 4 16 12c-5 8-12 12-16 12S11 30 6 22z" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/><circle cx="22" cy="22" r="5" fill="none" stroke="var(--dot)" stroke-width="2.2"/><path d="M22 5v4M36 8l-2.5 3.5M8 8l2.5 3.5" stroke="var(--dot)" stroke-width="2" stroke-linecap="round"/></svg>
+                <div><h5><b>判断 AI 切入点</b><span>03</span></h5><p>高频、重复、可规则化，三条都占才动手——Copilot 解决「一次」，产品解决「一类」。</p></div>
+              </li>
+              <li class="era-step">
+                <svg class="era-ico" viewBox="0 0 44 44" aria-hidden="true"><path d="M8 10h28a3 3 0 013 3v14a3 3 0 01-3 3H22l-8 7v-7H8a3 3 0 01-3-3V13a3 3 0 013-3z" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/><path d="M15 20l-3 3 3 3M25 20l3 3-3 3M22 17l-3 10" fill="none" stroke="var(--dot)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                <div><h5><b>VibeCoding 做 MVP</b><span>04</span></h5><p>不是程序员，但最懂这个问题。用自然语言写、调、改，4 周跑通最短链路。</p></div>
+              </li>
+              <li class="era-step">
+                <svg class="era-ico" viewBox="0 0 44 44" aria-hidden="true"><path d="M22 36V10m0 0l-7 7m7-7l7 7" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/><circle cx="10" cy="38" r="3" fill="none" stroke="var(--dot)" stroke-width="2"/><circle cx="22" cy="40" r="3" fill="none" stroke="var(--dot)" stroke-width="2"/><circle cx="34" cy="38" r="3" fill="none" stroke="var(--dot)" stroke-width="2"/></svg>
+                <div><h5><b>上线赋能组织</b><span>05</span></h5><p>审核 10min→3min、选号 30min→5min。个人工具长成团队工具，再沉淀成组织能力。</p></div>
+              </li>
+            </ol>
+          </section>
+          <section class="era-col">
+            <p class="era-colhead">ERA 三步法 · 把个人经验翻译成可复用系统</p>
+            <div class="era-eras">
+              <div class="era-mini"><span class="era-letter">E<b>Extract</b></span><p><b>提取经验</b> — 把隐性判断摆成显性流程：先做什么、再做什么、注意什么、成品长什么样。</p></div>
+              <div class="era-mini"><span class="era-letter">R<b>Refine</b></span><p><b>固化规则</b> — 「这图产品太小」→「产品占比 60%、光线明亮、背景简约、大量留白」。AI 不懂感觉，规则替它判断。</p></div>
+              <div class="era-mini"><span class="era-letter">A<b>Assign</b></span><p><b>定义边界</b> — AI 负责执行，人负责判断与验收：关键节点人工确认，才放行下一段自动化。</p></div>
+            </div>
+            <p class="era-foot">ERA 的作用：把一个人的隐性经验，变成一个谁都能复用的工具。</p>
+            <div class="era-check">
+              <p class="era-colhead">验证与放大 · 工具凭什么活下来</p>
+              <ul>
+                <li><b>自我验证 → 交叉验证</b>：不能只靠自己觉得好用，其他品牌跑通才算数。</li>
+                <li><b>三条指标</b>：效率有没有提升、输出准不准、换个品牌还能不能用。</li>
+                <li><b>持续使用才是成功</b>：上线只是起点，被团队天天用才是产品。</li>
+              </ul>
+            </div>
+          </section>
+        </div>
+        <p class="era-quote">AI 最大的价值，不是帮我们完成一次任务——是把<em>经验沉淀成能力，能力沉淀成系统</em>。</p>
       </div>
     </div>
     <p class="ghost ghost--br" aria-hidden="true">TW</p>
@@ -191,23 +260,23 @@
 <section class="scene scene--contact" id="contact" data-scene="contact" data-hash="contact" data-label="CONTACT" data-theme="ink" role="region" aria-labelledby="contact-title">
   <div class="scene-body"><div class="stage-inner">
     <div class="contact-pad resolve">
-      <p class="kicker">START A CONVERSATION</p>
-      <p class="id-eyebrow">AVAILABLE FOR AI PRODUCT ROLES</p>
-      <h2 class="h2" id="contact-title">你的流程里，<br>还有多少工作没写下来？</h2>
-      <p class="lede">接受 AI 产品岗位，也欢迎内容营销场景的产品合作。</p>
+      <p class="kicker">CONTACT</p>
+      <p class="id-eyebrow">OPEN TO OPPORTUNITIES</p>
+      <h2 class="h2" id="contact-title">有岗位或合作意向，<br>欢迎与我交流。</h2>
+      <p class="lede">坐标广州，期待以下方向机会：<br>· 求职：AI 产品经理 / AI 产品运营 / 用户增长岗位<br>· 合作：内容营销、达人业务相关 AI 产品项目<br>下方可获取简历或直接取得联系。</p>
       <div class="contact-links">
+        <a class="btn btn--link" href="/profile/" data-track="profile_click">完整履历 <span class="ar">↗</span></a>
         <a class="btn btn--link" href="mailto:1502110191@qq.com?subject=From%20teddywu.site" data-track="email_click">发送邮件 <span class="ar">↗</span></a>
         <button class="btn btn--link" data-copy="TeddyGorrr" data-track="wechat_copy">复制微信号 <span class="ar">↗</span></button>
         <button class="btn btn--link" data-qr="qr-wechat" aria-controls="qr-wechat" aria-expanded="false" data-track="wechat_qr">扫码加我 <span class="ar">↗</span></button>
-        <a class="btn btn--link" href="/profile/" data-track="profile_click">完整履历 <span class="ar">↗</span></a>
       </div>
       <figure class="qr" id="qr-wechat" hidden>
         <img src="/assets/img/wechat-qr.jpg" alt="Teddy Wu 的微信二维码，扫码可直接添加好友" width="400" height="400" loading="lazy" decoding="async">
         <figcaption>微信 · TeddyGorrr</figcaption>
       </figure>
       <div class="contact-meta">
-        <span>© <span data-year>2026</span> Teddy Wu</span><span>Guangzhou</span>
-        <span>Built as a static site</span><span>Demos use sample data</span><span>No cookies. No tracking of what you paste.</span>
+        <span>© <span data-year>2026</span> Teddy Wu · 广州</span>
+        <span>本站为纯静态页面</span><span>Demo 均运行样例数据</span><span>无 Cookie · 不追踪任何输入</span>
       </div>
     </div>
     <p class="ghost ghost--contact ghost--br" aria-hidden="true">I MAKE<br>AI USEFUL</p>
@@ -221,10 +290,10 @@
 <div class="rail" data-theme="paper">
   <p class="rail-index"><span class="cur">01</span> <span class="tot">/ 04</span></p>
   <div class="rail-segs" role="group" aria-label="场景进度">
-    <button class="rail-seg w10 is-current" data-scene-link="identity" aria-label="第 1 屏 身份" aria-current="true"><i></i></button>
-    <button class="rail-seg w18" data-scene-link="story" aria-label="第 2 屏 故事版"><i></i></button>
-    <button class="rail-seg w22" data-scene-link="trajectory" aria-label="第 3 屏 轨迹"><i></i></button>
-    <button class="rail-seg w06" data-scene-link="contact" aria-label="第 4 屏 联系"><i></i></button>
+    <button class="rail-seg w10 is-current" data-scene-link="identity" aria-label="第 1 屏 我是谁" aria-current="true"><i></i></button>
+    <button class="rail-seg w18" data-scene-link="story" aria-label="第 2 屏 我和 AI 的故事"><i></i></button>
+    <button class="rail-seg w22" data-scene-link="trajectory" aria-label="第 3 屏 我的工作轨迹"><i></i></button>
+    <button class="rail-seg w06" data-scene-link="contact" aria-label="第 4 屏 联系我"><i></i></button>
   </div>
   <details class="rail-jump"><summary><span class="cur">01</span> / 04 · <span class="sum-label">IDENTITY</span></summary>
     <div class="rail-menu">

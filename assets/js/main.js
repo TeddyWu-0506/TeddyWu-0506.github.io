@@ -117,6 +117,75 @@ document.addEventListener('click', (e) => {
   t.setAttribute('aria-expanded', String(open));
 });
 
+/* ---- header: 体验产品 Demo 概览选择 ---- */
+const pdModal = document.getElementById('pd-modal');
+if (pdModal) {
+  const pdOpen = document.getElementById('pd-open');
+  pdOpen.addEventListener('click', () => { pdModal.hidden = false; pdModal.querySelector('.pd-card').focus(); });
+  pdModal.addEventListener('click', (e) => {
+    if (e.target.closest('[data-pd-close]')) { pdModal.hidden = true; pdOpen.focus(); return; }
+    const c = e.target.closest('[data-pd]');
+    if (c) { pdModal.hidden = true;
+      const t = document.querySelector('[data-demo-open][data-demo-product="' + c.dataset.pd + '"]');
+      if (t) t.click(); }
+  });
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && !pdModal.hidden) pdModal.hidden = true; });
+}
+
+/* ---- career detail: 大弹窗查看完整经历 ---- */
+const EXP = {
+  p1: { n: '01 / 03', org: '阳狮集团', role: 'Senior Media Executive / AIPM', logo: '/assets/icons/logo-publicis.png',
+    span: '2024.09 — 至今', sub: '深入探索 AI · 从投放痛点出发独立完成两套 AI 系统 0-1 落地 · 服务宝洁汰渍全平台 KOL 营销，业务实操与 AI 产品开发深度结合', items: [
+    '<b>全链路投放闭环操盘</b> — 统筹达人筛选、商务 BD、内容风控、投放复盘全流程，月均 200+ 博主投放、月均消耗 100 万+；从重复作业中提炼审核、匹配两大痛点，输出产品需求驱动 AI 系统搭建',
+    '<b>AI 产品独立设计落地</b> — 搭建 RAG 知识库 + 分层 Prompt 审核系统，统一多品牌合规标准；对接飞瓜、MCN 多源 API 完成达人数据建模，搭建场景化匹配引擎与人工评分迭代闭环',
+    '<b>投放效果优化</b> — 联动品牌与投流团队校准内容卖点，实现进店率 15%+、CPUV &lt; 15，月度爆文率 40%+',
+    '<b>MCN 资源与项目管理</b> — 对接和管理 50+ MCN 机构，完成年框谈判、合规入库、合同签署等流程；涵盖黎子安、老爸评测、中国新闻网等优质博主资源'] },
+  bf: { n: '02 / 03', org: '蓝色光标', role: '高级客户执行', logo: '/assets/icons/logo-bluefocus.png',
+    span: '2023.04 — 2024.07', sub: '初识 AI · 操盘头部 KOL 全案，识别自动化工具核心诉求 · 脉动、简爱品牌百万级达人投放，深耕头部 KOL 全域 Campaign 全案落地', items: [
+    '<b>头部 KOL 全案操盘</b> — 承接何同学等 TOP 级达人多平台打包投放，独立完成商务议价、内容共创、跨部门协同、投放管控全流程；曝光与互动数据超额达成品牌目标 200%，沉淀头部达人合作 SOP 与内容风控标准',
+    '<b>批量投放流程标准化</b> — 落地多品牌并行投放 SOP，识别人工筛选与素材复核的重复低效问题，明确自动化工具的核心业务诉求，为后续 AI 系统建设提供需求输入'] },
+  ml: { n: '03 / 03', org: '茉莉数科集团', role: '客户执行', logo: '/assets/icons/logo-moli.png',
+    span: '2021.11 — 2023.03', sub: '内容 + 投放 · 抖音官号全链路运营与数据驱动迭代 · 服务宝洁潘婷、飘柔品牌，完整负责品牌官方抖音账号运营全链路', items: [
+    '<b>抖音官号内容统筹</b> — 闭环供应商筛选、演员对接、线下拍摄、成片审核交付全流程，搭建短视频内容合规校验清单，统一品牌内容输出标准',
+    '<b>达人投放执行</b> — 完成达人推荐、排期、内容审核、发布跟进全链路落地',
+    '<b>数据驱动内容迭代</b> — 常态化回收短视频与达人投放数据，拆解播放、转化、受众画像指标，输出选题与达人筛选优化建议'] },
+};
+let ccModal = null, ccLast = null;
+function ccClose() {
+  if (!ccModal) return;
+  ccModal.remove(); ccModal = null;
+  document.documentElement.classList.remove('ccx-lock');
+  if (ccLast) { ccLast.focus(); ccLast = null; }
+}
+function ccOpen(btn) {
+  const d = EXP[btn.dataset.exp]; if (!d) return;
+  ccClose();
+  ccLast = btn;
+  ccModal = document.createElement('div');
+  ccModal.className = 'ccx-modal';
+  ccModal.setAttribute('role', 'dialog'); ccModal.setAttribute('aria-modal', 'true');
+  ccModal.setAttribute('aria-label', d.org + ' 详细经历');
+  ccModal.innerHTML = `<div class="ccx-bg" data-ccx-close></div>
+    <div class="ccx-panel">
+      <header class="ccx-head">
+        <img class="ccx-logo" src="${d.logo}" width="40" height="40" alt="">
+        <div class="ccx-title"><p class="ccx-kicker">EXPERIENCE ${d.n} · ${d.span}</p><h3>${d.org}<span>${d.role}</span></h3></div>
+        <button type="button" class="ccx-x" data-ccx-close>✕ 关闭</button>
+      </header>
+      <p class="ccx-sub">${d.sub}</p>
+      <ul class="ccx-list">${d.items.map((i) => '<li>' + i + '</li>').join('')}</ul>
+    </div>`;
+  document.body.appendChild(ccModal);
+  document.documentElement.classList.add('ccx-lock');
+  ccModal.querySelector('.ccx-x').focus();
+}
+document.addEventListener('click', (e) => {
+  const b = e.target.closest('.cc-more');
+  if (b) { ccOpen(b); return; }
+  if (ccModal && e.target.closest('[data-ccx-close]')) ccClose();
+});
+document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && ccModal) ccClose(); });
+
 /* ---- header stuck ---- */
 const header = document.querySelector('.site-header,.doc-head');
 if (header) { const on = () => header.classList.toggle('is-stuck', window.scrollY > 12);
