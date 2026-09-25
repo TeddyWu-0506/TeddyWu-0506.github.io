@@ -3,13 +3,13 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>Teddy Wu — AI 产品经理 · 把重复的判断做成能运行的系统</title>
-<meta name="description" content="AI 产品经理 Teddy Wu 的作品台。两套从达人营销一线流程做出来的 AI 系统：图文审核与达人推荐，可在线直接试用。">
+<title>Teddy Wu — AI 产品经理 · 把重复的工作做成能运行的系统</title>
+<meta name="description" content="AI 产品经理 Teddy Wu 的作品台。两套从达人营销一线流程做出来的 AI 系统：内容审核与达人推荐，可在线直接试用。">
 <meta name="author" content="Teddy Wu">
 <link rel="canonical" href="https://teddywu-0506.github.io/">
 <meta property="og:type" content="website"><meta property="og:locale" content="zh_CN">
 <meta property="og:site_name" content="Teddy Wu"><meta property="og:url" content="https://teddywu-0506.github.io/">
-<meta property="og:title" content="Teddy Wu — AI 产品经理 · 把重复的判断做成能运行的系统">
+<meta property="og:title" content="Teddy Wu — AI 产品经理 · 把重复的工作做成能运行的系统">
 <meta property="og:description" content="两套从达人营销一线流程做出来的 AI 系统，可在线直接试用。">
 <meta property="og:image" content="https://teddywu-0506.github.io/assets/img/og-home.png"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="Teddy Wu — AI 产品经理作品台，两个可运行的 AI 系统">
@@ -26,12 +26,12 @@
      A watchdog here caused a 0.247 layout shift on throttled mobile, because the
      module runs after 1.6s and the flip to no-js was never undone. -->
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"Person","name":"Teddy Wu","alternateName":"吴天翼","jobTitle":"AI Product Manager",
+{"@context":"https://schema.org","@type":"Person","name":"Teddy Wu","alternateName":"吴奕文","jobTitle":"AI Product Manager",
  "url":"https://teddywu-0506.github.io/","email":"mailto:1502110191@qq.com","slogan":"I make AI useful.",
  "knowsLanguage":["zh-CN","en"],"address":{"@type":"PostalAddress","addressLocality":"Guangzhou","addressCountry":"CN"},
  "knowsAbout":["AI Product Management","Retrieval-Augmented Generation","Human-in-the-loop Design","Creator Marketing","Workflow Automation"],
- "makesOffer":[{"@type":"Offer","itemOffered":{"@type":"SoftwareApplication","name":"AI Content Review","applicationCategory":"BusinessApplication"}},
-               {"@type":"Offer","itemOffered":{"@type":"SoftwareApplication","name":"AI Creator Match","applicationCategory":"BusinessApplication"}}]}
+ "makesOffer":[{"@type":"Offer","itemOffered":{"@type":"SoftwareApplication","name":"AI Content QC System","applicationCategory":"BusinessApplication"}},
+               {"@type":"Offer","itemOffered":{"@type":"SoftwareApplication","name":"AI KOL Recommend System","applicationCategory":"BusinessApplication"}}]}
 </script>
 </head>
 <body>
@@ -43,13 +43,31 @@
     <span class="brand-sub">AI Product Manager &amp; Product Builder</span>
   </a>
   <nav class="nav" aria-label="主导航">
-    <a href="/#identity" data-scene-link="identity">身份</a>
-    <a href="/#work" data-scene-link="work">作品</a>
-    <a href="/#trajectory" data-scene-link="trajectory">轨迹</a>
-    <a href="/#contact" data-scene-link="contact">联系</a>
+    <a href="/#identity" data-scene-link="identity">我是谁</a>
+    <a href="/#story" data-scene-link="story">我和 AI 的故事</a>
+    <a href="/#trajectory" data-scene-link="trajectory">我的工作轨迹</a>
+    <a href="/#contact" data-scene-link="contact">联系我</a>
   </nav>
-  <a class="btn btn--solid btn--sm header-cta" href="/#work" data-scene-link="work" data-track="header_try_demo">跑一次 demo <span class="ar">↘</span></a>
+  <button type="button" class="btn btn--solid btn--sm header-cta" id="pd-open">体验产品 Demo <span class="ar">↘</span></button>
 </header>
+
+<div class="pd-modal" id="pd-modal" hidden>
+  <div class="pd-bg" data-pd-close></div>
+  <div class="pd-panel" role="dialog" aria-modal="true" aria-label="体验产品 Demo">
+    <header class="pd-head"><div><p class="pd-kicker">PRODUCT DEMO · SAMPLE DATA</p><h3>两套系统，亲手跑一遍</h3></div><button type="button" class="ccx-x" data-pd-close>✕ 关闭</button></header>
+    <div class="pd-grid">
+      <button type="button" class="pd-card" data-pd="review">
+        <img src="/assets/img/demo-qc.jpg" width="1400" height="787" alt="Content QC System 审核界面预览：左侧问题卡片流，右侧文档预览高亮" loading="lazy">
+        <div class="pd-body"><h4>Content QC System<span>内容审核</span></h4><p>导入稿件即出审核意见：RAG 规则库 + 分层 Prompt，逐条批准 / 拒绝 / 编辑，一键回写飞书文档。</p><div class="pd-tags"><span>审核 10min → 3min</span><span>规则召回率 92%</span><span>Mock 数据</span></div><span class="pd-go">打开 Demo <b>↗</b></span></div>
+      </button>
+      <button type="button" class="pd-card" data-pd="match">
+        <img src="/assets/img/demo-kol.jpg" width="1400" height="787" alt="KOL Recommend System 推荐界面预览：对话式需求确认与达人匹配卡片" loading="lazy">
+        <div class="pd-body"><h4>KOL Recommend System<span>达人推荐</span></h4><p>说出需求即回匹配达人：关键词识别 + 分步点选，按品类、场景、人群、预算真实过滤，导出深度数据。</p><div class="pd-tags"><span>选号 30min → 5min</span><span>候选池匹配率 85%</span><span>样例达人库</span></div><span class="pd-go">打开 Demo <b>↗</b></span></div>
+      </button>
+    </div>
+    <p class="pd-foot">弹窗中本地运行 · 样例数据不发起真实 API 调用 · 随时可关</p>
+  </div>
+</div>
 
 <main class="stage" id="stage">
 <div class="scene-stack">
@@ -62,11 +80,11 @@
       <h1 class="name resolve" id="identity-title"><span class="b">TEDDY</span><br><span class="c">WU</span></h1>
       <p class="id-eyebrow"><span class="dot dot--live" aria-hidden="true"></span>AI PRODUCT MANAGER · CONTENT &amp; CREATOR OPS · GUANGZHOU</p>
       <div>
-        <h2 class="h2" lang="zh-CN">把重复的判断，<br>做成能运行的系统。</h2>
-        <p class="lede" style="margin-top:18px">四年达人营销一线操盘，月均 200+ 达人。我把其中最耗人的两处判断做成了系统——现在它们能在这个页面上直接跑。</p>
+        <h2 class="h2" lang="zh-CN">把重复的工作，<br>做成能运行的系统。</h2>
+        <p class="lede" style="margin-top:18px">四年达人营销一线操盘，月均 200+ 达人。我把其中最耗人的两处工作做成了系统——现在它们能在这个页面上直接跑。</p>
       </div>
       <div class="id-actions">
-        <a class="btn btn--solid" href="/#work" data-scene-link="work" data-track="hero_work">看代表作品 <span class="ar">↘</span></a>
+        <a class="btn btn--solid" href="/#story" data-scene-link="story" data-track="hero_story">看闭环故事版 <span class="ar">↘</span></a>
         <a class="btn btn--link" href="/#trajectory" data-scene-link="trajectory" data-track="hero_traj">查看职业轨迹</a>
       </div>
       <p class="id-status"><span class="dot dot--live" aria-hidden="true"></span>2 systems online · sample data</p>
@@ -74,134 +92,77 @@
     <div class="portrait">
       <div class="portrait-frame portrait-frame--illus">
         <img src="/assets/img/portrait-849.jpg" srcset="/assets/img/portrait-480.jpg 480w, /assets/img/portrait-849.jpg 849w" sizes="(max-width:768px) 92vw, 46vw" alt="Teddy Wu 的肖像照" width="849" height="849" fetchpriority="high" decoding="async">
-        <p class="portrait-cap">吴天翼 / TEDDY</p>
+        <p class="portrait-cap">吴奕文 / TEDDY</p>
       </div>
     </div>
   </div></div>
 </section>
 
-<!-- ══════════════ 02 WORK ══════════════ -->
-<section class="scene scene--work" id="work" data-scene="work" data-hash="work" data-label="WORK" data-theme="paper" role="region" aria-labelledby="work-title">
+<!-- ══════════════ 02 STORYBOARD ══════════════ -->
+<section class="scene scene--story" id="story" data-scene="story" data-hash="story" data-label="STORY" data-theme="paper" role="region" aria-labelledby="story-title">
   <div class="scene-body"><div class="stage-inner scene-pad">
-    <div class="work-head">
-      <h2 class="kicker" id="work-title" style="font-size:var(--caption)">SELECTED WORK · 2026</h2>
-      <p class="kicker">两个已落地 · 一个在建</p>
+    <div class="work-head" style="display:grid;gap:6px">
+      <p class="kicker">HOW IT GOT BUILT · 2025 — 2026</p>
+      <h2 class="h2" id="story-title" style="font-size:clamp(22px,3.4vh,34px)">两套系统，同一个闭环。</h2>
     </div>
-    <div class="switcher resolve" role="tablist" aria-label="作品切换">
-      <button role="tab" id="tab-cr" aria-controls="p-cr" aria-selected="true" data-project-tab="content-review">
-        <span class="sw-idx">01</span><span class="sw-name">Content Review</span><span class="sw-cn">图文审核</span><span class="sw-state">本地演示 · 样例数据</span></button>
-      <button role="tab" id="tab-cm" aria-controls="p-cm" aria-selected="false" data-project-tab="creator-match">
-        <span class="sw-idx">02</span><span class="sw-name">Creator Match</span><span class="sw-cn">达人推荐</span><span class="sw-state">本地演示 · 样例数据</span></button>
-      <button role="tab" id="tab-al" aria-controls="p-al" aria-selected="false" data-project-tab="agent-loop">
-        <span class="sw-idx">03</span><span class="sw-name">Agent Loop</span><span class="sw-cn">复盘回流</span><span class="sw-state">设计中 · 无演示</span></button>
-    </div>
+    <div class="story">
+      <div class="story-kicker"><span class="t">闭环故事版</span><span class="m">Pain → Map → Build → Ship → Iterate → ↺</span></div>
+      <div class="story-grid">
 
-    <div class="work-panel" id="p-cr" role="tabpanel" aria-labelledby="tab-cr" data-project="content-review">
-      <div class="work-left resolve-copy">
-        <div class="work-intro">
-          <span class="kicker">AI CONTENT REVIEW PRODUCT</span>
-          <h3 class="product-name" lang="en">Content Review</h3>
-          <p class="work-cn-name">图文审核</p>
-          <p class="work-thesis">把散在人和文档里的品牌规则，变成机器能执行的判断。</p>
-        </div>
-        <div class="grid6">
-          <div class="cell"><span class="cell-label">问题</span><p class="cell-body">单条素材全链路审核 <strong>8–10min</strong>，规则散在老手脑子里和不同文档里。月均约 <strong>600 条</strong>。</p></div>
-          <div class="cell"><span class="cell-label">我的角色</span><p class="cell-body">定义审核链路、建模品牌规则、设计<strong>分层 Prompt</strong> 与人工兜底流程、度量效果。</p></div>
-          <div class="cell"><span class="cell-label">关键决策</span><p class="cell-body">用 <strong>RAG 召回规则</strong> 而非 fine-tune——规则每周变，可标注样本只有约 400 条。</p></div>
-          <div class="cell cell--result" role="button" tabindex="0" data-prov="prov-cr" aria-controls="prov-cr" aria-expanded="false">
-            <span class="cell-label">业务结果</span>
-            <p class="cell-stat"><span class="stat">10min → 3min</span></p>
-            <p class="cell-body">审核效率 +70% · 返稿占比 80%→40%</p>
-            <span class="cell-arrow">口径 +</span>
-            <div class="provenance" id="prov-cr">口径：单条小红书图文从收到初稿到给出可执行意见的中位耗时。样本 约 600 条/月。时间窗 2025.03–2025.08。一稿通过率 10%→30%。</div>
-          </div>
-          <div class="cell cell--evidence"><span class="cell-label">真实证据</span><p class="cell-body">本页 demo 可直接验证：粘贴稿件，看规则命中、置信度与转人工。</p><div class="work-cta"><button class="btn btn--solid" data-demo-open data-track="open_demo_review">打开体验 <span class="ar">↗</span></button>
-          <a class="btn btn--link" href="/work/content-review/" data-track="case_open">查看完整项目 <span class="ar">→</span></a></div></div>
-          <div class="cell"><span class="cell-label">下一步</span><p class="cell-body">多品牌规则冲突的<strong>仲裁机制</strong>还没做。新品牌冷启动仍需人工写规则。</p></div>
-        </div>
-      </div>
-      <div class="panel panel--preview resolve-focus" data-preview="review" aria-hidden="true">
-          <div class="app">
-          <div class="app-doc">
-            <span class="kicker">DRAFT / 001 · 汰渍</span>
-            <h4>挖到宝！汰渍洗衣原液，柔顺留香珠都省了。</h4>
-            <p><span class="app-line" data-l="1">所有顽固污渍都能轻松洗干净</span>，<span class="app-line" data-l="2">这款洗衣浓缩液真的绝了</span>。</p>
-            <span class="app-tag">洗衣原液 · 家居好物 · 持久留香</span>
-          </div>
-          <div class="app-metrics">
-            <div><b data-n="2">2</b><span>blocking</span></div>
-            <div><b data-n="1">1</b><span>suggestion</span></div>
-            <div><b data-n="1">1</b><span>转人工</span></div>
-          </div>
-        </div>
-        </div>
-      <div class="panel panel--live" data-demo="review" data-source="deck" data-case-url="/work/content-review/" hidden></div>
-    </div>
+        <article class="sb-card sb-c1" style="--rot:-.6deg">
+          <div class="sb-head"><span class="sb-n">01</span><span class="sb-en">Pain</span></div>
+          <h3>业务痛点</h3>
+          <svg class="sb-art" viewBox="0 0 140 84" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="46" cy="20" r="7"/><path d="M46 27v16M46 33l13 7M46 33l-12 8M46 43l9 12M46 43l-9 12"/><path d="M8 68h124M20 68v12M120 68v12"/><rect x="24" y="52" width="24" height="14" rx="1.5"/><path d="M20 66h34"/><path d="M92 62h30M94 54h26M98 46h18"/><circle cx="124" cy="18" r="8"/><path d="M124 13v5l3.5 2"/><path d="M58 10l2 4M64 8l2 4"/></svg>
+          <p>两处最耗人的重复工作：稿件审核 <span class="hl">8–10min</span>、筛号 <span class="hl">30min/次</span>，规则散在人和文档里。</p>
+          <span class="sb-chip">月均 600 条 · 200+ 达人</span>
+        </article>
 
-    <div class="work-panel" id="p-cm" role="tabpanel" aria-labelledby="tab-cm" data-project="creator-match" hidden>
-      <div class="work-left resolve-copy">
-        <div class="work-intro">
-          <span class="kicker">AI CREATOR MATCH PRODUCT</span>
-          <h3 class="product-name" lang="en">Creator Match</h3>
-          <p class="work-cn-name">达人推荐</p>
-          <p class="work-thesis">把「我凭感觉知道谁合适」，变成可检索、可解释、可复盘的候选池。</p>
-        </div>
-        <div class="grid6">
-          <div class="cell"><span class="cell-label">问题</span><p class="cell-body">达人数据分散在飞瓜、MCN 与自建表格里，人工筛号 <strong>30min/次</strong>，大促期批量 KOC 投放撑不住。</p></div>
-          <div class="cell"><span class="cell-label">我的角色</span><p class="cell-body">定义数据标准化字段、设计<strong>多支路召回</strong>与场景权重、搭建双向评分闭环。</p></div>
-          <div class="cell"><span class="cell-label">关键决策</span><p class="cell-body">用 <strong>场景权重重排</strong> 而非单一相似度——种草、品宣、拉新要的不是同一批人。</p></div>
-          <div class="cell cell--result" role="button" tabindex="0" data-prov="prov-cm" aria-controls="prov-cm" aria-expanded="false">
-            <span class="cell-label">业务结果</span>
-            <p class="cell-stat"><span class="stat">30min → 5min</span></p>
-            <p class="cell-body">选号效率 +83% · 中选率 30%→50%</p>
-            <span class="cell-arrow">口径 +</span>
-            <div class="provenance" id="prov-cm">口径：从收到 brief 到产出可提交候选池的中位耗时。样本 月均 200+ 达人筛选。时间窗 2025.06–2026.06。候选池匹配率 85%。</div>
-          </div>
-          <div class="cell cell--evidence"><span class="cell-label">真实证据</span><p class="cell-body">本页 demo 用 <strong>20 条脱敏样例索引</strong>：填一份 brief，看召回与重排过程。</p><div class="work-cta"><button class="btn btn--solid" data-demo-open data-track="open_demo_match">打开体验 <span class="ar">↗</span></button>
-          <a class="btn btn--link" href="/work/creator-match/" data-track="case_open">查看完整项目 <span class="ar">→</span></a></div></div>
-          <div class="cell"><span class="cell-label">下一步</span><p class="cell-body">报价与档期仍靠人工同步，<strong>没接实时数据源</strong>。索引规模与线上系统不一致。</p></div>
-        </div>
-      </div>
-      <div class="panel panel--preview resolve-focus" data-preview="match" aria-hidden="true">
-          <div class="app">
-          <div class="app-doc">
-            <span class="kicker">BRIEF · 大促 / 家居日用</span>
-            <h4>夏日洗护种草 · 小红书 · 腰部达人 12 位</h4>
-            <p>全索引 20 位 → 场景权重重排 → 输出 8 位候选，附逐维解释。</p>
-            <span class="app-tag">主题匹配 · 人设契合 · 粉丝画像</span>
-          </div>
-          <div class="app-metrics">
-            <div><b>top 8</b><span>from 20-row index</span></div>
-            <div><b>20→8</b><span>index → rank</span></div>
-            <div><b>5 dims</b><span>scored per creator</span></div>
-          </div>
-        </div>
-        </div>
-      <div class="panel panel--live" data-demo="match" data-source="deck" data-case-url="/work/creator-match/" hidden></div>
-    </div>
+        <article class="sb-card sb-card--b sb-c2" style="--rot:.5deg">
+          <div class="sb-head"><span class="sb-n">02</span><span class="sb-en">Map</span></div>
+          <h3>梳理流程</h3>
+          <svg class="sb-art" viewBox="0 0 140 84" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="14" y="8" width="86" height="54" rx="2"/><rect x="24" y="18" width="18" height="12" rx="1.5"/><rect x="52" y="18" width="18" height="12" rx="1.5"/><rect x="78" y="18" width="14" height="12" rx="1.5"/><path d="M44 24h6M72 24h4"/><path d="M47 21l3 3-3 3M74 21l3 3-3 3"/><path d="M24 44h40M24 52h30M18 44h3M18 52h3"/><circle cx="120" cy="34" r="7"/><path d="M120 41v18M120 47l-14-8M120 59l-6 14M120 59l6 14"/></svg>
+          <p>先不谈 AI，把「感觉不对」拆成可判定清单：五步审核链路；五维字段 + 四套场景权重。</p>
+          <span class="sb-chip">先画链路，再写代码</span>
+        </article>
 
-    <div class="work-panel" id="p-al" role="tabpanel" aria-labelledby="tab-al" data-project="agent-loop" hidden>
-      <div class="work-left resolve-copy">
-        <div class="work-intro">
-          <span class="kicker">IN DESIGN · NO DEMO YET</span>
-          <h3 class="product-name" lang="en">Agent Loop</h3>
-          <p class="work-cn-name">复盘回流</p>
-          <p class="work-thesis">把投放复盘变成下一轮选号的输入，而不是一个没人再打开的 PDF。</p>
-        </div>
-        <div class="grid6">
-          <div class="cell"><span class="cell-label">问题</span><p class="cell-body">复盘数据回收后无人再用，下一轮选号仍凭记忆。<strong>多数复盘文档此后再没被打开</strong>。</p></div>
-          <div class="cell"><span class="cell-label">我的角色</span><p class="cell-body">需求定义中。</p></div>
-          <div class="cell"><span class="cell-label">关键决策</span><p class="cell-body">先做<strong>规则写得下来</strong>的环节，而非最炫的环节。</p></div>
-          <div class="cell"><span class="cell-label">业务结果</span><p class="cell-stat"><span class="stat">尚无</span></p><p class="cell-body">未上线，不编数字。</p></div>
-          <div class="cell"><span class="cell-label">真实证据</span><p class="cell-body">无演示。可聊设计思路与已验证的前置假设。</p><div class="work-cta"><a class="btn btn--link" href="/#contact" data-scene-link="contact" data-track="agent_loop_chat">想聊这个方向 <span class="ar">→</span></a></div></div>
-          <div class="cell"><span class="cell-label">下一步</span><p class="cell-body">打通投放后台与达人索引的<strong>数据回流</strong>，让效果指标能反查到达人维度。</p></div>
-        </div>
+        <article class="sb-card sb-c3" style="--rot:-.4deg">
+          <div class="sb-head"><span class="sb-n">03</span><span class="sb-en">Build</span></div>
+          <h3>Vibecoding 做 MVP</h3>
+          <svg class="sb-art" viewBox="0 0 140 84" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="34" y="10" width="96" height="58" rx="3"/><path d="M34 22h96"/><circle cx="42" cy="16" r="1.6"/><circle cx="49" cy="16" r="1.6"/><path d="M46 34l9 7-9 7"/><path d="M62 48h22"/><path d="M14 22l2.6 5.4L22 30l-5.4 2.6L14 38l-2.6-5.4L6 30l5.4-2.6z"/><circle cx="20" cy="52" r="6"/><path d="M20 58v12M20 62l12-6M20 70l-6 9M20 70l6 9"/></svg>
+          <p>一个人 + 借用工程接口：RAG 召回、分层 Prompt、多支路召回，先用 20 条样例跑通链路。</p>
+          <span class="sb-chip">RAG + 分层 Prompt</span>
+        </article>
+
+        <article class="sb-card sb-card--b sb-c4" style="--rot:.6deg">
+          <div class="sb-head"><span class="sb-n">04</span><span class="sb-en">Ship</span></div>
+          <h3>上线团队使用</h3>
+          <svg class="sb-art" viewBox="0 0 140 84" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 64h112M16 64v12M108 64v12"/><rect x="22" y="48" width="20" height="12" rx="1.5"/><path d="M18 60h28"/><circle cx="32" cy="32" r="6"/><path d="M32 38v10M32 44l8 4"/><rect x="70" y="48" width="20" height="12" rx="1.5"/><path d="M66 60h28"/><circle cx="80" cy="32" r="6"/><path d="M80 38v10M80 44l-8 4"/><path d="M126 8v48"/><path d="M126 8h12l-4.5 5.5L138 19h-12"/></svg>
+          <p>服务 P&amp;G 汰渍全平台投放：审核 <span class="hl">10min → 3min</span>、选号 <span class="hl">30min → 5min</span>、中选率 30%→50%。</p>
+          <span class="sb-chip">两套系统 0→1</span>
+        </article>
+
+        <article class="sb-card sb-c5" style="--rot:-.5deg">
+          <div class="sb-head"><span class="sb-n">05</span><span class="sb-en">Iterate</span></div>
+          <h3>收集反馈迭代</h3>
+          <svg class="sb-art" viewBox="0 0 140 84" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="24" cy="30" r="7"/><path d="M24 37v16M24 42l12 6M24 53l-7 13M24 53l7 13"/><circle cx="116" cy="30" r="7"/><path d="M116 37v16M116 42l-12 6M116 53l-7 13M116 53l7 13"/><rect x="40" y="5" width="30" height="18" rx="3"/><path d="M48 23l-4 7 9-3"/><path d="M51 14a5 5 0 1 1 1.4 3.5"/><path d="M50 18.5l.8-4 4 1"/><rect x="72" y="5" width="30" height="18" rx="3"/><path d="M94 23l4 7-9-3"/><path d="M79 14l4 4 8-8"/><path d="M40 66c18 12 42 12 60 0" stroke-dasharray="5 6"/><path d="M96 62l5 5-7 3"/></svg>
+          <p>采纳和忽略都是数据：召回率 <span class="hl">92%</span>、匹配率 <span class="hl">85%</span>，修正持续回流。</p>
+          <span class="sb-chip">闭环让系统长大</span>
+        </article>
+
+        <div class="sb-loop" aria-hidden="true"><svg viewBox="0 0 260 150" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M252 140C190 154 84 156 48 128 20 106 18 64 30 30" stroke-dasharray="6 7"/><path d="M22 38l8-14 8 12"/><text x="150" y="132" text-anchor="middle" font-size="12" fill="currentColor" stroke="none">业务一直在变 · 回到 01</text></svg></div>
+
+        <p class="sb-loopback">↺ 回到第 01 格——业务一直在变，故事继续。</p>
       </div>
-      <div class="panel panel--preview resolve-focus"><div class="app"><div class="app-doc">
-        <span class="kicker">NO DEMO · IN DESIGN</span>
-        <h4>这一格是空的，因为还没做出来。</h4>
-        <p>我不给未上线的东西配数字。等它有了，这里会换成可运行的界面。</p>
-        <span class="app-tag">honesty over polish</span></div></div></div>
+    </div>
+    <div class="sb-launch">
+      <div>
+        <p class="sb-launch-big">故事讲完了，剩下的你亲手跑。</p>
+        <p class="sb-launch-sub">弹窗中本地运行 · 随时可关 · 完整故事版：<a href="/demo/review/" data-track="storyboard_open">内容审核 →</a> <a href="/demo/match/" data-track="storyboard_open">达人推荐 →</a></p>
+      </div>
+      <div class="sb-launch-cta">
+        <button type="button" class="btn sb-launch-btn" data-demo-open data-demo-product="review" data-track="open_demo_review" aria-haspopup="dialog" aria-controls="sb-modal">▶ 内容审核 Demo <span class="ar">↗</span></button>
+        <button type="button" class="btn sb-launch-btn" data-demo-open data-demo-product="match" data-track="open_demo_match" aria-haspopup="dialog" aria-controls="sb-modal">▶ 达人推荐 Demo <span class="ar">↗</span></button>
+      </div>
     </div>
   </div></div>
 </section>
@@ -211,29 +172,79 @@
   <div class="scene-body"><div class="stage-inner scene-pad" style="position:relative">
     <p class="kicker">CAREER / METHOD</p>
     <div class="traj-head" style="margin-top:14px">
-      <h2 class="h2" id="traj-title">从投放一线，<br>走到产品定义。</h2>
+      <h2 class="h2" id="traj-title">从投放增长一线，<br>到产品设计与构建。</h2>
       <div class="tabs" role="tablist" aria-label="轨迹切换">
         <button role="tab" id="tt-c" aria-controls="tp-c" aria-selected="true">职业经历</button>
         <button role="tab" id="tt-m" aria-controls="tp-m" aria-selected="false">工作方法</button>
+        <button role="tab" id="tt-e" aria-controls="tp-e" aria-selected="false">产品方法论</button>
       </div>
     </div>
     <div id="tp-c" role="tabpanel" aria-labelledby="tt-c">
       <div class="career resolve-view">
-        <div class="career-col"><span class="cc-idx">01 / 2024.09 — NOW</span><h3 class="cc-org">阳狮集团 · 盛世长城</h3><p class="cc-role">Senior Media Executive / AIPM</p><p class="cc-scope">P&amp;G 汰渍全平台 Creator / KOL 营销</p><p class="cc-judge">规模让我必须把判断交给系统。</p><div class="cc-tags"><span>月200+达人</span><span>100W+月消耗</span><span>两套系统 0-1</span></div></div>
-        <div class="career-col"><span class="cc-idx">02 / 2023.04 — 2024.07</span><h3 class="cc-org">蓝色光标</h3><p class="cc-role">高级客户执行</p><p class="cc-scope">脉动、简爱百万级达人投放，头部 KOL 全案</p><p class="cc-judge">第一次意识到重复劳动是流程问题，不是我的问题。</p><div class="cc-tags"><span>头部KOL全案</span><span>SOP 沉淀</span></div></div>
-        <div class="career-col"><span class="cc-idx">03 / 2021.11 — 2023.03</span><h3 class="cc-org">茉莉数科</h3><p class="cc-role">客户执行</p><p class="cc-scope">宝洁潘婷、飘柔抖音官号全链路运营</p><p class="cc-judge">内容合规不是「感觉不对」，是可以写成清单的。</p><div class="cc-tags"><span>官号运营</span><span>合规清单</span></div></div>
-        <div class="career-col"><span class="cc-idx">04 / 2025 —</span><h3 class="cc-org">自建 AI 系统</h3><p class="cc-role">产品设计与落地</p><p class="cc-scope">图文审核 + 达人推荐两套系统</p><p class="cc-judge">规则写下来之后，机器就能接手。</p><div class="cc-tags"><span>RAG</span><span>分层Prompt</span><span>HITL</span></div></div>
+        <div class="career-col"><span class="cc-idx">01 / 2024.09 — NOW</span><h3 class="cc-org"><img class="cc-logo" src="/assets/icons/logo-publicis.png" width="22" height="22" alt="" loading="lazy">阳狮集团<button type="button" class="cc-more" data-exp="p1" aria-label="查看详细经历：阳狮"><span class="ccm-t">查看详情</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M7 17L17 7M9 7h8v8" stroke-linecap="round" stroke-linejoin="round"/></svg></button></h3><p class="cc-role">Senior Media Executive / AIPM</p><p class="cc-scope">P&amp;G 汰渍全平台 Creator / KOL 营销</p><p class="cc-judge">真正上手 AI 是从这里开始，一做就是两套系统。</p><div class="cc-tags"><span>月200+达人</span><span>100W+月消耗</span><span>两套系统 0-1</span></div></div>
+        <div class="career-col"><span class="cc-idx">02 / 2023.04 — 2024.07</span><h3 class="cc-org"><img class="cc-logo" src="/assets/icons/logo-bluefocus.png" width="22" height="22" alt="" loading="lazy">蓝色光标<button type="button" class="cc-more" data-exp="bf" aria-label="查看详细经历：蓝色光标"><span class="ccm-t">查看详情</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M7 17L17 7M9 7h8v8" stroke-linecap="round" stroke-linejoin="round"/></svg></button></h3><p class="cc-role">高级客户执行</p><p class="cc-scope">脉动、简爱百万级达人投放，头部 KOL 全案</p><p class="cc-judge">那时 AI 只是「知道有、用过一点」，重复劳动我倒先记住了。</p><div class="cc-tags"><span>头部KOL全案</span><span>SOP 沉淀</span></div></div>
+        <div class="career-col"><span class="cc-idx">03 / 2021.11 — 2023.03</span><h3 class="cc-org"><img class="cc-logo" src="/assets/icons/logo-moli.png" width="22" height="22" alt="" loading="lazy">茉莉数科<button type="button" class="cc-more" data-exp="ml" aria-label="查看详细经历：茉莉数科"><span class="ccm-t">查看详情</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M7 17L17 7M9 7h8v8" stroke-linecap="round" stroke-linejoin="round"/></svg></button></h3><p class="cc-role">客户执行</p><p class="cc-scope">宝洁潘婷、飘柔抖音官号全链路运营</p><p class="cc-judge">内容合规不是「感觉不对」，是可以写成清单的。</p><div class="cc-tags"><span>官号运营</span><span>合规清单</span></div></div>
       </div>
       <p class="kicker" style="margin-top:26px">产品定义 · 体验设计 · AI 产品开发 · <a href="/profile/" data-track="full_profile" style="border-bottom:1px solid currentColor">查看完整履历 →</a></p>
     </div>
     <div id="tp-m" role="tabpanel" aria-labelledby="tt-m" hidden>
       <div class="methods resolve-view">
         <div class="method"><span class="method-n">01</span><div><h4>先量成本，再谈方案</h4><p>我不用「效率提升」开头。先算清楚：这个动作每月重复多少次、每次多少人时。算不出来，它就不值得做产品。</p></div></div>
-        <div class="method"><span class="method-n">02</span><div><h4>把隐性规则写成可判定条目</h4><p>老手说「这条不对劲」，我得问出到底是哪个词不对、属于哪一类、能不能举反例。写不出来就不该上模型。</p></div></div>
-        <div class="method"><span class="method-n">03</span><div><h4>给模型一个岗位，不是一个愿望</h4><p>拆成风险识别、规范校验、优化建议三层，每层只管一件事，输出必须是结构化字段。一层出错不牵连另外两层。</p></div></div>
-        <div class="method"><span class="method-n">04</span><div><h4>在模型不确定的地方留人</h4><p>置信度低于阈值、规则库没命中、新品牌冷启动——这三种情况必须转人工，而不是硬猜。兜底是产品设计的一部分。</p></div></div>
-        <div class="method"><span class="method-n">05</span><div><h4>让结果可复盘</h4><p>采纳和忽略都是数据。没有回流的审核系统，三个月后就会退化成没人信的提示器。</p></div></div>
-        <div class="risk-note"><h5>我现在最清楚的风险</h5><p>规则召回率 92% 是在 3 个品牌、约 400 条规则下测的。品牌数继续增加时它会掉——多品牌规则冲突的仲裁我还没解决，这也是 AGENT LOOP 存在的原因。</p></div>
+        <div class="method"><span class="method-n">02</span><div><h4>把隐性经验写成可判定的规则</h4><p>老手说「这条不对劲」，我得问出是哪个词不对、属于哪一类、反例是什么。写不成 SOP 的事，谈不上自动化，更谈不上产品化。</p></div></div>
+        <div class="method"><span class="method-n">03</span><div><h4>把大问题拆成小流程</h4><p>模糊的需求，拆到每一步有明确的输入输出、出错能定位到环节。先用最小方案跑通最短链路，再谈扩展——两套系统都是这么从 MVP 长出来的。</p></div></div>
+        <div class="method"><span class="method-n">04</span><div><h4>先设计兜底，再设计体验</h4><p>哪些环节必须有人确认、自动化到哪里为止、出了错谁来接——这些先于功能写进方案。没人敢负责的产品，不会有人用。</p></div></div>
+        <div class="method"><span class="method-n">05</span><div><h4>让每个动作都可复盘</h4><p>采纳、拒绝、修改，都是值得留下的信号。把数据回流跑起来，产品才会越用越准，而不是上线即巅峰。</p></div></div>
+        <div class="risk-note"><h5>我现在最清楚的风险</h5><p>规则召回率 92% 是在 3 个品牌、约 400 条规则下测的。品牌数继续增加时它会掉——多品牌规则冲突的仲裁我还没解决。</p></div>
+      </div>
+    </div>
+    <div id="tp-e" role="tabpanel" aria-labelledby="tt-e" hidden>
+      <div class="era">
+        <p class="era-claim">业务不只是需求的提出者，<em>还可以是工具的创造者</em>。<span>—— 从业务问题到 AI 工具 · 阳狮内部分享</span></p>
+        <div class="era-grid">
+          <section class="era-col">
+            <p class="era-colhead">五步路径 · 一个业务人怎么把问题做成产品</p>
+            <ol class="era-steps">
+              <li class="era-step">
+                <svg class="era-ico" viewBox="0 0 44 44" aria-hidden="true"><path d="M24 4L12 24h8l-4 16 16-22h-9z" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/><circle cx="35" cy="10" r="3" fill="none" stroke="var(--dot)" stroke-width="2"/></svg>
+                <div><h5><b>发现痛点</b><span>01</span></h5><p>审一篇稿 8-10 分钟、筛一次号 30 分钟——每天都重复的事，才值得被改变。</p></div>
+              </li>
+              <li class="era-step">
+                <svg class="era-ico" viewBox="0 0 44 44" aria-hidden="true"><circle cx="9" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="2.2"/><circle cx="34" cy="22" r="4" fill="none" stroke="currentColor" stroke-width="2.2"/><circle cx="12" cy="34" r="4" fill="none" stroke="var(--dot)" stroke-width="2.2"/><path d="M13 13.5l17 6.5M30.5 25.5l-15 6.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-dasharray="3 3"/></svg>
+                <div><h5><b>梳理工作流</b><span>02</span></h5><p>先不碰工具，把流程摊开：哪一步、靠什么判断、错了会怎样。画得出来，才交得出去。</p></div>
+              </li>
+              <li class="era-step">
+                <svg class="era-ico" viewBox="0 0 44 44" aria-hidden="true"><path d="M6 22c5-8 12-12 16-12s11 4 16 12c-5 8-12 12-16 12S11 30 6 22z" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/><circle cx="22" cy="22" r="5" fill="none" stroke="var(--dot)" stroke-width="2.2"/><path d="M22 5v4M36 8l-2.5 3.5M8 8l2.5 3.5" stroke="var(--dot)" stroke-width="2" stroke-linecap="round"/></svg>
+                <div><h5><b>判断 AI 切入点</b><span>03</span></h5><p>高频、重复、可规则化，三条都占才动手——Copilot 解决「一次」，产品解决「一类」。</p></div>
+              </li>
+              <li class="era-step">
+                <svg class="era-ico" viewBox="0 0 44 44" aria-hidden="true"><path d="M8 10h28a3 3 0 013 3v14a3 3 0 01-3 3H22l-8 7v-7H8a3 3 0 01-3-3V13a3 3 0 013-3z" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/><path d="M15 20l-3 3 3 3M25 20l3 3-3 3M22 17l-3 10" fill="none" stroke="var(--dot)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                <div><h5><b>VibeCoding 做 MVP</b><span>04</span></h5><p>不是程序员，但最懂这个问题。用自然语言写、调、改，4 周跑通最短链路。</p></div>
+              </li>
+              <li class="era-step">
+                <svg class="era-ico" viewBox="0 0 44 44" aria-hidden="true"><path d="M22 36V10m0 0l-7 7m7-7l7 7" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/><circle cx="10" cy="38" r="3" fill="none" stroke="var(--dot)" stroke-width="2"/><circle cx="22" cy="40" r="3" fill="none" stroke="var(--dot)" stroke-width="2"/><circle cx="34" cy="38" r="3" fill="none" stroke="var(--dot)" stroke-width="2"/></svg>
+                <div><h5><b>上线赋能组织</b><span>05</span></h5><p>审核 10min → 3min、选号 30min → 5min。个人工具长成团队工具，再沉淀成组织能力。</p></div>
+              </li>
+            </ol>
+          </section>
+          <section class="era-col">
+            <p class="era-colhead">ERA 三步法 · 把个人经验翻译成可复用系统</p>
+            <div class="era-eras">
+              <div class="era-mini"><span class="era-letter">E<b>Extract</b></span><p><b>提取经验</b> — 把隐性判断摆成显性流程：先做什么、再做什么、注意什么、成品长什么样。</p></div>
+              <div class="era-mini"><span class="era-letter">R<b>Refine</b></span><p><b>固化规则</b> — 「这图产品太小」→「产品占比 60%、光线明亮、背景简约、大量留白」。AI 不懂感觉，规则替它判断。</p></div>
+              <div class="era-mini"><span class="era-letter">A<b>Assign</b></span><p><b>定义边界</b> — AI 负责执行，人负责判断与验收：关键节点人工确认，才放行下一段自动化。</p></div>
+            </div>
+            <p class="era-foot">ERA 的作用：把一个人的隐性经验，变成一个谁都能复用的工具。</p>
+            <div class="era-check">
+              <p class="era-colhead">验证与放大 · 工具凭什么活下来</p>
+              <ul>
+                <li><b>自我验证 → 交叉验证</b>：不能只靠自己觉得好用，其他品牌跑通才算数。</li>
+                <li><b>三条指标</b>：效率有没有提升、输出准不准、换个品牌还能不能用。</li>
+                <li><b>持续使用才是成功</b>：上线只是起点，被团队天天用才是产品。</li>
+              </ul>
+            </div>
+          </section>
+        </div>
+        <p class="era-quote">AI 最大的价值，不是帮我们完成一次任务——是把<em>经验沉淀成能力，能力沉淀成系统</em>。</p>
       </div>
     </div>
     <p class="ghost ghost--br" aria-hidden="true">TW</p>
@@ -244,23 +255,23 @@
 <section class="scene scene--contact" id="contact" data-scene="contact" data-hash="contact" data-label="CONTACT" data-theme="ink" role="region" aria-labelledby="contact-title">
   <div class="scene-body"><div class="stage-inner">
     <div class="contact-pad resolve">
-      <p class="kicker">START A CONVERSATION</p>
-      <p class="id-eyebrow">AVAILABLE FOR AI PRODUCT ROLES</p>
-      <h2 class="h2" id="contact-title">你的流程里，<br>还有多少判断没写下来？</h2>
-      <p class="lede">接受 AI 产品岗位，也欢迎内容营销场景的产品合作。</p>
+      <p class="kicker">CONTACT</p>
+      <p class="id-eyebrow">OPEN TO OPPORTUNITIES</p>
+      <h2 class="h2" id="contact-title">有岗位或合作意向，<br>欢迎与我交流。</h2>
+      <p class="lede">坐标广州，期待以下方向机会：<br>· 求职：AI 产品经理 / AI 产品运营 / 用户增长岗位<br>· 合作：内容营销、达人业务相关 AI 产品项目<br>下方可获取简历或直接取得联系。</p>
       <div class="contact-links">
+        <a class="btn btn--link" href="/profile/" data-track="profile_click">完整履历 <span class="ar">↗</span></a>
         <a class="btn btn--link" href="mailto:1502110191@qq.com?subject=From%20teddywu.site" data-track="email_click">发送邮件 <span class="ar">↗</span></a>
         <button class="btn btn--link" data-copy="TeddyGorrr" data-track="wechat_copy">复制微信号 <span class="ar">↗</span></button>
         <button class="btn btn--link" data-qr="qr-wechat" aria-controls="qr-wechat" aria-expanded="false" data-track="wechat_qr">扫码加我 <span class="ar">↗</span></button>
-        <a class="btn btn--link" href="/profile/" data-track="profile_click">完整履历 <span class="ar">↗</span></a>
       </div>
       <figure class="qr" id="qr-wechat" hidden>
         <img src="/assets/img/wechat-qr.jpg" alt="Teddy Wu 的微信二维码，扫码可直接添加好友" width="400" height="400" loading="lazy" decoding="async">
         <figcaption>微信 · TeddyGorrr</figcaption>
       </figure>
       <div class="contact-meta">
-        <span>© <span data-year>2026</span> Teddy Wu</span><span>Guangzhou</span>
-        <span>Built as a static site</span><span>Demos use sample data</span><span>No cookies. No tracking of what you paste.</span>
+        <span>© <span data-year>2026</span> Teddy Wu · 广州</span>
+        <span>本站为纯静态页面</span><span>Demo 均运行样例数据</span><span>无 Cookie · 不追踪任何输入</span>
       </div>
     </div>
     <p class="ghost ghost--contact ghost--br" aria-hidden="true">I MAKE<br>AI USEFUL</p>
@@ -274,14 +285,14 @@
 <div class="rail" data-theme="paper">
   <p class="rail-index"><span class="cur">01</span> <span class="tot">/ 04</span></p>
   <div class="rail-segs" role="group" aria-label="场景进度">
-    <button class="rail-seg w10 is-current" data-scene-link="identity" aria-label="第 1 屏 身份" aria-current="true"><i></i></button>
-    <button class="rail-seg w22" data-scene-link="work" aria-label="第 2 屏 作品"><i></i></button>
-    <button class="rail-seg w16" data-scene-link="trajectory" aria-label="第 3 屏 轨迹"><i></i></button>
-    <button class="rail-seg w06" data-scene-link="contact" aria-label="第 4 屏 联系"><i></i></button>
+    <button class="rail-seg w10 is-current" data-scene-link="identity" aria-label="第 1 屏 我是谁" aria-current="true"><i></i></button>
+    <button class="rail-seg w18" data-scene-link="story" aria-label="第 2 屏 我和 AI 的故事"><i></i></button>
+    <button class="rail-seg w22" data-scene-link="trajectory" aria-label="第 3 屏 我的工作轨迹"><i></i></button>
+    <button class="rail-seg w06" data-scene-link="contact" aria-label="第 4 屏 联系我"><i></i></button>
   </div>
   <details class="rail-jump"><summary><span class="cur">01</span> / 04 · <span class="sum-label">IDENTITY</span></summary>
     <div class="rail-menu">
-      <a href="/#identity" data-scene-link="identity">01 身份</a><a href="/#work" data-scene-link="work">02 作品</a>
+      <a href="/#identity" data-scene-link="identity">01 身份</a><a href="/#story" data-scene-link="story">02 故事版</a>
       <a href="/#trajectory" data-scene-link="trajectory">03 轨迹</a><a href="/#contact" data-scene-link="contact">04 联系</a>
     </div></details>
   <p class="rail-name">IDENTITY</p>
@@ -292,6 +303,18 @@
   </div>
   <p class="rail-live" aria-live="polite"></p>
 </div>
+<!-- demo modal: opened by the work-panel launch buttons -->
+<div class="sb-modal" id="sb-modal" role="dialog" aria-modal="true" aria-label="本地 Demo" hidden>
+  <div class="sb-modal-bg" data-close></div>
+  <div class="sb-modal-panel">
+    <div class="sb-modal-bar">
+      <p class="t" id="sb-modal-title">本地 Demo · 样例数据</p>
+      <button type="button" class="sb-modal-close" id="sb-close">✕ 关闭</button>
+    </div>
+    <div class="demo-host" id="sb-demo-host"></div>
+  </div>
+</div>
+
 <p id="scene-announce" class="sr-only" aria-live="polite"></p>
 
 <script type="module" src="/assets/js/main.js"></script>

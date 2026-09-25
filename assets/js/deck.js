@@ -1,5 +1,9 @@
 import { track } from './analytics.js';
 
+/* Deck mode needs two things: a wide-enough window AND enough height that
+   every scene's real content fits its frame. When any scene would overflow,
+   the deck stops compressing and the whole page falls back to native
+   vertical scrolling (is-vertical mode) - nothing is ever clipped. */
 const DECK_MQ = '(min-width: 769px)';
 
 export function createDeck({ onScene } = {}) {
@@ -26,7 +30,15 @@ export function createDeck({ onScene } = {}) {
   const annEl  = document.getElementById('scene-announce');
 
   const mq = window.matchMedia(DECK_MQ);
-  let deckMode = mq.matches;
+  const contentFits = () => {
+    const avail = innerHeight - ((header?.offsetHeight || 64) + (rail?.offsetHeight || 56));
+    return scenes.every((sc) => {
+      const b = sc.querySelector('.scene-body');
+      return !b || b.scrollHeight <= avail + 8;
+    });
+  };
+  const wantsDeck = () => mq.matches && contentFits();
+  let deckMode = wantsDeck();
   let i = 0, lock = 0, last = 0;
 
   const themeOf = (el) => el.dataset.theme || 'paper';
@@ -75,6 +87,8 @@ export function createDeck({ onScene } = {}) {
     if (deckMode) {
       cut();
       scenes[i]._t = Date.now();
+      const nb = scenes[i].querySelector('.scene-body');
+      if (nb) nb.scrollTop = 0;                      // every scene enters from its own top
       const h = scenes[i].querySelector('h2,h1');
       if (h && !document.activeElement.closest('input,textarea,select')) h.setAttribute('tabindex', '-1');
     } else {
@@ -89,7 +103,7 @@ export function createDeck({ onScene } = {}) {
 
   function applyMode() {
     const was = deckMode;
-    deckMode = mq.matches;
+    deckMode = wantsDeck();
     stage.classList.toggle('is-vertical', !deckMode);
     stack.classList.toggle('is-vertical', !deckMode);
     document.body.classList.toggle('is-deck', deckMode);
@@ -128,7 +142,14 @@ export function createDeck({ onScene } = {}) {
   stage.addEventListener('wheel', (e) => {
     if (!deckMode || lock) return;
     const body = scenes[i].querySelector('.scene-body');
-    if (body && body.scrollHeight - body.clientHeight > 4) return;   // content owns the wheel
+    /* Content owns the wheel only while its own scroll can still absorb the
+       gesture; once it is pinned at an edge, the deck takes the wheel back. */
+    if (body && body.scrollHeight - body.clientHeight > 4) {
+      const atTop = body.scrollTop <= 0;
+      const atBottom = body.scrollTop + body.clientHeight >= body.scrollHeight - 1;
+      if (e.deltaY > 0 && !atBottom) return;
+      if (e.deltaY < 0 && !atTop) return;
+    }
     if (Math.abs(e.deltaY) < 26 || Math.abs(e.deltaY) < Math.abs(e.deltaX)) return;
     const atEdge = (e.deltaY > 0 && i === scenes.length - 1) || (e.deltaY < 0 && i === 0);
     if (atEdge) return;
@@ -170,6 +191,15 @@ export function createDeck({ onScene } = {}) {
 
   const onMq = () => { last = i; applyMode(); };
   mq.addEventListener ? mq.addEventListener('change', onMq) : mq.addListener(onMq);
+  let rz = 0;
+  window.addEventListener('resize', () => {
+    if (rz) return;
+    rz = requestAnimationFrame(() => { rz = 0; if (wantsDeck() !== deckMode) { last = i; applyMode(); } });
+  });
+  /* webfont swap and late image load change text metrics; re-check once settled */
+  const refit = () => { if (wantsDeck() !== deckMode) { last = i; applyMode(); } };
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(refit);
+  window.addEventListener('load', refit);
 
   /* --- init --- */
   const fromHash = () => {

@@ -2,12 +2,12 @@
 <html lang="zh-CN">
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>图文审核 · AI Content Review — 把品牌规则变成机器能执行的判断 · Teddy Wu</title>
+<title>内容审核系统 · AI Content QC System — 把品牌规则变成机器能执行的工作 · Teddy Wu</title>
 <meta name="description" content="达人内容 AI 审核系统。单条审核 10min→3min（口径见页内）。粘贴稿件即可试用，含规则命中、置信度与人工兜底。">
 <link rel="canonical" href="https://teddywu-0506.github.io/work/content-review/">
 <meta property="og:type" content="article"><meta property="og:locale" content="zh_CN">
-<meta property="og:title" content="图文审核 · AI Content Review — 把品牌规则变成机器能执行的判断 · Teddy Wu"><meta property="og:description" content="达人内容 AI 审核系统。单条审核 10min→3min（口径见页内）。粘贴稿件即可试用，含规则命中、置信度与人工兜底。"><meta property="og:url" content="https://teddywu-0506.github.io/work/content-review/">
-<meta property="og:image" content="https://teddywu-0506.github.io/assets/img/og-review.png"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta property="og:image:alt" content="图文审核 · AI Content Review — 把品牌规则变成机器能执行的判断 · Teddy Wu">
+<meta property="og:title" content="内容审核系统 · AI Content QC System — 把品牌规则变成机器能执行的工作 · Teddy Wu"><meta property="og:description" content="达人内容 AI 审核系统。单条审核 10min→3min（口径见页内）。粘贴稿件即可试用，含规则命中、置信度与人工兜底。"><meta property="og:url" content="https://teddywu-0506.github.io/work/content-review/">
+<meta property="og:image" content="https://teddywu-0506.github.io/assets/img/og-review.png"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta property="og:image:alt" content="内容审核系统 · AI Content QC System — 把品牌规则变成机器能执行的工作 · Teddy Wu">
 <meta name="twitter:card" content="summary_large_image"><meta name="theme-color" content="#F2F0EA">
 <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="/assets/icons/apple-touch-icon.png">
@@ -17,16 +17,16 @@
 <body class="doc">
 <header class="doc-head" data-theme="paper">
   <a class="brand" href="/"><span class="brand-mark">TW</span><span class="brand-rule" aria-hidden="true"></span><span class="brand-sub">Product Dossier</span></a>
-  <nav class="nav" aria-label="页面导航"><a href="/#work">← 返回作品台</a><a href="/profile/">履历</a><a href="/#contact">联系</a></nav>
+  <nav class="nav" aria-label="页面导航"><a href="/#story">← 返回作品台</a><a href="/profile/">履历</a><a href="/#contact">联系</a></nav>
 </header>
 <main class="doc-main">
 
 <section class="doc-hero">
-  <div><a class="back" href="/#work">← 返回作品台</a>
+  <div><a class="back" href="/#story">← 返回作品台</a>
     <p class="kicker">SELECTED WORK 01 · 2026</p>
-    <h1 class="product-name" style="margin:14px 0 6px">Content Review</h1>
-    <p class="work-cn-name">图文审核</p></div>
-  <div><p class="doc-thesis">把散在人和文档里的品牌规则，变成机器能执行的判断。</p>
+    <h1 class="product-name" style="margin:14px 0 6px">Content QC System</h1>
+    <p class="work-cn-name">内容审核系统</p></div>
+  <div><p class="doc-thesis">把散在人和文档里的品牌规则，变成机器能执行的工作。</p>
     <p class="doc-status">本地演示 · 样例数据 · 线上版本服务 P&amp;G 汰渍全平台投放</p>
     <p style="margin-top:18px"><a class="btn btn--solid" href="#demo">直接跑一次 <span class="ar">↘</span></a></p></div>
 </section>
@@ -45,14 +45,14 @@
   <div class="flow"><div class="flow-step"><span class="flow-n">01</span><div><h3>收稿</h3><p>从飞书 / 腾讯文档批量导入，抽取正文、话题标签与图片 OCR 文本，统一成一份结构化素材对象。</p><span class="flow-tag">你在 demo 里粘贴的那段文字，就是这一步的产物</span></div></div><div class="flow-step"><span class="flow-n">02</span><div><h3>规则召回</h3><p>品牌规则标签库 + 多品牌 SOP 知识库做向量检索。关键做法是给每个 chunk 补一段语义摘要——不加摘要时召回率只有 78%，补了以后稳定在 92%。</p><span class="flow-tag">召回率 92%</span></div></div><div class="flow-step"><span class="flow-n">03</span><div><h3>分层校验</h3><p>风险识别（广告法红线、绝对化表述）→ 规范校验（产品名逐字匹配、卖点命中、话题规范）→ 优化建议（开头钩子、信息结构）。</p></div></div><div class="flow-step"><span class="flow-n">04</span><div><h3>结构化输出</h3><p>每条意见固定带：规则 ID、原文位置、建议改写、置信度。没有结构的输出无法被下游消费，也无法统计哪条规则最常被忽略。</p></div></div><div class="flow-step"><span class="flow-n">05</span><div><h3>人工兜底与回流</h3><p>知识库盲区自动触发人工；人工的采纳与忽略作为增量样本回流知识库。这一步决定系统是越来越准，还是越来越没人信。</p><span class="flow-tag">HITL</span></div></div></div></div></section>
 <section class="sec" id="demo"><div class="sec-grid">
   <div><span class="sec-kicker">05 / Try it</span><h2>自己跑一次。</h2>
-    <p class="prose" style="margin-top:16px">本地规则引擎，无模型调用、无网络请求。输出结构与线上系统一致，用于说明判断链路。</p></div>
+    <p class="prose" style="margin-top:16px">本地规则引擎，无模型调用、无网络请求。输出结构与线上系统一致，用于说明工作链路。</p></div>
   <div><div class="doc-demo"><div class="demo-host" data-demo="review" data-source="case" data-case-url="/work/content-review/"></div></div></div></div></section>
 <section class="sec"><div class="sec-grid">
   <div><span class="sec-kicker">06 / Results, with receipts</span><h2>数字，和它的口径。</h2></div>
   <div><div class="res"><div class="res-row"><b>10min → 3min</b><em>单条审核耗时</em><span>中位耗时 · 约 600 条/月 · 2025.03–2025.08</span></div><div class="res-row"><b>80% → 40%</b><em>返稿素材占比</em><span>需返稿素材 / 总素材 · 同期对比</span></div><div class="res-row"><b>10% → 30%</b><em>一稿通过率</em><span>一次过审占比 · 相对提升 200%</span></div><div class="res-row"><b>92%</b><em>规则召回率</em><span>3 个品牌、约 400 条规则下的测试集结果</span></div><div class="res-row is-down"><b>61%</b><em>新品牌冷启动召回率</em><span>规则数 &lt; 40 条的品牌。未达成项：目前直接转人工，不硬用模型。</span></div></div>
     <div class="grid6" style="margin-top:30px"><div class="cell cell--result" role="button" tabindex="0" data-prov="prov" aria-controls="prov" aria-expanded="false">
       <span class="cell-label">业务结果</span><p class="cell-stat"><span class="stat">10min → 3min</span></p>
-      <p class="cell-body">审核效率 +70%</p><span class="cell-arrow">口径 +</span>
+      <p class="cell-body">审核效率 +70% · 返稿占比 80%→40%</p><span class="cell-arrow">口径 +</span>
       <div class="provenance" id="prov">口径：单条小红书图文从收到初稿到给出可执行意见的中位耗时。样本 约 600 条/月。时间窗 2025.03–2025.08。一稿通过率 10%→30%。</div></div></div></div></div></section>
 <section class="sec"><div class="sec-grid">
   <div><span class="sec-kicker">07 / What broke</span><h2>它坏过三次。</h2></div>
