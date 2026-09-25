@@ -306,7 +306,7 @@ html.no-js .scene-body, .stage.is-vertical .scene-body{overflow:visible;min-heig
   gap:clamp(28px,4.4vw,72px);align-items:center;min-height:100%;
   /* the portrait bleeds -rail-h past the frame; bottom padding must cover that bleed
      or the scene grows a phantom internal scroll that eats the first wheel event */
-  padding-block:clamp(14px,2.4vh,26px) max(clamp(14px,2.4vh,26px),calc(var(--rail-h) + 6px))}
+  padding-block:clamp(10px,1.9vh,22px) max(clamp(10px,1.9vh,22px),calc(var(--rail-h) + 6px))}
 .id-left{display:grid;gap:clamp(14px,2.2vh,26px);position:relative;z-index:1}
 .id-year{font-family:var(--f-mono);font-size:var(--micro);letter-spacing:.14em;text-transform:uppercase;color:var(--text-secondary)}
 .id-eyebrow{font-family:var(--f-mono);font-size:var(--caption);letter-spacing:.06em;text-transform:uppercase;
@@ -3061,7 +3061,7 @@ body.doc{padding-top:var(--header-h);padding-bottom:0;overflow-x:clip}
 .scene--story .story-kicker{margin-bottom:clamp(6px,1.1vh,12px)}
 .scene--story .story-grid{grid-template-rows:auto clamp(22px,3.4vh,36px) auto;gap:clamp(6px,1vh,12px) 8px}
 .scene--story .sb-card{padding:clamp(9px,1.4vh,13px) 12px clamp(9px,1.3vh,12px)}
-.scene--story .sb-art{height:clamp(30px,4.4vh,46px)}
+.scene--story .sb-art{height:clamp(40px,6vh,58px)}
 .scene--story .sb-card p{margin-top:5px;margin-bottom:7px;line-height:1.6}
 .scene--story .sb-launch{padding:clamp(8px,1.4vh,14px) clamp(16px,2.4vw,30px)}
 .scene--story .sb-launch-big{font-size:clamp(16px,2.2vh,22px)}
@@ -3201,3 +3201,17 @@ body.doc{padding-top:var(--header-h);padding-bottom:0;overflow-x:clip}
 .era-check li b { color: var(--text-primary); font-weight: 600; }
 
 .era-foot { margin: 0; text-align: right; font-size: 12px; font-style: italic; color: var(--text-quiet); }
+.sb-doodle{position:absolute;color:var(--ink-400);opacity:.5;pointer-events:none;z-index:0}
+
+/* ---- wide-but-short viewports: grow the board itself, not just its frame ---- */
+@media (min-width:1600px){
+  .scene--story .story-kicker .t{font-size:clamp(17px,2.3vh,22px)}
+  .scene--story .sb-card{padding:clamp(13px,2vh,20px) clamp(15px,1.5vw,24px) clamp(13px,1.8vh,18px)}
+  .scene--story .sb-card h3{font-size:clamp(17px,2.5vh,23px)}
+  .scene--story .sb-card p{font-size:clamp(12.5px,1.85vh,15.5px);line-height:1.8}
+  .scene--story .sb-art{height:clamp(56px,8.4vh,84px)}
+  .scene--story .sb-n,.scene--story .sb-en{font-size:calc(var(--caption) + 1px)}
+  .scene--story .sb-chip{font-size:12.5px;padding:4px 11px}
+  .scene--story .sb-launch-big{font-size:clamp(21px,2.9vh,28px)}
+  .scene--story .sb-doodle{opacity:.6}
+}
