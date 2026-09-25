@@ -33,7 +33,7 @@
   gap:clamp(28px,4.4vw,72px);align-items:center;min-height:100%;
   /* the portrait bleeds -rail-h past the frame; bottom padding must cover that bleed
      or the scene grows a phantom internal scroll that eats the first wheel event */
-  padding-block:clamp(14px,2.4vh,26px) max(clamp(14px,2.4vh,26px),calc(var(--rail-h) + 6px))}
+  padding-block:clamp(10px,1.9vh,22px) max(clamp(10px,1.9vh,22px),calc(var(--rail-h) + 6px))}
 .id-left{display:grid;gap:clamp(14px,2.2vh,26px);position:relative;z-index:1}
 .id-year{font-family:var(--f-mono);font-size:var(--micro);letter-spacing:.14em;text-transform:uppercase;color:var(--text-secondary)}
 .id-eyebrow{font-family:var(--f-mono);font-size:var(--caption);letter-spacing:.06em;text-transform:uppercase;

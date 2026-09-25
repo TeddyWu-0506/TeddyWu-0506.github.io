@@ -36,6 +36,40 @@ function mountIn(root) {
 }
 
 /* ---- deck ---- */
+/* ---- fit-zoom: story board and trajectory tab panels scale to the
+   viewport instead of kicking the deck into vertical scroll ---- */
+const fitPads = [...document.querySelectorAll('.scene--story .scene-pad')];
+if (fitPads.length) {
+  const lastZoom = new Map();
+  const fitPad = (pad) => {
+    if (innerWidth < 1000) { pad.style.zoom = ''; lastZoom.set(pad, ''); return; }
+    pad.style.zoom = 1;
+    const header = document.querySelector('.site-header')?.offsetHeight || 64;
+    const rail = document.querySelector('.rail')?.offsetHeight || 56;
+    const body = pad.closest('.scene-body');
+    const availH = innerHeight - header - rail;
+    /* story is a single fixed board: measure its own box, not the scroll
+       container, so the result is identical in deck and vertical layout */
+    const h0 = pad.offsetHeight || 1;
+    const w0 = pad.offsetWidth || 1;
+    const k = Math.max(0.7, Math.min((availH - 8) / h0, (innerWidth - 96) / w0, 1.5));
+    const next = (k > 0.99 && k < 1.01) ? '' : k.toFixed(3);
+    if (pad.style.zoom !== next) {
+      pad.style.zoom = next;
+      if (lastZoom.get(pad) !== next) {
+        lastZoom.set(pad, next);
+        requestAnimationFrame(() => dispatchEvent(new Event('resize')));
+      }
+    }
+  };
+  let raf = 0;
+  const fitAll = () => { raf = 0; fitPads.forEach(fitPad); };
+  const queueAll = () => { if (!raf) raf = requestAnimationFrame(fitAll); };
+  addEventListener('resize', queueAll);
+  addEventListener('load', queueAll);
+  fitAll();
+}
+
 const deck = createDeck({
   onScene: (i, scene) => {
     mountIn(scene);
